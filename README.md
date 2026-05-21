@@ -127,8 +127,25 @@ git push -u origin main
 ## Deploy on Vercel
 
 1. Push the repo and import in Vercel.
-2. Add `MONGODB_URI` and `JWT_SECRET` in project environment variables.
-3. Deploy. Verify with `GET /api/health`.
+2. In **Vercel → your project → Settings → Environment Variables**, add these for **Production** (and **Preview** if you use preview URLs):
+
+   | Name | Value |
+   |------|--------|
+   | `MONGODB_URI` | Your MongoDB Atlas connection string (same as local) |
+   | `JWT_SECRET` | **At least 32 characters** — not the placeholder from `.env.example` |
+   | `COOKIE_SECURE` | `true` |
+
+   Generate a strong `JWT_SECRET` (PowerShell or terminal):
+
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
+   ```
+
+   Paste the output as the value. Do **not** use a short password like `mysecret` (under 32 chars will fail login with “JWT secret missing or too short”).
+
+3. **Redeploy** after saving env vars (Deployments → … → Redeploy). New variables are not applied to old deployments until you redeploy.
+
+4. Verify: open `https://YOUR_APP.vercel.app/api/health` — you should see `"jwtConfigured": true` and `"mongodbConfigured": true`.
 
 ## Health check
 

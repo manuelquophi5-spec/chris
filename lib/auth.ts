@@ -15,7 +15,7 @@ function getSecretKey(): Uint8Array {
   const secret = process.env.JWT_SECRET;
   if (!secret || secret.length < 32) {
     throw new Error(
-      "JWT_SECRET must be set and at least 32 characters in .env.local",
+      "JWT_SECRET must be set and at least 32 characters (local: .env.local; Vercel: Project Settings → Environment Variables)",
     );
   }
   return new TextEncoder().encode(secret);

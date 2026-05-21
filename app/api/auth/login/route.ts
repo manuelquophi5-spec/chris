@@ -89,7 +89,7 @@ export async function POST(request: Request) {
     console.error("[auth/login]", err);
     const message =
       err instanceof Error && err.message.includes("JWT_SECRET")
-        ? "Server misconfigured: JWT_SECRET missing or too short"
+        ? "Server misconfigured: set JWT_SECRET (32+ characters) in Vercel environment variables, then redeploy"
         : err instanceof Error && err.message.includes("MONGODB_URI")
           ? "Server misconfigured: database not connected"
           : "Login failed. Try again in a moment.";
