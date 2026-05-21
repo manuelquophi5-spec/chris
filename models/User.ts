@@ -31,7 +31,8 @@ const userSchema = new Schema<IUser>(
       lowercase: true,
       trim: true,
     },
-    passwordHash: { type: String, select: false },
+    // Optional until the user completes "Set password" on first login.
+    passwordHash: { type: String, select: false, required: false },
     passwordMustChange: { type: Boolean, default: true },
     failedLoginAttempts: { type: Number, default: 0 },
     lockedUntil: { type: Date, default: null },
@@ -44,6 +45,13 @@ const userSchema = new Schema<IUser>(
   },
   { timestamps: true },
 );
+
+// Next.js hot reload can keep an old schema (e.g. required passwordHash).
+if (process.env.NODE_ENV !== "production") {
+  if (mongoose.models.User) {
+    mongoose.deleteModel("User");
+  }
+}
 
 export const User: Model<IUser> =
   mongoose.models.User ?? mongoose.model<IUser>("User", userSchema);

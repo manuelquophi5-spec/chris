@@ -75,6 +75,7 @@ export async function POST(request: Request) {
       name: firstName,
       role,
       passwordMustChange: true,
+      // No password yet — staff sets it via /set-password
     });
 
     await writeAudit(
@@ -97,6 +98,18 @@ export async function POST(request: Request) {
     );
   } catch (err) {
     console.error("[admin/users POST]", err);
-    return jsonError("Could not create user", 500);
+    if (
+      err &&
+      typeof err === "object" &&
+      "name" in err &&
+      err.name === "ValidationError" &&
+      "errors" in err
+    ) {
+      const first = Object.values(
+        err.errors as Record<string, { message?: string }>,
+      )[0];
+      return jsonError(first?.message ?? "Invalid user data", 400);
+    }
+    return jsonError("Could not add this person. Restart the dev server and try again.", 500);
   }
 }
