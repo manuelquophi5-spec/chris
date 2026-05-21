@@ -77,6 +77,23 @@ export function AdminUsersManager() {
     await load();
   }
 
+  async function resetPassword(id: string) {
+    setError(null);
+    const res = await authFetch(`/api/admin/users/${id}/reset-password`, {
+      method: "POST",
+    });
+    const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
+    if (!res.ok) {
+      setError(data.error ?? "Could not reset password");
+      return;
+    }
+    setMessage(
+      data.message ??
+        "Password cleared — tell them to open Set password and choose a new one.",
+    );
+    await load();
+  }
+
   function copyInstructions(id: string, name: string) {
     const text = `Hi ${name}, set up Ella attendance:\n1. Open the Ella website\n2. Tap "Set password"\n3. Employee ID: ${id}\n4. Choose a password, then sign in each day to check in/out.`;
     void navigator.clipboard.writeText(text).then(() => {
@@ -236,6 +253,15 @@ export function AdminUsersManager() {
                           className="rounded-lg bg-emerald-600 px-2.5 py-1.5 text-xs font-semibold text-white"
                         >
                           Unlock
+                        </button>
+                      ) : null}
+                      {!u.passwordMustChange ? (
+                        <button
+                          type="button"
+                          onClick={() => void resetPassword(u.id)}
+                          className="rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-1.5 text-xs font-semibold text-amber-900 hover:bg-amber-100"
+                        >
+                          Reset password
                         </button>
                       ) : null}
                     </div>

@@ -16,11 +16,9 @@ import {
 import { jsonError } from "@/lib/api";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { toSessionUser } from "@/lib/session-user";
-import {
-  internalEmailFromEmployeeId,
-  normalizeEmployeeId,
-} from "@/lib/user-account";
-import { User } from "@/models/User";
+import { findUserByEmployeeIdForAuth } from "@/lib/find-user-by-employee-id";
+import { userNeedsPasswordSetup } from "@/lib/password-hash";
+import { normalizeEmployeeId } from "@/lib/user-account";
 
 export async function POST(request: Request) {
   try {
@@ -45,13 +43,7 @@ export async function POST(request: Request) {
     }
 
     await connectDB();
-    const doc = await User.findOne({
-      $or: [
-        { employeeId },
-        { email: employeeId.toLowerCase() },
-        { email: internalEmailFromEmployeeId(employeeId) },
-      ],
-    }).select("+passwordHash");
+    const doc = await findUserByEmployeeIdForAuth(employeeId);
 
     if (!doc) {
       return jsonError("Invalid employee ID or password", 401);
@@ -61,7 +53,7 @@ export async function POST(request: Request) {
       return jsonError(lockoutMessage(doc.lockedUntil!), 423);
     }
 
-    if (!doc.passwordHash || doc.passwordMustChange) {
+    if (userNeedsPasswordSetup(doc)) {
       return NextResponse.json({
         requiresPasswordSetup: true,
         employeeId: doc.employeeId ?? employeeId,
@@ -73,7 +65,8 @@ export async function POST(request: Request) {
       return jsonError("Password is required");
     }
 
-    const valid = await verifyPassword(password, doc.passwordHash);
+    const hash = doc.passwordHash!;
+    const valid = await verifyPassword(password, hash);
     if (!valid) {
       await recordFailedLogin(doc);
       if (isAccountLocked(doc.lockedUntil)) {

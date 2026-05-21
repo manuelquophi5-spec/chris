@@ -11,8 +11,9 @@ import { jsonError } from "@/lib/api";
 import { validatePassword } from "@/lib/password-policy";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { toSessionUser } from "@/lib/session-user";
+import { findUserByEmployeeIdForAuth } from "@/lib/find-user-by-employee-id";
+import { userNeedsPasswordSetup } from "@/lib/password-hash";
 import { isValidEmployeeId, normalizeEmployeeId } from "@/lib/user-account";
-import { User } from "@/models/User";
 
 export async function POST(request: Request) {
   try {
@@ -37,12 +38,12 @@ export async function POST(request: Request) {
     if (policyError) return jsonError(policyError);
 
     await connectDB();
-    const doc = await User.findOne({ employeeId }).select("+passwordHash");
+    const doc = await findUserByEmployeeIdForAuth(employeeId);
     if (!doc) {
       return jsonError("Employee ID not found", 404);
     }
 
-    if (doc.passwordHash && !doc.passwordMustChange) {
+    if (!userNeedsPasswordSetup(doc)) {
       return jsonError(
         "Password already set. Sign in with your employee ID and password.",
         409,
