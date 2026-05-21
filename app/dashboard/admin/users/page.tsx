@@ -3,9 +3,5 @@ import { requireAdminPage } from "@/lib/admin-guard";
 
 export default async function AdminUsersPage() {
   await requireAdminPage();
-  return (
-    <div>
-      <AdminUsersManager />
-    </div>
-  );
+  return <AdminUsersManager />;
 }
