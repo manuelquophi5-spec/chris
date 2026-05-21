@@ -28,7 +28,7 @@ export async function GET() {
 
   const users: AdminUserRow[] = docs.map((d) => ({
     id: d._id.toString(),
-    employeeId: d.employeeId,
+    employeeId: d.employeeId ?? "",
     name: d.name,
     role: d.role,
     passwordMustChange: Boolean(d.passwordMustChange),

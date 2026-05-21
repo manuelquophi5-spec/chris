@@ -3,7 +3,7 @@ import type { UserRole } from "@/types";
 
 export interface IUser {
   _id: mongoose.Types.ObjectId;
-  employeeId: string;
+  employeeId?: string;
   email: string;
   passwordHash?: string;
   passwordMustChange: boolean;

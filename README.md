@@ -68,13 +68,20 @@ middleware.ts      protect /dashboard
 
 ### First admin user
 
-Registration always creates `user` accounts. Promote an account in MongoDB:
+Admins sign in with **email + password** at [/login/admin](http://localhost:3000/login/admin). Staff still use **employee ID** at `/login`.
 
-```js
-db.users.updateOne({ email: "you@example.com" }, { $set: { role: "admin" } })
+Create the first admin from your machine (uses `MONGODB_URI` from `.env.local`):
+
+```bash
+# PowerShell — set vars for this command only
+$env:ADMIN_EMAIL="you@company.com"; $env:ADMIN_PASSWORD="YourSecurePass1"; $env:ADMIN_NAME="Admin"; npm run create-admin
 ```
 
-Or set `ALLOW_BOOTSTRAP_ADMIN=true` in `.env.local` temporarily and pass `"role": "admin"` in the register API body (not exposed in the UI).
+Or add `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `ADMIN_NAME` to `.env.local`, then run `npm run create-admin`.
+
+Password rules: at least 10 characters with letters and numbers. Re-running the command updates the same email’s password.
+
+On Vercel, run `npm run create-admin` locally against your production `MONGODB_URI`, or run the same logic once in MongoDB with a bcrypt hash.
 
 ## Daily attendance rules
 

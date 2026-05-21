@@ -46,7 +46,7 @@ export async function GET(request: Request) {
     if (!status?.checkIn) {
       alerts.push({
         userId: uid,
-        employeeId: u.employeeId,
+        employeeId: u.employeeId ?? "",
         name: u.name,
         type: "missing_checkin",
         dayKey,
@@ -54,7 +54,7 @@ export async function GET(request: Request) {
     } else if (!status.checkOut) {
       alerts.push({
         userId: uid,
-        employeeId: u.employeeId,
+        employeeId: u.employeeId ?? "",
         name: u.name,
         type: "missing_checkout",
         dayKey,

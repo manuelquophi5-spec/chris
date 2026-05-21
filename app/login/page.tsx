@@ -126,15 +126,26 @@ export default function LoginPage() {
       title="Sign in"
       subtitle="Attendance check-in"
       footer={
-        <p className="text-sm text-slate-600">
-          New team member?{" "}
-          <Link
-            href="/set-password"
-            className="font-semibold text-emerald-700 underline-offset-2 hover:underline"
-          >
-            Set your password
-          </Link>
-        </p>
+        <div className="space-y-2 text-sm text-slate-600">
+          <p>
+            New team member?{" "}
+            <Link
+              href="/set-password"
+              className="font-semibold text-emerald-700 underline-offset-2 hover:underline"
+            >
+              Set your password
+            </Link>
+          </p>
+          <p>
+            Administrator?{" "}
+            <Link
+              href="/login/admin"
+              className="font-semibold text-emerald-700 underline-offset-2 hover:underline"
+            >
+              Admin sign in (email)
+            </Link>
+          </p>
+        </div>
       }
     >
       <Suspense
