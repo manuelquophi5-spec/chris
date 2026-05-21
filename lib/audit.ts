@@ -4,6 +4,7 @@ import { AuditLog } from "@/models/AuditLog";
 export type AuditAction =
   | "user.create"
   | "user.unlock"
+  | "user.reset_password"
   | "location.create"
   | "location.update"
   | "location.deactivate"
