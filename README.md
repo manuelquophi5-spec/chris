@@ -100,12 +100,29 @@ Use `"type": "check_out"` when leaving. Pass `timezoneOffset` from `new Date().g
 
 Returns `409` if already checked in/out today; `403` if outside the geofence.
 
-## PWA
+## PWA (install on phone)
 
-- `app/manifest.ts` enables install-to-home-screen on supported browsers.
-- Add branded icons under `public/icons/` (`icon-192.png`, `icon-512.png`). Minimal placeholders are generated on first `npm run postinstall` if missing.
+- `app/manifest.ts` + `public/sw.js` service worker (required for “Install app” on Android Chrome).
+- Icons are generated on `npm install` via `sharp` (`npm run pwa:icons` to regenerate).
+- On the site, use the **Install** banner (Android) or **Share → Add to Home Screen** (iPhone).
 
-Use **HTTPS** in production (Vercel provides this). Geolocation requires a secure context on mobile.
+Use **HTTPS** in production (set `COOKIE_SECURE=true` on Vercel). Geolocation needs a secure context on mobile.
+
+## Push to GitHub
+
+Git is initialized locally on branch `main`. After [GitHub CLI](https://cli.github.com/) login:
+
+```powershell
+gh auth login
+gh repo create ella --public --source=. --remote=origin --push
+```
+
+Or create an empty repo on GitHub, then:
+
+```powershell
+git remote add origin https://github.com/YOUR_USER/ella.git
+git push -u origin main
+```
 
 ## Deploy on Vercel
 
