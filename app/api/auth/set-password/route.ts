@@ -1,0 +1,74 @@
+import { NextResponse } from "next/server";
+import { connectDB } from "@/lib/db";
+import {
+  COOKIE_NAME,
+  cookieMaxAgeForRole,
+  getCookieOptions,
+  hashPassword,
+  signAccessToken,
+} from "@/lib/auth";
+import { jsonError } from "@/lib/api";
+import { validatePassword } from "@/lib/password-policy";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { toSessionUser } from "@/lib/session-user";
+import { isValidEmployeeId, normalizeEmployeeId } from "@/lib/user-account";
+import { User } from "@/models/User";
+
+export async function POST(request: Request) {
+  try {
+    const ip = getClientIp(request);
+    const body = await request.json();
+    const employeeId = normalizeEmployeeId(String(body.employeeId ?? ""));
+    const password = String(body.password ?? "");
+
+    if (!isValidEmployeeId(employeeId)) {
+      return jsonError("Enter a valid employee ID");
+    }
+
+    const limited = checkRateLimit(`set-password:${ip}:${employeeId}`);
+    if (!limited.allowed) {
+      return jsonError(
+        `Too many attempts. Try again in ${limited.retryAfterSec ?? 60} seconds.`,
+        429,
+      );
+    }
+
+    const policyError = validatePassword(password);
+    if (policyError) return jsonError(policyError);
+
+    await connectDB();
+    const doc = await User.findOne({ employeeId }).select("+passwordHash");
+    if (!doc) {
+      return jsonError("Employee ID not found", 404);
+    }
+
+    if (doc.passwordHash && !doc.passwordMustChange) {
+      return jsonError(
+        "Password already set. Sign in with your employee ID and password.",
+        409,
+      );
+    }
+
+    doc.passwordHash = await hashPassword(password);
+    doc.passwordMustChange = false;
+    doc.failedLoginAttempts = 0;
+    doc.lockedUntil = null;
+    await doc.save();
+
+    const sessionUser = toSessionUser(doc);
+    const token = await signAccessToken(sessionUser);
+    const response = NextResponse.json({
+      user: sessionUser,
+      message: "Password created. You are signed in.",
+    });
+    response.cookies.set(
+      COOKIE_NAME,
+      token,
+      getCookieOptions(cookieMaxAgeForRole(sessionUser.role)),
+    );
+    return response;
+  } catch (err) {
+    console.error("[auth/set-password]", err);
+    return jsonError("Could not set password. Try again.", 500);
+  }
+}

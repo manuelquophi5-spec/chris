@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local / thesis artifacts
+Project Work.docx
+_docx_extract/
+_project_work.zip
+_project_work_text.txt

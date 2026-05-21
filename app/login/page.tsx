@@ -1,0 +1,149 @@
+"use client";
+
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useState, Suspense } from "react";
+import {
+  AuthPageShell,
+  mobileButtonClass,
+  mobileInputClass,
+} from "@/components/auth/AuthPageShell";
+import {
+  authFetch,
+  parseJsonResponse,
+  redirectAfterAuth,
+} from "@/lib/auth-client";
+
+function LoginForm() {
+  const searchParams = useSearchParams();
+  const [employeeId, setEmployeeId] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    try {
+      const res = await authFetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          employeeId: employeeId.trim().toUpperCase(),
+          password,
+        }),
+      });
+
+      const data = await parseJsonResponse<{
+        error?: string;
+        requiresPasswordSetup?: boolean;
+        employeeId?: string;
+      }>(res);
+
+      if (res.status === 200 && data.requiresPasswordSetup) {
+        const id = data.employeeId ?? employeeId.trim().toUpperCase();
+        redirectAfterAuth(`/set-password?id=${encodeURIComponent(id)}`);
+        return;
+      }
+
+      if (!res.ok) {
+        setError(data.error ?? "Invalid employee ID or password");
+        setLoading(false);
+        return;
+      }
+
+      const from = searchParams.get("from") ?? "/dashboard";
+      redirectAfterAuth(from);
+    } catch {
+      setError("Network error. Check your connection and try again.");
+      setLoading(false);
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label
+          className="text-sm font-medium text-slate-700"
+          htmlFor="employeeId"
+        >
+          Employee ID
+        </label>
+        <input
+          id="employeeId"
+          type="text"
+          autoComplete="username"
+          autoCapitalize="characters"
+          className={`${mobileInputClass} font-mono uppercase`}
+          value={employeeId}
+          onChange={(e) => setEmployeeId(e.target.value.toUpperCase())}
+          required
+        />
+      </div>
+      <div>
+        <label
+          className="text-sm font-medium text-slate-700"
+          htmlFor="password"
+        >
+          Password
+        </label>
+        <input
+          id="password"
+          type="password"
+          autoComplete="current-password"
+          className={mobileInputClass}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <p className="mt-1.5 text-xs text-slate-500">
+          First time? Leave password empty and submit — or use{" "}
+          <Link href="/set-password" className="font-semibold text-emerald-700">
+            Set password
+          </Link>
+          .
+        </p>
+      </div>
+      {error && (
+        <p
+          className="rounded-xl bg-red-50 px-3 py-2.5 text-sm text-red-700"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
+      <button type="submit" disabled={loading} className={mobileButtonClass}>
+        {loading ? "Signing in…" : "Sign in"}
+      </button>
+    </form>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <AuthPageShell
+      title="Sign in"
+      subtitle="Attendance check-in"
+      footer={
+        <p className="text-sm text-slate-600">
+          New team member?{" "}
+          <Link
+            href="/set-password"
+            className="font-semibold text-emerald-700 underline-offset-2 hover:underline"
+          >
+            Set your password
+          </Link>
+        </p>
+      }
+    >
+      <Suspense
+        fallback={
+          <p className="text-center text-sm text-slate-500">Loading…</p>
+        }
+      >
+        <LoginForm />
+      </Suspense>
+    </AuthPageShell>
+  );
+}
