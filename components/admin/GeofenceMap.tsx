@@ -82,7 +82,7 @@ export function GeofenceMap({
     draft || selectedId || activeLocations.length > 0 ? 17 : DEFAULT_ZOOM;
 
   return (
-    <div className="h-[min(56vh,480px)] w-full overflow-hidden rounded-xl border border-slate-200">
+    <div className="h-[min(56vh,480px)] w-full overflow-hidden rounded-xl border border-[var(--ella-border)]">
       <MapContainer
         center={center}
         zoom={zoom}

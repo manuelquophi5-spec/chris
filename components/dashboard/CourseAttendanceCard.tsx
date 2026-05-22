@@ -9,8 +9,7 @@ import {
 } from "@/lib/geolocation";
 import type { AttendanceType, TodayAttendanceStatus } from "@/types";
 
-const selectClass =
-  "mt-2 w-full min-h-[52px] rounded-2xl border border-slate-200/80 bg-white px-4 text-base text-slate-900 shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/25";
+const selectClass = "ella-select mt-2";
 
 type Props = { onUpdate?: () => void };
 
@@ -98,7 +97,7 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
 
   if (!today?.hasEnrollments) {
     return (
-      <p className="rounded-xl bg-slate-100 px-4 py-3 text-sm text-slate-600">
+      <p className="ella-panel-muted px-4 py-3 text-sm text-[var(--ella-fg-muted)]">
         No classes assigned yet. Ask your administrator to enroll you.
       </p>
     );
@@ -109,13 +108,13 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-slate-600">
+      <p className="ella-text-muted">
         Select the class you are attending. Attendance is only allowed during the
         scheduled time.
       </p>
 
       {active.length === 0 ? (
-        <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        <p className="ella-alert-warning">
           No class is active right now.
           {inactive[0]?.window.reason
             ? ` ${inactive[0].window.reason}`
@@ -123,9 +122,7 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
         </p>
       ) : (
         <>
-          <label className="block text-sm font-medium text-slate-700">
-            Class in session
-          </label>
+          <label className="ella-label block">Class in session</label>
           <select
             className={selectClass}
             value={courseId}
@@ -140,7 +137,7 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
           </select>
 
           {selected && (
-            <div className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
+            <div className="ella-panel-muted px-4 py-3 text-sm text-[var(--ella-fg-muted)]">
               <p>
                 <span className="font-semibold">Today:</span>{" "}
                 {selected.window.active ? "Active now" : selected.window.reason}
@@ -152,7 +149,7 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
                 </p>
               )}
               {selected.isLateNext && !selected.hasCheckIn && (
-                <p className="mt-2 text-amber-800">
+                <p className="mt-2 text-[var(--ella-warning)]">
                   You are past the on-time window — check-in will count as late.
                 </p>
               )}
@@ -164,7 +161,7 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
               type="button"
               disabled={!selected?.canCheckIn || loading !== null}
               onClick={() => void mark("check_in")}
-              className="min-h-[52px] rounded-2xl bg-emerald-600 px-4 text-base font-semibold text-white disabled:opacity-50"
+              className="ella-btn-primary min-h-[52px] disabled:opacity-50"
             >
               {loading === "check_in" ? "Checking in…" : "Check in to class"}
             </button>
@@ -172,7 +169,7 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
               type="button"
               disabled={!selected?.canCheckOut || loading !== null}
               onClick={() => void mark("check_out")}
-              className="min-h-[52px] rounded-2xl border-2 border-slate-300 bg-white px-4 text-base font-semibold text-slate-800 disabled:opacity-50"
+              className="ella-btn-secondary min-h-[52px] disabled:opacity-50"
             >
               {loading === "check_out" ? "Checking out…" : "Check out of class"}
             </button>
@@ -181,7 +178,7 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
       )}
 
       {inactive.length > 0 && active.length > 0 && (
-        <details className="text-sm text-slate-500">
+        <details className="text-sm text-[var(--ella-fg-subtle)]">
           <summary className="cursor-pointer font-medium">
             Other enrolled classes (not active now)
           </summary>
@@ -196,14 +193,12 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
       )}
 
       {error && (
-        <p className="rounded-xl bg-red-50 px-3 py-2.5 text-sm text-red-700" role="alert">
+        <p className="ella-alert-error" role="alert">
           {error}
         </p>
       )}
       {message && (
-        <p className="rounded-xl bg-emerald-50 px-3 py-2.5 text-sm text-emerald-900">
-          {message}
-        </p>
+        <p className="ella-alert-success">{message}</p>
       )}
     </div>
   );

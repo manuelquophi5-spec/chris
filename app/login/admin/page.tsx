@@ -55,7 +55,7 @@ function AdminLoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="text-sm font-medium text-slate-700" htmlFor="email">
+        <label className="ella-label" htmlFor="email">
           Email
         </label>
         <input
@@ -71,7 +71,7 @@ function AdminLoginForm() {
       </div>
       <div>
         <label
-          className="text-sm font-medium text-slate-700"
+          className="ella-label"
           htmlFor="password"
         >
           Password
@@ -88,7 +88,7 @@ function AdminLoginForm() {
       </div>
       {error && (
         <p
-          className="rounded-xl bg-red-50 px-3 py-2.5 text-sm text-red-700"
+          className="ella-alert-error"
           role="alert"
         >
           {error}
@@ -107,11 +107,11 @@ export default function AdminLoginPage() {
       title="Admin sign in"
       subtitle="Manage campuses, classes, and attendance"
       footer={
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-[var(--ella-fg-muted)]">
           Student check-in?{" "}
           <Link
             href="/login"
-            className="font-semibold text-emerald-700 underline-offset-2 hover:underline"
+            className="ella-link"
           >
             Student sign in
           </Link>
@@ -120,7 +120,7 @@ export default function AdminLoginPage() {
     >
       <Suspense
         fallback={
-          <p className="text-center text-sm text-slate-500">Loading…</p>
+          <p className="text-center text-sm text-[var(--ella-fg-muted)]">Loading…</p>
         }
       >
         <AdminLoginForm />

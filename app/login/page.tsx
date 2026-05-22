@@ -65,10 +65,7 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label
-          className="text-sm font-medium text-slate-700"
-          htmlFor="studentId"
-        >
+        <label className="ella-label" htmlFor="studentId">
           Student ID
         </label>
         <input
@@ -83,10 +80,7 @@ function LoginForm() {
         />
       </div>
       <div>
-        <label
-          className="text-sm font-medium text-slate-700"
-          htmlFor="password"
-        >
+        <label className="ella-label" htmlFor="password">
           Password
         </label>
         <input
@@ -97,19 +91,16 @@ function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <p className="mt-1.5 text-xs text-slate-500">
+        <p className="mt-1.5 text-xs text-[var(--ella-fg-subtle)]">
           First time? Leave password empty and submit — or use{" "}
-          <Link href="/set-password" className="font-semibold text-emerald-700">
+          <Link href="/set-password" className="ella-link">
             Set password
           </Link>
           .
         </p>
       </div>
       {error && (
-        <p
-          className="rounded-xl bg-red-50 px-3 py-2.5 text-sm text-red-700"
-          role="alert"
-        >
+        <p className="ella-alert-error" role="alert">
           {error}
         </p>
       )}
@@ -126,22 +117,16 @@ export default function LoginPage() {
       title="Sign in"
       subtitle="Attendance check-in"
       footer={
-        <div className="space-y-2 text-sm text-slate-600">
+        <div className="space-y-2 text-sm text-[var(--ella-fg-muted)]">
           <p>
             New student?{" "}
-            <Link
-              href="/set-password"
-              className="font-semibold text-emerald-700 underline-offset-2 hover:underline"
-            >
+            <Link href="/set-password" className="ella-link">
               Set your password
             </Link>
           </p>
           <p>
             Administrator?{" "}
-            <Link
-              href="/login/admin"
-              className="font-semibold text-emerald-700 underline-offset-2 hover:underline"
-            >
+            <Link href="/login/admin" className="ella-link">
               Admin sign in (email)
             </Link>
           </p>
@@ -150,7 +135,7 @@ export default function LoginPage() {
     >
       <Suspense
         fallback={
-          <p className="text-center text-sm text-slate-500">Loading…</p>
+          <p className="text-center text-sm text-[var(--ella-fg-muted)]">Loading…</p>
         }
       >
         <LoginForm />

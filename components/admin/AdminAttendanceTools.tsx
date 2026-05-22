@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
 import type { AttendanceAlert } from "@/types";
+import { adminBtnPrimary, adminBtnSecondary } from "./admin-ui";
 
 export function AdminAttendanceTools() {
   const tzOffset = new Date().getTimezoneOffset();
@@ -39,35 +40,31 @@ export function AdminAttendanceTools() {
   return (
     <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Who came in today</h1>
-        <p className="mt-1 text-base text-slate-600">
+        <h1 className="ella-heading-page">Who came in today</h1>
+        <p className="ella-text-muted mt-1">
           Download a spreadsheet for payroll, or see who forgot to check in or out
           {dayKey ? ` (${dayKey})` : ""}.
         </p>
       </div>
       <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={downloadCsv}
-          className="rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700"
-        >
+        <button type="button" onClick={downloadCsv} className={adminBtnPrimary}>
           Download spreadsheet (Excel)
         </button>
         <button
           type="button"
           onClick={() => void loadAlerts()}
-          className="rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+          className={adminBtnSecondary}
         >
           Refresh alerts
         </button>
       </div>
 
       {!loading && alerts.length > 0 && (
-        <div className="w-full rounded-xl border border-amber-200 bg-amber-50 p-4">
-          <p className="text-sm font-semibold text-amber-900">
+        <div className="ella-alert-warning w-full">
+          <p className="font-semibold">
             {alerts.length} alert{alerts.length === 1 ? "" : "s"} today
           </p>
-          <ul className="mt-2 space-y-1 text-sm text-amber-900">
+          <ul className="mt-2 space-y-1">
             {alerts.slice(0, 8).map((a) => (
               <li key={`${a.userId}-${a.type}`}>
                 {a.name} ({a.employeeId}) —{" "}
@@ -77,7 +74,7 @@ export function AdminAttendanceTools() {
               </li>
             ))}
             {alerts.length > 8 && (
-              <li className="text-amber-700">+{alerts.length - 8} more</li>
+              <li className="opacity-80">+{alerts.length - 8} more</li>
             )}
           </ul>
         </div>

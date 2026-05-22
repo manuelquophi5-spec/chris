@@ -78,25 +78,25 @@ export function AdminOverview() {
     },
   ];
 
-  const cards = [
+  const stats = [
     {
       label: "Students & staff",
       value: userCount ?? "—",
       href: "/dashboard/admin/users",
     },
     {
-      label: "Still need a password",
+      label: "Need password setup",
       value: pendingSetup ?? "—",
       href: "/dashboard/admin/users",
-      highlight: (pendingSetup ?? 0) > 0,
+      warn: (pendingSetup ?? 0) > 0,
     },
     {
-      label: "Workplaces set up",
+      label: "Campuses active",
       value: siteCount ?? "—",
       href: "/dashboard/admin/sites",
     },
     {
-      label: "Check-ins today",
+      label: "Marks today",
       value: todayMarks ?? "—",
       href: "/dashboard/admin/attendance",
     },
@@ -105,65 +105,66 @@ export function AdminOverview() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Welcome</h1>
-        <p className="mt-2 max-w-2xl text-base text-slate-600">
-          This screen helps you set up Ella for your school. You do not need any
-          technical knowledge — follow the steps below.
+        <h1 className="ella-heading-page">Welcome</h1>
+        <p className="ella-text-muted mt-2 max-w-2xl">
+          Set up Ella for your school. Follow the checklist below; no technical
+          knowledge required.
         </p>
       </div>
 
       <AdminHelpCard title="What students do on their phones">
-        <p>
-          1. Open the Ella link in Chrome or Safari (install to home screen if
-          you like).
-        </p>
-        <p>2. Sign in with their student ID and password.</p>
-        <p>3. Select their class and check in during the scheduled time.</p>
-        <p className="text-slate-500">
-          The phone must be on campus — GPS confirms they are at the class site.
+        <p>1. Open Ella in Chrome or Safari (add to home screen if you like).</p>
+        <p>2. Sign in with student ID and password.</p>
+        <p>3. Select their class and check in during the scheduled window.</p>
+        <p className="text-[var(--ella-fg-subtle)]">
+          GPS confirms they are on campus at the class site.
         </p>
       </AdminHelpCard>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {cards.map((card) => (
+      <div className="ella-stat-row">
+        {stats.map((stat) => (
           <Link
-            key={card.label}
-            href={card.href}
-            className={`rounded-xl border bg-white p-5 shadow-sm transition hover:shadow-md ${
-              card.highlight
-                ? "border-amber-300 bg-amber-50/50"
-                : "border-slate-200 hover:border-emerald-300"
+            key={stat.label}
+            href={stat.href}
+            className={`ella-stat-cell transition hover:bg-[var(--ella-surface-muted)] ${
+              stat.warn ? "bg-[var(--ella-warning-subtle)]" : ""
             }`}
           >
-            <p className="text-sm font-medium text-slate-600">{card.label}</p>
-            <p className="mt-2 text-3xl font-bold text-slate-900">{card.value}</p>
-            <p className="mt-2 text-sm font-semibold text-emerald-700">Open →</p>
+            <p className="ella-stat-label">{stat.label}</p>
+            <p className="ella-stat-value">{stat.value}</p>
           </Link>
         ))}
       </div>
 
       <div>
-        <h2 className="text-lg font-bold text-slate-900">Setup checklist</h2>
-        <div className="mt-4 grid gap-4 md:grid-cols-2">
+        <h2 className="ella-heading-section text-lg">Setup checklist</h2>
+        <ol className="mt-4 space-y-3">
           {steps.map((s) => (
-            <div
+            <li
               key={s.step}
-              className="flex flex-col rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
+              className="ella-card flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:gap-6"
             >
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white">
-                {s.step}
-              </span>
-              <h3 className="mt-3 text-base font-bold text-slate-900">{s.title}</h3>
-              <p className="mt-2 flex-1 text-sm text-slate-600">{s.body}</p>
+              <div className="flex min-w-0 flex-1 gap-4">
+                <span
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--ella-accent)] text-sm font-bold text-[var(--ella-accent-fg)]"
+                  aria-hidden
+                >
+                  {s.step}
+                </span>
+                <div className="min-w-0">
+                  <h3 className="font-bold text-[var(--ella-fg)]">{s.title}</h3>
+                  <p className="ella-text-muted mt-1">{s.body}</p>
+                </div>
+              </div>
               <Link
                 href={s.href}
-                className="mt-4 inline-flex justify-center rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700"
+                className="ella-btn-primary shrink-0 px-5 py-2.5 text-sm sm:ml-auto"
               >
                 {s.button}
               </Link>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </div>
   );

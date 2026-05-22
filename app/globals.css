@@ -1,9 +1,42 @@
 @import "leaflet/dist/leaflet.css";
 @import "tailwindcss";
 
+/* Ella design tokens — OKLCH, hue-tinted neutrals, restrained emerald accent */
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --ella-hue: 155;
+  --ella-bg: oklch(0.985 0.008 var(--ella-hue));
+  --ella-fg: oklch(0.25 0.022 var(--ella-hue));
+  --ella-fg-muted: oklch(0.5 0.02 var(--ella-hue));
+  --ella-fg-subtle: oklch(0.62 0.018 var(--ella-hue));
+  --ella-surface: oklch(0.995 0.005 var(--ella-hue));
+  --ella-surface-muted: oklch(0.965 0.012 var(--ella-hue));
+  --ella-border: oklch(0.9 0.014 var(--ella-hue));
+  --ella-border-strong: oklch(0.82 0.018 var(--ella-hue));
+  --ella-accent: oklch(0.52 0.13 var(--ella-hue));
+  --ella-accent-hover: oklch(0.46 0.13 var(--ella-hue));
+  --ella-accent-active: oklch(0.4 0.12 var(--ella-hue));
+  --ella-accent-fg: oklch(0.99 0.008 var(--ella-hue));
+  --ella-accent-subtle: oklch(0.94 0.04 var(--ella-hue));
+  --ella-accent-muted: oklch(0.88 0.06 var(--ella-hue));
+  --ella-sidebar: oklch(0.3 0.04 var(--ella-hue));
+  --ella-sidebar-raised: oklch(0.35 0.038 var(--ella-hue));
+  --ella-sidebar-fg: oklch(0.93 0.015 var(--ella-hue));
+  --ella-sidebar-muted: oklch(0.68 0.03 var(--ella-hue));
+  --ella-danger: oklch(0.48 0.16 25);
+  --ella-danger-subtle: oklch(0.96 0.03 25);
+  --ella-warning: oklch(0.45 0.12 75);
+  --ella-warning-subtle: oklch(0.96 0.04 75);
+  --ella-info-subtle: oklch(0.95 0.03 230);
+  --ella-theme: oklch(0.52 0.13 var(--ella-hue));
+  --ella-radius-sm: 0.5rem;
+  --ella-radius: 0.75rem;
+  --ella-radius-lg: 1rem;
+  --ella-radius-xl: 1.25rem;
+  --ella-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ella-ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+
+  --background: var(--ella-bg);
+  --foreground: var(--ella-fg);
 }
 
 @theme inline {
@@ -14,8 +47,8 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--ella-bg);
+  color: var(--ella-fg);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -31,12 +64,488 @@ button {
   font-family: inherit;
 }
 
-/* Mobile app shell */
+/* ——— Layout shells ——— */
+
 .mobile-app-bg {
   background:
-    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(16, 185, 129, 0.12), transparent),
-    radial-gradient(ellipse 80% 50% at 100% 50%, rgba(20, 184, 166, 0.06), transparent),
-    var(--background);
+    radial-gradient(
+      ellipse 100% 60% at 50% -10%,
+      oklch(0.92 0.06 var(--ella-hue) / 0.35),
+      transparent 70%
+    ),
+    var(--ella-bg);
+}
+
+.admin-app-bg {
+  background: var(--ella-surface-muted);
+}
+
+/* ——— Component vocabulary ——— */
+
+@layer components {
+  .ella-brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--ella-radius);
+    background: var(--ella-accent);
+    color: var(--ella-accent-fg);
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    box-shadow: 0 2px 8px oklch(0.35 0.08 var(--ella-hue) / 0.2);
+  }
+
+  .ella-card {
+    border-radius: var(--ella-radius-xl);
+    border: 1px solid var(--ella-border);
+    background: var(--ella-surface);
+    box-shadow: 0 1px 3px oklch(0.25 0.02 var(--ella-hue) / 0.06);
+  }
+
+  .ella-card-padded {
+    border-radius: var(--ella-radius-xl);
+    border: 1px solid var(--ella-border);
+    background: var(--ella-surface);
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px oklch(0.25 0.02 var(--ella-hue) / 0.06);
+  }
+
+  .ella-panel-muted {
+    border-radius: var(--ella-radius-lg);
+    background: var(--ella-surface-muted);
+    border: 1px solid var(--ella-border);
+  }
+
+  .ella-input {
+    width: 100%;
+    min-height: 3rem;
+    border-radius: var(--ella-radius);
+    border: 1px solid var(--ella-border);
+    background: var(--ella-surface);
+    padding: 0 1rem;
+    font-size: 1rem;
+    color: var(--ella-fg);
+    transition:
+      border-color 0.15s var(--ella-ease-out),
+      box-shadow 0.15s var(--ella-ease-out);
+  }
+
+  .ella-input::placeholder {
+    color: var(--ella-fg-subtle);
+  }
+
+  .ella-input:focus {
+    outline: none;
+    border-color: var(--ella-accent);
+    box-shadow: 0 0 0 3px oklch(0.52 0.13 var(--ella-hue) / 0.18);
+  }
+
+  .ella-select {
+    width: 100%;
+    min-height: 3.25rem;
+    border-radius: var(--ella-radius-lg);
+    border: 1px solid var(--ella-border);
+    background: var(--ella-surface);
+    padding: 0 1rem;
+    font-size: 1rem;
+    color: var(--ella-fg);
+    transition:
+      border-color 0.15s var(--ella-ease-out),
+      box-shadow 0.15s var(--ella-ease-out);
+  }
+
+  .ella-select:focus {
+    outline: none;
+    border-color: var(--ella-accent);
+    box-shadow: 0 0 0 3px oklch(0.52 0.13 var(--ella-hue) / 0.18);
+  }
+
+  .ella-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    border-radius: var(--ella-radius);
+    background: var(--ella-accent);
+    padding: 0 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ella-accent-fg);
+    transition:
+      background 0.15s var(--ella-ease-out),
+      transform 0.12s var(--ella-ease-out);
+  }
+
+  .ella-btn-primary:hover:not(:disabled) {
+    background: var(--ella-accent-hover);
+  }
+
+  .ella-btn-primary:active:not(:disabled) {
+    background: var(--ella-accent-active);
+    transform: scale(0.98);
+  }
+
+  .ella-btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ella-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    border-radius: var(--ella-radius);
+    border: 1px solid var(--ella-border-strong);
+    background: var(--ella-surface);
+    padding: 0 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ella-fg);
+    transition:
+      background 0.15s var(--ella-ease-out),
+      border-color 0.15s var(--ella-ease-out),
+      transform 0.12s var(--ella-ease-out);
+  }
+
+  .ella-btn-secondary:hover:not(:disabled) {
+    background: var(--ella-surface-muted);
+  }
+
+  .ella-btn-secondary:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  .ella-btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ella-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.5rem;
+    border-radius: var(--ella-radius-sm);
+    padding: 0 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ella-fg-muted);
+    transition:
+      background 0.15s var(--ella-ease-out),
+      color 0.15s var(--ella-ease-out);
+  }
+
+  .ella-btn-ghost:hover {
+    background: var(--ella-surface-muted);
+    color: var(--ella-fg);
+  }
+
+  .ella-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ella-fg-muted);
+  }
+
+  .ella-heading-page {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ella-fg);
+  }
+
+  .ella-heading-section {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ella-fg);
+  }
+
+  .ella-text-muted {
+    font-size: 0.875rem;
+    color: var(--ella-fg-muted);
+    line-height: 1.5;
+  }
+
+  .ella-link {
+    font-weight: 600;
+    color: var(--ella-accent-hover);
+    text-underline-offset: 2px;
+  }
+
+  .ella-link:hover {
+    text-decoration: underline;
+  }
+
+  .ella-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .ella-badge-complete {
+    background: var(--ella-accent-subtle);
+    color: oklch(0.38 0.1 var(--ella-hue));
+  }
+
+  .ella-badge-open {
+    background: var(--ella-warning-subtle);
+    color: var(--ella-warning);
+  }
+
+  .ella-badge-idle {
+    background: var(--ella-surface-muted);
+    color: var(--ella-fg-muted);
+  }
+
+  .ella-alert-error {
+    border-radius: var(--ella-radius);
+    background: var(--ella-danger-subtle);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: var(--ella-danger);
+  }
+
+  .ella-alert-success {
+    border-radius: var(--ella-radius);
+    background: var(--ella-accent-subtle);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: oklch(0.38 0.1 var(--ella-hue));
+  }
+
+  .ella-alert-warning {
+    border-radius: var(--ella-radius-lg);
+    border: 1px solid oklch(0.85 0.06 75);
+    background: var(--ella-warning-subtle);
+    padding: 0.875rem 1rem;
+    font-size: 0.875rem;
+    color: oklch(0.35 0.08 75);
+  }
+
+  .ella-info-panel {
+    border-radius: var(--ella-radius-lg);
+    border: 1px solid oklch(0.88 0.04 230);
+    background: var(--ella-info-subtle);
+    padding: 1.25rem;
+    font-size: 0.875rem;
+    color: var(--ella-fg-muted);
+    line-height: 1.55;
+  }
+
+  .ella-stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-radius: var(--ella-radius-lg);
+    border: 1px solid var(--ella-border);
+    background: var(--ella-surface);
+    overflow: hidden;
+  }
+
+  .ella-stat-cell {
+    flex: 1 1 8rem;
+    padding: 1rem 1.25rem;
+    border-right: 1px solid var(--ella-border);
+  }
+
+  .ella-stat-cell:last-child {
+    border-right: none;
+  }
+
+  .ella-stat-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ella-fg-subtle);
+  }
+
+  .ella-stat-value {
+    margin-top: 0.25rem;
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ella-fg);
+  }
+
+  .ella-nav-item {
+    display: block;
+    border-radius: var(--ella-radius);
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ella-sidebar-muted);
+    transition:
+      background 0.15s var(--ella-ease-out),
+      color 0.15s var(--ella-ease-out);
+  }
+
+  .ella-nav-item:hover {
+    background: var(--ella-sidebar-raised);
+    color: var(--ella-sidebar-fg);
+  }
+
+  .ella-nav-item-active {
+    background: var(--ella-accent);
+    color: var(--ella-accent-fg);
+    box-shadow: 0 2px 8px oklch(0.35 0.08 var(--ella-hue) / 0.25);
+  }
+
+  .ella-nav-item-active:hover {
+    background: var(--ella-accent-hover);
+    color: var(--ella-accent-fg);
+  }
+
+  .mobile-tab-bar {
+    border-top: 1px solid var(--ella-border);
+    background: var(--ella-surface);
+    box-shadow: 0 -4px 24px oklch(0.25 0.02 var(--ella-hue) / 0.06);
+  }
+
+  .mobile-tab-item-active-bg {
+    background: var(--ella-accent-subtle);
+  }
+
+  .ella-table-wrap {
+    overflow: hidden;
+    border-radius: var(--ella-radius-lg);
+    border: 1px solid var(--ella-border);
+    background: var(--ella-surface);
+    box-shadow: 0 1px 3px oklch(0.25 0.02 var(--ella-hue) / 0.06);
+  }
+
+  .ella-table-wrap-header {
+    border-bottom: 1px solid var(--ella-border);
+    padding: 1rem 1.25rem;
+  }
+
+  .ella-table {
+    width: 100%;
+    min-width: 100%;
+    text-align: left;
+    font-size: 0.875rem;
+  }
+
+  .ella-table thead {
+    border-bottom: 1px solid var(--ella-border);
+    background: var(--ella-surface-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--ella-fg-subtle);
+  }
+
+  .ella-table th {
+    padding: 0.75rem 1rem;
+  }
+
+  .ella-table tbody tr {
+    border-bottom: 1px solid var(--ella-border);
+  }
+
+  .ella-table tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  .ella-table tbody tr:hover {
+    background: oklch(0.97 0.01 var(--ella-hue) / 0.6);
+  }
+
+  .ella-table td {
+    padding: 0.75rem 1rem;
+    color: var(--ella-fg-muted);
+  }
+
+  .ella-table td strong,
+  .ella-table .ella-table-primary {
+    color: var(--ella-fg);
+    font-weight: 500;
+  }
+
+  .ella-list-panel {
+    border-radius: var(--ella-radius-lg);
+    border: 1px solid var(--ella-border);
+    background: var(--ella-surface);
+    box-shadow: 0 1px 3px oklch(0.25 0.02 var(--ella-hue) / 0.06);
+    overflow: hidden;
+  }
+
+  .ella-list-panel-header {
+    border-bottom: 1px solid var(--ella-border);
+    padding: 1rem 1.25rem;
+  }
+
+  .ella-list-item {
+    display: block;
+    width: 100%;
+    padding: 1rem 1.25rem;
+    text-align: left;
+    transition: background 0.15s var(--ella-ease-out);
+  }
+
+  .ella-list-item:hover {
+    background: var(--ella-surface-muted);
+  }
+
+  .ella-list-item-active {
+    background: var(--ella-accent-subtle);
+  }
+
+  .ella-chip-danger {
+    display: inline-flex;
+    border-radius: 9999px;
+    background: var(--ella-danger-subtle);
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ella-danger);
+  }
+
+  .ella-chip-warning {
+    display: inline-flex;
+    border-radius: 9999px;
+    background: var(--ella-warning-subtle);
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ella-warning);
+  }
+
+  .ella-chip-success {
+    display: inline-flex;
+    border-radius: 9999px;
+    background: var(--ella-accent-subtle);
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: oklch(0.38 0.1 var(--ella-hue));
+  }
+
+  .ella-chip-neutral {
+    display: inline-flex;
+    border-radius: 9999px;
+    background: var(--ella-surface-muted);
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ella-fg-muted);
+  }
+
+  .ella-quote {
+    border-radius: var(--ella-radius);
+    background: var(--ella-surface);
+    padding: 0.75rem;
+    font-weight: 500;
+    color: var(--ella-fg);
+  }
 }
 
 @keyframes fade-in {
@@ -51,7 +560,7 @@ button {
 @keyframes slide-up {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -62,7 +571,7 @@ button {
 @keyframes tab-pop {
   from {
     opacity: 0;
-    transform: scale(0.85);
+    transform: scale(0.92);
   }
   to {
     opacity: 1;
@@ -88,7 +597,7 @@ button {
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -97,23 +606,23 @@ button {
 }
 
 .animate-fade-in {
-  animation: fade-in 0.35s ease-out both;
+  animation: fade-in 0.2s var(--ella-ease-out) both;
 }
 
 .animate-slide-up {
-  animation: slide-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: slide-up 0.22s var(--ella-ease-out-expo) both;
 }
 
 .animate-tab-pop {
-  animation: tab-pop 0.25s ease-out both;
+  animation: tab-pop 0.18s var(--ella-ease-out) both;
 }
 
 .animate-shake {
-  animation: shake 0.4s ease-out both;
+  animation: shake 0.35s var(--ella-ease-out) both;
 }
 
 .animate-page-enter {
-  animation: page-enter 0.3s ease-out both;
+  animation: page-enter 0.2s var(--ella-ease-out) both;
 }
 
 @media (prefers-reduced-motion: reduce) {

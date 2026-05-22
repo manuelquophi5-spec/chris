@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
 import type { GeocodeResult } from "@/lib/geocode";
+import { adminInput } from "./admin-ui";
 
 type Props = {
   onSelect: (place: GeocodeResult) => void;
@@ -81,12 +82,12 @@ export function LocationSearch({ onSelect, disabled }: Props) {
 
   return (
     <div ref={wrapRef} className="relative">
-      <label className="block text-xs font-semibold uppercase tracking-wide text-slate-500">
+      <label className="ella-label block text-xs font-semibold uppercase tracking-wide text-[var(--ella-fg-subtle)]">
         Search location
       </label>
       <div className="relative mt-1.5">
         <span
-          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--ella-fg-subtle)]"
           aria-hidden
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
@@ -105,23 +106,26 @@ export function LocationSearch({ onSelect, disabled }: Props) {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => results.length > 0 && setOpen(true)}
           placeholder="Office address, city, landmark…"
-          className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-10 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:bg-slate-50"
+          className={`${adminInput} pl-10 pr-10 shadow-sm disabled:bg-[var(--ella-surface-muted)]`}
           autoComplete="off"
         />
         {loading && (
-          <span className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-slate-200 border-t-emerald-600" />
+          <span
+            className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-[var(--ella-border)] border-t-[var(--ella-accent)]"
+            aria-hidden
+          />
         )}
       </div>
 
       {error && (
-        <p className="mt-1.5 text-xs text-red-600" role="alert">
+        <p className="ella-alert-error mt-1.5 text-xs" role="alert">
           {error}
         </p>
       )}
 
       {open && results.length > 0 && (
         <ul
-          className="absolute z-50 mt-1 max-h-56 w-full overflow-auto rounded-lg border border-slate-200 bg-white py-1 shadow-lg"
+          className="absolute z-50 mt-1 max-h-56 w-full overflow-auto rounded-lg border border-[var(--ella-border)] bg-[var(--ella-surface)] py-1 shadow-lg"
           role="listbox"
         >
           {results.map((place) => (
@@ -129,11 +133,13 @@ export function LocationSearch({ onSelect, disabled }: Props) {
               <button
                 type="button"
                 role="option"
-                className="w-full px-3 py-2.5 text-left text-sm hover:bg-emerald-50"
+                className="w-full px-3 py-2.5 text-left text-sm transition hover:bg-[var(--ella-accent-subtle)]"
                 onClick={() => pick(place)}
               >
-                <span className="font-medium text-slate-900">{place.shortName}</span>
-                <span className="mt-0.5 block text-xs text-slate-500 line-clamp-2">
+                <span className="font-medium text-[var(--ella-fg)]">
+                  {place.shortName}
+                </span>
+                <span className="mt-0.5 block text-xs text-[var(--ella-fg-subtle)] line-clamp-2">
                   {place.displayName}
                 </span>
               </button>
@@ -143,7 +149,7 @@ export function LocationSearch({ onSelect, disabled }: Props) {
       )}
 
       {open && !loading && query.trim().length >= 2 && results.length === 0 && !error && (
-        <p className="absolute z-50 mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-500 shadow-lg">
+        <p className="absolute z-50 mt-1 w-full rounded-lg border border-[var(--ella-border)] bg-[var(--ella-surface)] px-3 py-2 text-xs text-[var(--ella-fg-subtle)] shadow-lg">
           No places found. Try a city, street, or building name.
         </p>
       )}

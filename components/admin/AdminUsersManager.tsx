@@ -3,6 +3,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
 import type { AdminUserRow } from "@/types";
+import {
+  adminBtnGhost,
+  adminBtnPrimary,
+  adminBtnSecondary,
+  adminInput,
+  adminSelect,
+  adminStack,
+} from "./admin-ui";
 import { AdminHelpCard } from "./AdminHelpCard";
 
 export function AdminUsersManager() {
@@ -103,10 +111,10 @@ export function AdminUsersManager() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className={adminStack}>
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Students & staff</h1>
-        <p className="mt-2 text-base text-slate-600">
+        <h1 className="ella-heading-page">Students & staff</h1>
+        <p className="ella-text-muted mt-2">
           Add students and lecturers here. Each student gets an ID they use to
           sign in.
         </p>
@@ -114,32 +122,29 @@ export function AdminUsersManager() {
 
       <AdminHelpCard title="Tell new students (copy & send)">
         <p>After you add someone, send them:</p>
-        <p className="rounded-lg bg-white px-3 py-2 font-medium text-slate-800">
+        <p className="ella-quote">
           “Open Ella → Set password → enter your Student ID → pick a password →
           check in during class.”
         </p>
       </AdminHelpCard>
 
-      <form
-        onSubmit={handleCreate}
-        className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
-      >
-        <h2 className="text-lg font-bold text-slate-900">Add a new person</h2>
+      <form onSubmit={handleCreate} className="ella-card-padded">
+        <h2 className="ella-heading-section text-lg">Add a new person</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="block">
-            <span className="text-sm font-semibold text-slate-700">First name</span>
+            <span className="ella-label font-semibold">First name</span>
             <input
               type="text"
               required
               minLength={2}
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-3 text-base focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+              className={`${adminInput} text-base py-3`}
               placeholder="e.g. Ama"
             />
           </label>
           <label className="block">
-            <span className="text-sm font-semibold text-slate-700">
+            <span className="ella-label font-semibold">
               Student ID (they will type this)
             </span>
             <input
@@ -148,16 +153,16 @@ export function AdminUsersManager() {
               minLength={3}
               value={studentId}
               onChange={(e) => setStudentId(e.target.value.toUpperCase())}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-3 font-mono text-base uppercase focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+              className={`${adminInput} font-mono text-base uppercase py-3`}
               placeholder="e.g. E10234"
             />
           </label>
           <label className="block sm:col-span-2">
-            <span className="text-sm font-semibold text-slate-700">Job type</span>
+            <span className="ella-label font-semibold">Job type</span>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value as "user" | "instructor")}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-3 text-base"
+              className={`${adminSelect} text-base py-3`}
             >
               <option value="user">Student — checks in on phone during class</option>
               <option value="instructor">
@@ -167,83 +172,81 @@ export function AdminUsersManager() {
           </label>
         </div>
         {error && (
-          <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">
+          <p className="ella-alert-error mt-3" role="alert">
             {error}
           </p>
         )}
         {message && (
-          <p className="mt-3 rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-900" role="status">
+          <p className="ella-alert-success mt-3" role="status">
             {message}
           </p>
         )}
         <button
           type="submit"
           disabled={saving}
-          className="mt-5 w-full rounded-xl bg-emerald-600 py-3.5 text-base font-bold text-white hover:bg-emerald-700 disabled:opacity-50 sm:w-auto sm:px-8"
+          className={`${adminBtnPrimary} mt-5 w-full py-3.5 text-base font-bold sm:w-auto sm:px-8`}
         >
           {saving ? "Adding…" : "Add student or lecturer"}
         </button>
       </form>
 
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        <div className="border-b border-slate-100 px-5 py-4">
-          <h2 className="text-lg font-bold text-slate-900">All students & staff</h2>
+      <div className="ella-table-wrap">
+        <div className="ella-table-wrap-header">
+          <h2 className="ella-heading-section text-lg">All students & staff</h2>
         </div>
-        <table className="min-w-full text-left text-sm">
-          <thead className="border-b border-slate-200 bg-slate-50 text-xs font-semibold uppercase text-slate-500">
+        <table className="ella-table">
+          <thead>
             <tr>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Student ID</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">Actions</th>
+              <th>Name</th>
+              <th>Student ID</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody>
             {loading ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-slate-500">
+                <td colSpan={4} className="py-8 text-[var(--ella-fg-subtle)]">
                   Loading…
                 </td>
               </tr>
             ) : users.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-slate-500">
+                <td colSpan={4} className="py-8 text-[var(--ella-fg-subtle)]">
                   No one added yet. Use the form above.
                 </td>
               </tr>
             ) : (
               users.map((u) => (
-                <tr key={u.id} className="hover:bg-slate-50/80">
-                  <td className="px-4 py-3 font-medium text-slate-900">
+                <tr key={u.id}>
+                  <td className="ella-table-primary">
                     {u.name}
                     {u.role === "instructor" && (
-                      <span className="ml-2 text-xs text-slate-500">Lecturer</span>
+                      <span className="ml-2 text-xs text-[var(--ella-fg-subtle)]">
+                        Lecturer
+                      </span>
                     )}
                   </td>
-                  <td className="px-4 py-3 font-mono text-base text-slate-800">
+                  <td className="font-mono text-base text-[var(--ella-fg)]">
                     {u.employeeId}
                   </td>
-                  <td className="px-4 py-3">
+                  <td>
                     {u.lockedUntil ? (
-                      <span className="rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-800">
+                      <span className="ella-chip-danger">
                         Locked (too many wrong passwords)
                       </span>
                     ) : u.passwordMustChange ? (
-                      <span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-900">
-                        Needs to set password
-                      </span>
+                      <span className="ella-chip-warning">Needs to set password</span>
                     ) : (
-                      <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-800">
-                        Ready to use Ella
-                      </span>
+                      <span className="ella-chip-success">Ready to use Ella</span>
                     )}
                   </td>
-                  <td className="px-4 py-3">
+                  <td>
                     <div className="flex flex-wrap gap-2">
                       <button
                         type="button"
                         onClick={() => copyInstructions(u.employeeId, u.name)}
-                        className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                        className={adminBtnGhost}
                       >
                         {copiedId === u.employeeId ? "Copied!" : "Copy instructions"}
                       </button>
@@ -251,7 +254,7 @@ export function AdminUsersManager() {
                         <button
                           type="button"
                           onClick={() => void unlockUser(u.id)}
-                          className="rounded-lg bg-emerald-600 px-2.5 py-1.5 text-xs font-semibold text-white"
+                          className={`${adminBtnPrimary} px-2.5 py-1.5 text-xs`}
                         >
                           Unlock
                         </button>
@@ -260,7 +263,7 @@ export function AdminUsersManager() {
                         <button
                           type="button"
                           onClick={() => void resetPassword(u.id)}
-                          className="rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-1.5 text-xs font-semibold text-amber-900 hover:bg-amber-100"
+                          className="rounded-lg border border-[var(--ella-warning)]/35 bg-[var(--ella-warning-subtle)] px-2.5 py-1.5 text-xs font-semibold text-[var(--ella-warning)] hover:opacity-90"
                         >
                           Reset password
                         </button>

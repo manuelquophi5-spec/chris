@@ -60,29 +60,30 @@ export function PwaProvider() {
 
   if (isStandalone() || dismissed) return null;
 
+  const bannerClass =
+    "fixed bottom-20 left-4 right-4 z-50 mx-auto max-w-md ella-card p-4 sm:bottom-6 sm:left-auto sm:right-6 md:bottom-6";
+
   if (installEvent) {
     return (
-      <div
-        className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-md rounded-2xl border border-emerald-200 bg-white p-4 shadow-xl sm:left-auto sm:right-6"
-        role="region"
-        aria-label="Install app"
-      >
-        <p className="text-sm font-bold text-slate-900">Install Ella on your phone</p>
-        <p className="mt-1 text-xs text-slate-600">
-          Add to your home screen for quick check-in — works like an app.
+      <div className={bannerClass} role="region" aria-label="Install app">
+        <p className="text-sm font-bold text-[var(--ella-fg)]">
+          Install Ella on your phone
+        </p>
+        <p className="ella-text-muted mt-1 text-xs">
+          Add to your home screen for quick check-in.
         </p>
         <div className="mt-3 flex gap-2">
           <button
             type="button"
             onClick={() => void handleInstall()}
-            className="flex-1 rounded-xl bg-emerald-600 py-2.5 text-sm font-bold text-white"
+            className="ella-btn-primary flex-1 py-2.5 text-sm"
           >
             Install
           </button>
           <button
             type="button"
             onClick={() => setDismissed(true)}
-            className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-600"
+            className="ella-btn-secondary px-4 py-2.5 text-sm"
           >
             Not now
           </button>
@@ -93,21 +94,21 @@ export function PwaProvider() {
 
   if (showIosHint) {
     return (
-      <div
-        className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-md rounded-2xl border border-slate-200 bg-white p-4 shadow-xl sm:left-auto sm:right-6"
-        role="region"
-        aria-label="Install on iPhone"
-      >
-        <p className="text-sm font-bold text-slate-900">Add Ella to your home screen</p>
-        <ol className="mt-2 list-decimal space-y-1 pl-4 text-xs text-slate-600">
-          <li>Tap the Share button in Safari (square with arrow)</li>
-          <li>Choose <strong>Add to Home Screen</strong></li>
-          <li>Tap Add — then open Ella from your home screen</li>
+      <div className={bannerClass} role="region" aria-label="Install on iPhone">
+        <p className="text-sm font-bold text-[var(--ella-fg)]">
+          Add Ella to your home screen
+        </p>
+        <ol className="mt-2 list-decimal space-y-1 pl-4 text-xs text-[var(--ella-fg-muted)]">
+          <li>Tap Share in Safari (square with arrow)</li>
+          <li>
+            Choose <strong>Add to Home Screen</strong>
+          </li>
+          <li>Tap Add, then open Ella from your home screen</li>
         </ol>
         <button
           type="button"
           onClick={() => setDismissed(true)}
-          className="mt-3 w-full rounded-xl border border-slate-200 py-2 text-sm font-medium text-slate-600"
+          className="ella-btn-secondary mt-3 w-full py-2 text-sm"
         >
           Got it
         </button>

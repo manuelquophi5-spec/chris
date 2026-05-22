@@ -9,7 +9,7 @@ const GeofenceMapDynamic = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-[min(52vh,420px)] items-center justify-center rounded-xl border border-slate-200 bg-slate-100 text-sm text-slate-500">
+      <div className="ella-panel-muted flex h-[min(52vh,420px)] items-center justify-center text-sm text-[var(--ella-fg-subtle)]">
         Loading map…
       </div>
     ),

@@ -28,8 +28,7 @@ type Props = {
   onUpdate?: () => void;
 };
 
-const selectClass =
-  "mt-2 w-full min-h-[52px] rounded-2xl border border-slate-200/80 bg-white px-4 text-base text-slate-900 shadow-inner transition focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/25";
+const selectClass = "ella-select mt-2";
 
 function formatTime(iso: string) {
   return new Date(iso).toLocaleTimeString([], {
@@ -318,17 +317,14 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
   return (
     <div className="space-y-5">
       {showCheckoutReminder && (
-        <div
-          className="animate-fade-in rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
-          role="status"
-        >
+        <div className="ella-alert-warning animate-fade-in" role="status">
           <p className="font-semibold">Remember to check out</p>
-          <p className="mt-1 text-amber-800">
+          <p className="mt-1">
             You checked in earlier but haven&apos;t checked out yet.
           </p>
           <button
             type="button"
-            className="mt-2 text-xs font-semibold text-amber-900 underline"
+            className="mt-2 text-xs font-semibold underline"
             onClick={() => setReminderDismissed(true)}
           >
             Dismiss
@@ -336,79 +332,73 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
         </div>
       )}
 
-      <section className="mobile-card animate-slide-up overflow-hidden rounded-3xl border border-emerald-200/60 bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-700 p-5 text-white shadow-lg shadow-emerald-900/15">
+      <section className="ella-card-padded animate-slide-up">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-emerald-100/90">
+            <p className="text-xs font-medium text-[var(--ella-fg-subtle)]">
               {today ? formatDayLabel(today.dayKey) : "Today"}
             </p>
-            <h2 className="mt-1 text-xl font-bold tracking-tight">
-              Attendance
-            </h2>
+            <h2 className="ella-heading-section mt-0.5 text-xl">Attendance</h2>
           </div>
           {today?.isComplete ? (
-            <span className="animate-fade-in rounded-full bg-white/20 px-3 py-1.5 text-xs font-semibold backdrop-blur">
-              ✓ Complete
+            <span className="ella-badge ella-badge-complete animate-fade-in">
+              Complete
             </span>
           ) : today?.checkIn || openSessions.some((s) => s.hasCheckIn) ? (
-            <span className="animate-fade-in rounded-full bg-amber-400/30 px-3 py-1.5 text-xs font-semibold backdrop-blur">
+            <span className="ella-badge ella-badge-open animate-fade-in">
               On site
             </span>
           ) : (
-            <span className="rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium backdrop-blur">
-              Not in yet
-            </span>
+            <span className="ella-badge ella-badge-idle">Not in yet</span>
           )}
         </div>
 
-        <div className="mt-5 grid grid-cols-2 gap-3">
-          <div className="rounded-2xl bg-white/15 p-3 backdrop-blur-sm">
-            <p className="text-[11px] font-medium uppercase tracking-wide text-emerald-100">
+        <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-[var(--ella-border)] pt-4">
+          <div>
+            <dt className="text-xs font-medium text-[var(--ella-fg-subtle)]">
               Check in
-            </p>
-            <p className="mt-1 text-sm font-semibold">
+            </dt>
+            <dd className="mt-0.5 text-base font-semibold tabular-nums text-[var(--ella-fg)]">
               {today?.checkIn ? formatTime(today.checkIn.markedAt) : "—"}
-            </p>
+            </dd>
           </div>
-          <div className="rounded-2xl bg-white/15 p-3 backdrop-blur-sm">
-            <p className="text-[11px] font-medium uppercase tracking-wide text-emerald-100">
+          <div>
+            <dt className="text-xs font-medium text-[var(--ella-fg-subtle)]">
               Check out
-            </p>
-            <p className="mt-1 text-sm font-semibold">
+            </dt>
+            <dd className="mt-0.5 text-base font-semibold tabular-nums text-[var(--ella-fg)]">
               {today?.checkOut ? formatTime(today.checkOut.markedAt) : "—"}
-            </p>
+            </dd>
           </div>
-        </div>
+        </dl>
         {lockedSite && (
-          <p className="mt-3 text-center text-xs text-emerald-100/90">
+          <p className="mt-3 text-center text-xs text-[var(--ella-fg-muted)]">
             {lockedSite}
           </p>
         )}
       </section>
 
       <section
-        className="mobile-card animate-slide-up rounded-3xl border border-slate-200/80 bg-white p-5 shadow-md shadow-slate-200/50"
+        className="ella-card-padded animate-slide-up"
         style={{ animationDelay: "60ms" }}
       >
-        <h3 className="text-base font-bold text-slate-900">Mark attendance</h3>
-        <p className="mt-1 text-sm text-slate-500">
+        <h3 className="ella-heading-section">Mark attendance</h3>
+        <p className="ella-text-muted mt-1">
           Be at the office to check in. GPS must be within the site area.
         </p>
 
         {distanceHint && (
-          <p className="mt-3 rounded-2xl bg-slate-50 px-4 py-3 text-sm text-slate-700">
+          <p className="ella-panel-muted mt-3 px-4 py-3 text-sm text-[var(--ella-fg-muted)]">
             {distanceHint}
           </p>
         )}
         {gpsHint && (
-          <p className="mt-2 text-xs text-amber-700">{gpsHint}</p>
+          <p className="mt-2 text-xs text-[var(--ella-warning)]">{gpsHint}</p>
         )}
 
         {useSessions && openSessions.length > 0 ? (
           <label className="mt-4 block">
-            <span className="text-sm font-semibold text-slate-700">
-              Active session
-            </span>
+            <span className="ella-label font-semibold">Active session</span>
             <select
               className={selectClass}
               value={sessionId}
@@ -430,12 +420,10 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
           </label>
         ) : locations.length > 0 && !useSessions ? (
           <label className="mt-4 block">
-            <span className="text-sm font-semibold text-slate-700">
-              Work site
-            </span>
+            <span className="ella-label font-semibold">Work site</span>
             {lockedSite ? (
               <p
-                className={`${selectClass} flex items-center bg-slate-50 text-slate-700`}
+                className={`${selectClass} flex items-center bg-[var(--ella-surface-muted)] text-[var(--ella-fg-muted)]`}
               >
                 {lockedSite}
               </p>
@@ -456,20 +444,18 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
             )}
           </label>
         ) : !useSessions ? (
-          <p className="mt-4 rounded-2xl bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <p className="ella-alert-warning mt-4">
             No sites configured. Contact your administrator.
           </p>
         ) : null}
 
         <label className="mt-4 block">
-          <span className="text-sm font-semibold text-slate-700">
-            Photo (optional)
-          </span>
+          <span className="ella-label font-semibold">Photo (optional)</span>
           <input
             type="file"
             accept="image/*"
             capture="user"
-            className="mt-2 w-full text-sm text-slate-600"
+            className="mt-2 w-full text-sm text-[var(--ella-fg-muted)]"
             onChange={onPhotoChange}
             disabled={busy}
           />
@@ -480,7 +466,7 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
             type="button"
             disabled={checkInDisabled}
             onClick={() => mark("check_in")}
-            className="mobile-action-btn w-full rounded-2xl bg-emerald-600 py-4 text-base font-bold text-white shadow-lg shadow-emerald-600/30 transition-all active:scale-[0.98] disabled:scale-100 disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none"
+            className="ella-btn-primary w-full min-h-[52px] text-base disabled:scale-100 disabled:border disabled:border-[var(--ella-border)] disabled:bg-[var(--ella-surface-muted)] disabled:text-[var(--ella-fg-subtle)]"
           >
             {checkInButtonLabel(today, loading === "check_in")}
           </button>
@@ -488,31 +474,25 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
             type="button"
             disabled={checkOutDisabled}
             onClick={() => mark("check_out")}
-            className="mobile-action-btn w-full rounded-2xl bg-slate-800 py-4 text-base font-bold text-white shadow-lg shadow-slate-800/25 transition-all active:scale-[0.98] disabled:scale-100 disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none"
+            className="ella-btn-secondary w-full min-h-[52px] border-[var(--ella-fg)] bg-[var(--ella-fg)] text-[var(--ella-accent-fg)] hover:bg-[var(--ella-fg-muted)] disabled:border-[var(--ella-border)] disabled:bg-[var(--ella-surface-muted)] disabled:text-[var(--ella-fg-subtle)]"
           >
             {checkOutButtonLabel(today, loading === "check_out")}
           </button>
         </div>
 
         {today?.isComplete && (
-          <p className="animate-fade-in mt-4 text-center text-sm font-medium text-emerald-700">
+          <p className="animate-fade-in mt-4 text-center text-sm font-medium text-[var(--ella-accent-hover)]">
             You&apos;re done for today. See you tomorrow.
           </p>
         )}
 
         {message && (
-          <p
-            className="animate-fade-in mt-4 rounded-2xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800"
-            role="status"
-          >
+          <p className="ella-alert-success animate-fade-in mt-4" role="status">
             {message}
           </p>
         )}
         {error && (
-          <p
-            className="animate-shake mt-4 rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm leading-relaxed text-red-800"
-            role="alert"
-          >
+          <p className="ella-alert-error animate-shake mt-4 leading-relaxed" role="alert">
             {error}
           </p>
         )}

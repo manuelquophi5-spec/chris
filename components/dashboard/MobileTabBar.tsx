@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 type Tab = {
   href: string;
   label: string;
-  icon: "home" | "history" | "map";
+  icon: "home" | "history";
   match: (path: string) => boolean;
 };
 
@@ -31,16 +31,6 @@ const icons = {
       />
     </svg>
   ),
-  map: (
-    <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden>
-      <path
-        d="m9 18-4 2 1-5-4-6 12-2 4 6Z"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ),
 };
 
 export function MobileTabBar() {
@@ -62,7 +52,10 @@ export function MobileTabBar() {
   ];
 
   return (
-    <nav className="mobile-tab-bar fixed bottom-0 left-0 right-0 z-30 border-t border-white/20 bg-white/90 pb-[max(0.35rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+    <nav
+      className="mobile-tab-bar fixed bottom-0 left-0 right-0 z-30 pb-[max(0.35rem,env(safe-area-inset-bottom))] pt-2"
+      aria-label="Main"
+    >
       <div className="mx-auto flex max-w-lg items-stretch justify-around px-2">
         {tabs.map((tab) => {
           const active = tab.match(pathname);
@@ -70,22 +63,22 @@ export function MobileTabBar() {
             <Link
               key={tab.href}
               href={tab.href}
-              className={`mobile-tab-item relative flex min-h-[56px] flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl px-2 transition-all duration-300 ${
+              className={`relative flex min-h-[56px] flex-1 flex-col items-center justify-center gap-0.5 rounded-xl px-2 transition-colors duration-150 ${
                 active
-                  ? "text-emerald-700"
-                  : "text-slate-400 active:scale-95"
+                  ? "text-[var(--ella-accent)]"
+                  : "text-[var(--ella-fg-subtle)] active:scale-95"
               }`}
             >
               {active && (
                 <span
-                  className="absolute inset-x-2 top-1 h-9 rounded-2xl bg-emerald-100/90 animate-tab-pop"
+                  className="mobile-tab-item-active-bg absolute inset-x-3 top-1.5 h-9 rounded-lg animate-tab-pop"
                   aria-hidden
                 />
               )}
               <span className="relative z-10">{icons[tab.icon]}</span>
               <span
-                className={`relative z-10 text-[11px] font-semibold tracking-wide ${
-                  active ? "text-emerald-800" : "text-slate-500"
+                className={`relative z-10 text-[11px] font-semibold ${
+                  active ? "text-[var(--ella-accent-hover)]" : "text-[var(--ella-fg-muted)]"
                 }`}
               >
                 {tab.label}

@@ -4,6 +4,14 @@ import { useCallback, useEffect, useState } from "react";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
 import { WEEKDAY_OPTIONS } from "@/lib/schedule";
 import type { AdminUserRow, CourseRow, CourseStatsSummary } from "@/types";
+import {
+  adminBtnGhost,
+  adminBtnPrimary,
+  adminBtnSecondary,
+  adminInput,
+  adminSelect,
+  adminStack,
+} from "./admin-ui";
 import { AdminHelpCard } from "./AdminHelpCard";
 
 type LocationOption = { id: string; name: string };
@@ -161,10 +169,10 @@ export function AdminCourseManager() {
   );
 
   return (
-    <div className="space-y-8">
+    <div className={adminStack}>
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Classes & courses</h1>
-        <p className="mt-2 text-base text-slate-600">
+        <h1 className="ella-heading-page">Classes & courses</h1>
+        <p className="ella-text-muted mt-2">
           Create classes, set schedules, assign lecturers, enroll students, and
           review attendance.
         </p>
@@ -180,46 +188,46 @@ export function AdminCourseManager() {
       </AdminHelpCard>
 
       {message && (
-        <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+        <p className="ella-alert-success">
           {message}
         </p>
       )}
       {error && (
-        <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>
+        <p className="ella-alert-error">{error}</p>
       )}
 
       <form
         onSubmit={handleCreate}
-        className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+        className="ella-card-padded"
       >
-        <h2 className="text-lg font-bold text-slate-900">Create a class</h2>
+        <h2 className="ella-heading-section text-lg">Create a class</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="block sm:col-span-2">
-            <span className="text-sm font-semibold text-slate-700">Course title</span>
+            <span className="ella-label font-semibold">Course title</span>
             <input
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5"
+              className={`${adminInput} mt-1`}
               placeholder="e.g. Introduction to Computing"
             />
           </label>
           <label className="block sm:col-span-2">
-            <span className="text-sm font-semibold text-slate-700">Description</span>
+            <span className="ella-label font-semibold">Description</span>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5"
+              className={`${adminInput} mt-1`}
             />
           </label>
           <label className="block">
-            <span className="text-sm font-semibold text-slate-700">Lecturer</span>
+            <span className="ella-label font-semibold">Lecturer</span>
             <select
               required
               value={lecturerId}
               onChange={(e) => setLecturerId(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5"
+              className={`${adminInput} mt-1`}
             >
               <option value="">Select lecturer</option>
               {lecturers.map((l) => (
@@ -230,11 +238,11 @@ export function AdminCourseManager() {
             </select>
           </label>
           <label className="block">
-            <span className="text-sm font-semibold text-slate-700">Campus / room GPS</span>
+            <span className="ella-label font-semibold">Campus / room GPS</span>
             <select
               value={locationId}
               onChange={(e) => setLocationId(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5"
+              className={`${adminInput} mt-1`}
             >
               <option value="">Select workplace</option>
               {locations
@@ -247,27 +255,27 @@ export function AdminCourseManager() {
             </select>
           </label>
           <label className="block">
-            <span className="text-sm font-semibold text-slate-700">Start time</span>
+            <span className="ella-label font-semibold">Start time</span>
             <input
               type="time"
               required
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5"
+              className={`${adminInput} mt-1`}
             />
           </label>
           <label className="block">
-            <span className="text-sm font-semibold text-slate-700">End time</span>
+            <span className="ella-label font-semibold">End time</span>
             <input
               type="time"
               required
               value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5"
+              className={`${adminInput} mt-1`}
             />
           </label>
           <label className="block">
-            <span className="text-sm font-semibold text-slate-700">
+            <span className="ella-label font-semibold">
               Late after (minutes)
             </span>
             <input
@@ -276,20 +284,20 @@ export function AdminCourseManager() {
               max={120}
               value={lateAfterMinutes}
               onChange={(e) => setLateAfterMinutes(Number(e.target.value))}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5"
+              className={`${adminInput} mt-1`}
             />
           </label>
         </div>
         <fieldset className="mt-4">
-          <legend className="text-sm font-semibold text-slate-700">Class days</legend>
+          <legend className="ella-label font-semibold">Class days</legend>
           <div className="mt-2 flex flex-wrap gap-2">
             {WEEKDAY_OPTIONS.map((d) => (
               <label
                 key={d.value}
                 className={`cursor-pointer rounded-lg border px-3 py-2 text-sm font-medium ${
                   scheduleDays.includes(d.value)
-                    ? "border-emerald-600 bg-emerald-50 text-emerald-900"
-                    : "border-slate-200 text-slate-600"
+                    ? "border-[var(--ella-accent)] bg-[var(--ella-accent-subtle)] text-[var(--ella-accent-hover)]"
+                    : "border-[var(--ella-border)] text-[var(--ella-fg-muted)]"
                 }`}
               >
                 <input
@@ -306,34 +314,34 @@ export function AdminCourseManager() {
         <button
           type="submit"
           disabled={saving || scheduleDays.length === 0}
-          className="mt-6 rounded-lg bg-emerald-600 px-5 py-3 text-sm font-semibold text-white disabled:opacity-50"
+          className={`${adminBtnPrimary} mt-6 px-5 py-3`}
         >
           {saving ? "Saving…" : "Create class"}
         </button>
       </form>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
-          <div className="border-b border-slate-100 px-5 py-4">
-            <h2 className="text-lg font-bold text-slate-900">All classes</h2>
+        <div className="ella-list-panel">
+          <div className="ella-list-panel-header">
+            <h2 className="ella-heading-section text-lg">All classes</h2>
           </div>
-          <ul className="max-h-[420px] divide-y divide-slate-100 overflow-y-auto">
+          <ul className="max-h-[420px] divide-y divide-[var(--ella-border)] overflow-y-auto">
             {courses.map((c) => (
               <li key={c.id}>
                 <button
                   type="button"
                   onClick={() => void loadCourseDetail(c.id)}
-                  className={`w-full px-5 py-3 text-left hover:bg-slate-50 ${
-                    selectedId === c.id ? "bg-emerald-50" : ""
+                  className={`ella-list-item ${
+                    selectedId === c.id ? "ella-list-item-active" : ""
                   }`}
                 >
-                  <p className="font-semibold text-slate-900">{c.title}</p>
-                  <p className="text-sm text-slate-600">
+                  <p className="font-semibold text-[var(--ella-fg)]">{c.title}</p>
+                  <p className="ella-text-muted text-sm">
                     {c.lecturerName} · {c.startTime}–{c.endTime} · {c.enrolledCount}{" "}
                     students
                   </p>
                   {c.isActiveNow && (
-                    <span className="text-xs font-semibold text-emerald-700">
+                    <span className="text-xs font-semibold text-[var(--ella-accent-hover)]">
                       Active now
                     </span>
                   )}
@@ -346,8 +354,8 @@ export function AdminCourseManager() {
         <div className="space-y-4">
           {selectedId ? (
             <>
-              <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-                <h3 className="font-bold text-slate-900">Enroll students</h3>
+              <div className="ella-card-padded">
+                <h3 className="ella-heading-section">Enroll students</h3>
                 <select
                   multiple
                   value={pickStudent}
@@ -356,7 +364,7 @@ export function AdminCourseManager() {
                       Array.from(e.target.selectedOptions, (o) => o.value),
                     )
                   }
-                  className="mt-2 h-32 w-full rounded-lg border border-slate-200 px-2 py-2 text-sm"
+                  className={`${adminInput} mt-2 h-32 py-2`}
                 >
                   {notEnrolled.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -364,13 +372,13 @@ export function AdminCourseManager() {
                     </option>
                   ))}
                 </select>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 text-xs text-[var(--ella-fg-subtle)]">
                   Hold Ctrl (Windows) to select multiple students.
                 </p>
                 <button
                   type="button"
                   onClick={() => void enrollSelected()}
-                  className="mt-3 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white"
+                  className={`${adminBtnPrimary} mt-3`}
                 >
                   Add to class
                 </button>
@@ -378,11 +386,11 @@ export function AdminCourseManager() {
                   {enrolled.map((s) => (
                     <li
                       key={s.id}
-                      className="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2"
+                      className="ella-panel-muted flex items-center justify-between px-3 py-2"
                     >
                       <span>
                         {s.name}{" "}
-                        <span className="font-mono text-slate-500">{s.employeeId}</span>
+                        <span className="font-mono text-[var(--ella-fg-subtle)]">{s.employeeId}</span>
                       </span>
                       <button
                         type="button"
@@ -396,41 +404,43 @@ export function AdminCourseManager() {
                 </ul>
               </div>
 
-              <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-                <h3 className="font-bold text-slate-900">Attendance report</h3>
+              <div className="ella-card-padded">
+                <h3 className="ella-heading-section">Attendance report</h3>
                 <input
                   type="search"
                   placeholder="Search student…"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="mt-2 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
+                  className={`${adminInput} mt-2`}
                 />
                 {stats && (
-                  <table className="mt-4 w-full text-left text-sm">
-                    <thead>
-                      <tr className="border-b text-xs uppercase text-slate-500">
-                        <th className="py-2">Student</th>
-                        <th className="py-2">%</th>
-                        <th className="py-2">Late</th>
-                        <th className="py-2">Missed</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredRecords?.map((s) => (
-                        <tr key={s.userId} className="border-b border-slate-50">
-                          <td className="py-2 font-medium">{s.name}</td>
-                          <td className="py-2">{s.attendancePercent}%</td>
-                          <td className="py-2">{s.lateSessions}</td>
-                          <td className="py-2">{s.missedSessions}</td>
+                  <div className="ella-table-wrap mt-4">
+                    <table className="ella-table">
+                      <thead>
+                        <tr>
+                          <th>Student</th>
+                          <th>%</th>
+                          <th>Late</th>
+                          <th>Missed</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {filteredRecords?.map((s) => (
+                          <tr key={s.userId}>
+                            <td className="ella-table-primary">{s.name}</td>
+                            <td>{s.attendancePercent}%</td>
+                            <td>{s.lateSessions}</td>
+                            <td>{s.missedSessions}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 )}
               </div>
             </>
           ) : (
-            <p className="rounded-xl border border-dashed border-slate-200 bg-white p-8 text-center text-sm text-slate-500">
+            <p className="ella-panel-muted border-dashed p-8 text-center text-sm text-[var(--ella-fg-subtle)]">
               Select a class to enroll students and view attendance statistics.
             </p>
           )}

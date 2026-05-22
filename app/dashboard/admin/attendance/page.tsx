@@ -5,7 +5,7 @@ import { requireStaffPage } from "@/lib/admin-guard";
 export default async function AdminAttendancePage() {
   await requireStaffPage();
   return (
-    <div>
+    <div className="space-y-8">
       <AdminAttendanceTools />
       <AttendanceHistory showUser />
     </div>

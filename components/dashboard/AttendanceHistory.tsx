@@ -72,11 +72,11 @@ function groupByDay(rows: Row[]): DayGroup[] {
 
 function HistorySkeleton() {
   return (
-    <ul className="mt-4 space-y-3">
+    <ul className="mt-4 space-y-2">
       {[0, 1, 2].map((i) => (
         <li
           key={i}
-          className="h-28 animate-pulse rounded-3xl bg-slate-100"
+          className="h-20 animate-pulse rounded-xl bg-[var(--ella-surface-muted)]"
           style={{ animationDelay: `${i * 80}ms` }}
         />
       ))}
@@ -103,17 +103,17 @@ export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) 
   }, []);
 
   return (
-    <section className="mobile-card rounded-3xl border border-slate-200/80 bg-white p-5 shadow-md shadow-slate-200/50">
+    <section className="ella-card-padded">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-slate-900">History</h2>
-          <p className="mt-0.5 text-sm text-slate-500">Your past check-ins</p>
+          <h2 className="ella-heading-section text-lg">History</h2>
+          <p className="ella-text-muted mt-0.5">Your past check-ins</p>
         </div>
         <button
           type="button"
           onClick={load}
           disabled={loading}
-          className="min-h-[44px] shrink-0 rounded-2xl bg-emerald-50 px-4 text-sm font-semibold text-emerald-700 transition active:scale-95 disabled:opacity-50"
+          className="ella-btn-ghost min-h-[44px] rounded-xl bg-[var(--ella-accent-subtle)] text-[var(--ella-accent-hover)] disabled:opacity-50"
         >
           Refresh
         </button>
@@ -123,55 +123,45 @@ export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) 
         <HistorySkeleton />
       ) : days.length === 0 ? (
         <div className="animate-fade-in mt-8 text-center">
-          <p className="text-4xl">📋</p>
-          <p className="mt-3 text-sm font-medium text-slate-600">
+          <p className="text-sm font-medium text-[var(--ella-fg-muted)]">
             No attendance yet
           </p>
-          <p className="mt-1 text-xs text-slate-400">
-            Check in from the Home tab when you arrive
+          <p className="mt-1 text-xs text-[var(--ella-fg-subtle)]">
+            Check in from Home when you arrive on site
           </p>
         </div>
       ) : (
-        <ul className="mt-5 space-y-3">
+        <ul className="mt-5 divide-y divide-[var(--ella-border)] rounded-xl border border-[var(--ella-border)] bg-[var(--ella-surface)]">
           {days.map((day, index) => (
             <li
               key={day.dayKey}
-              className="animate-slide-up rounded-3xl border border-slate-100 bg-gradient-to-br from-slate-50 to-white p-4 shadow-sm"
+              className="animate-slide-up px-4 py-3.5"
               style={{ animationDelay: `${Math.min(index, 8) * 40}ms` }}
             >
               <div className="flex items-center justify-between gap-2">
-                <p className="text-sm font-bold text-slate-900">{day.label}</p>
+                <div className="min-w-0">
+                  <p className="text-sm font-bold text-[var(--ella-fg)]">
+                    {day.label}
+                  </p>
+                  <p className="text-xs text-[var(--ella-fg-subtle)]">
+                    {day.locationName}
+                  </p>
+                </div>
                 {day.checkIn && day.checkOut ? (
-                  <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-800">
-                    Complete
-                  </span>
+                  <span className="ella-badge ella-badge-complete">Complete</span>
                 ) : day.checkIn ? (
-                  <span className="rounded-full bg-amber-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-800">
-                    Open
-                  </span>
+                  <span className="ella-badge ella-badge-open">Open</span>
                 ) : null}
               </div>
-              <p className="mt-0.5 text-xs text-slate-500">{day.locationName}</p>
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                <div className="rounded-2xl bg-white px-3 py-2.5 shadow-sm ring-1 ring-slate-100">
-                  <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
-                    In
-                  </p>
-                  <p className="mt-0.5 text-sm font-bold text-slate-900">
-                    {day.checkIn ? formatTime(day.checkIn.markedAt) : "—"}
-                  </p>
-                </div>
-                <div className="rounded-2xl bg-white px-3 py-2.5 shadow-sm ring-1 ring-slate-100">
-                  <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
-                    Out
-                  </p>
-                  <p className="mt-0.5 text-sm font-bold text-slate-900">
-                    {day.checkOut ? formatTime(day.checkOut.markedAt) : "—"}
-                  </p>
-                </div>
-              </div>
+              <p className="mt-2 text-sm tabular-nums text-[var(--ella-fg-muted)]">
+                <span className="text-[var(--ella-fg-subtle)]">In </span>
+                {day.checkIn ? formatTime(day.checkIn.markedAt) : "—"}
+                <span className="mx-2 text-[var(--ella-border-strong)]">·</span>
+                <span className="text-[var(--ella-fg-subtle)]">Out </span>
+                {day.checkOut ? formatTime(day.checkOut.markedAt) : "—"}
+              </p>
               {showUser && day.checkIn?.user && (
-                <p className="mt-2 text-xs text-slate-600">
+                <p className="mt-1.5 text-xs text-[var(--ella-fg-muted)]">
                   {day.checkIn.user.name}
                   {day.checkIn.user.employeeId
                     ? ` · ${day.checkIn.user.employeeId}`

@@ -2,6 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
+import {
+  adminBtnPrimary,
+  adminInput,
+  adminSelect,
+  adminStack,
+} from "./admin-ui";
 
 type LocationOption = { id: string; name: string };
 
@@ -84,46 +90,45 @@ export function SessionManager() {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-slate-900">Classes (optional)</h1>
-      <p className="mt-2 max-w-2xl text-base text-slate-600">
-        Only needed for schools or timed meetings. Staff check in when class starts
-        and out when it ends. For a normal office, use daily check-in on the phone
-        instead — you can skip this page.
-      </p>
+    <div className={adminStack}>
+      <div>
+        <h1 className="ella-heading-page">Classes (optional)</h1>
+        <p className="ella-text-muted mt-2 max-w-2xl">
+          Only needed for schools or timed meetings. Staff check in when class starts
+          and out when it ends. For a normal office, use daily check-in on the phone
+          instead — you can skip this page.
+        </p>
+      </div>
 
-      <form
-        onSubmit={handleCreate}
-        className="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
-      >
-        <h2 className="text-lg font-semibold text-slate-900">New session</h2>
+      <form onSubmit={handleCreate} className="ella-card-padded">
+        <h2 className="ella-heading-section text-lg">New session</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="block sm:col-span-2">
-            <span className="text-sm font-medium text-slate-700">Title</span>
+            <span className="ella-label">Title</span>
             <input
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm"
+              className={adminInput}
               placeholder="Intro to Computing — Week 5"
             />
           </label>
           <label className="block">
-            <span className="text-sm font-medium text-slate-700">Course code (optional)</span>
+            <span className="ella-label">Course code (optional)</span>
             <input
               value={courseCode}
               onChange={(e) => setCourseCode(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm"
+              className={adminInput}
               placeholder="CS101"
             />
           </label>
           <label className="block">
-            <span className="text-sm font-medium text-slate-700">Site</span>
+            <span className="ella-label">Site</span>
             <select
               required
               value={locationId}
               onChange={(e) => setLocationId(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm"
+              className={adminSelect}
             >
               <option value="">Select site…</option>
               {locations.map((l) => (
@@ -134,87 +139,83 @@ export function SessionManager() {
             </select>
           </label>
           <label className="block">
-            <span className="text-sm font-medium text-slate-700">Starts</span>
+            <span className="ella-label">Starts</span>
             <input
               type="datetime-local"
               required
               value={startAt}
               onChange={(e) => setStartAt(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm"
+              className={adminInput}
             />
           </label>
           <label className="block">
-            <span className="text-sm font-medium text-slate-700">Ends</span>
+            <span className="ella-label">Ends</span>
             <input
               type="datetime-local"
               required
               value={endAt}
               onChange={(e) => setEndAt(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm"
+              className={adminInput}
             />
           </label>
         </div>
         {error && (
-          <p className="mt-3 text-sm text-red-600" role="alert">
+          <p className="ella-alert-error mt-3" role="alert">
             {error}
           </p>
         )}
         {message && (
-          <p className="mt-3 text-sm text-emerald-700" role="status">
+          <p className="ella-alert-success mt-3" role="status">
             {message}
           </p>
         )}
         <button
           type="submit"
           disabled={saving}
-          className="mt-4 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50"
+          className={`${adminBtnPrimary} mt-4 px-5`}
         >
           {saving ? "Saving…" : "Create session"}
         </button>
       </form>
 
-      <div className="mt-8 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        <table className="min-w-full text-left text-sm">
-          <thead className="border-b border-slate-200 bg-slate-50 text-xs font-semibold uppercase text-slate-500">
+      <div className="ella-table-wrap">
+        <table className="ella-table">
+          <thead>
             <tr>
-              <th className="px-4 py-3">Session</th>
-              <th className="px-4 py-3">Site</th>
-              <th className="px-4 py-3">Window</th>
-              <th className="px-4 py-3">Status</th>
+              <th>Session</th>
+              <th>Site</th>
+              <th>Window</th>
+              <th>Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody>
             {sessions.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-slate-500">
+                <td colSpan={4} className="py-8 text-[var(--ella-fg-subtle)]">
                   No sessions yet.
                 </td>
               </tr>
             ) : (
               sessions.map((s) => (
                 <tr key={s.id}>
-                  <td className="px-4 py-3 font-medium text-slate-900">
+                  <td className="ella-table-primary">
                     {s.title}
                     {s.courseCode ? (
-                      <span className="ml-2 text-xs text-slate-500">
+                      <span className="ml-2 text-xs font-normal text-[var(--ella-fg-subtle)]">
                         {s.courseCode}
                       </span>
                     ) : null}
                   </td>
-                  <td className="px-4 py-3 text-slate-600">{s.locationName}</td>
-                  <td className="px-4 py-3 text-slate-600">
+                  <td>{s.locationName}</td>
+                  <td>
                     {new Date(s.startAt).toLocaleString()} –{" "}
                     {new Date(s.endAt).toLocaleTimeString()}
                   </td>
-                  <td className="px-4 py-3">
+                  <td>
                     {s.isActive ? (
-                      <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs font-semibold text-emerald-800">
-                        Live
-                      </span>
+                      <span className="ella-chip-success">Live</span>
                     ) : (
-                      <span className="rounded-full bg-slate-100 px-2 py-1 text-xs text-slate-600">
-                        Scheduled / ended
-                      </span>
+                      <span className="ella-chip-neutral">Scheduled / ended</span>
                     )}
                   </td>
                 </tr>

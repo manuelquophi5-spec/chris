@@ -15,11 +15,17 @@ import type { GeofenceLocation } from "@/types/location";
 const DEFAULT_LAT = 5.6037;
 const DEFAULT_LNG = -0.187;
 
-const inputClass =
-  "w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20";
+import {
+  adminBtnDanger,
+  adminBtnGhost,
+  adminBtnPrimary,
+  adminBtnSecondary,
+  adminInput,
+  adminStack,
+} from "./admin-ui";
 
-const btnPrimary =
-  "rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50";
+const inputClass = adminInput;
+const btnPrimary = adminBtnPrimary;
 
 export function AdminGeofenceManager() {
   const [locations, setLocations] = useState<GeofenceLocation[]>([]);
@@ -198,16 +204,16 @@ export function AdminGeofenceManager() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className={adminStack}>
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Workplaces</h1>
-        <p className="mt-2 max-w-2xl text-base text-slate-600">
+        <h1 className="ella-heading-page">Workplaces</h1>
+        <p className="ella-text-muted mt-2 max-w-2xl">
           Mark where staff are allowed to check in. Search for your building, set
           how close they must be (the green circle on the map), then save.
         </p>
       </div>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <section className="ella-card-padded">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div className="min-w-0 flex-1 max-w-xl">
             <LocationSearch onSelect={handlePlaceSelect} disabled={saving} />
@@ -215,13 +221,13 @@ export function AdminGeofenceManager() {
           <button
             type="button"
             onClick={useMyLocation}
-            className="shrink-0 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-semibold text-emerald-800 hover:bg-emerald-100"
+            className="shrink-0 ella-btn-secondary border-[var(--ella-accent-muted)] bg-[var(--ella-accent-subtle)] text-[var(--ella-accent-hover)]"
           >
             Use my current location
           </button>
         </div>
 
-        <p className="mt-3 text-sm text-slate-600">
+        <p className="mt-3 ella-text-muted">
           <strong>Step 1:</strong> Search your office address and pick it from the list.
           <br />
           <strong>Step 2:</strong> Drag the slider so the circle covers the building (try 80–150 m).
@@ -240,8 +246,8 @@ export function AdminGeofenceManager() {
         </div>
       </section>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-base font-bold text-slate-900">
+      <section className="ella-card-padded">
+        <h2 className="ella-heading-section">
           {isEditing ? "Update this workplace" : "Save a new workplace"}
         </h2>
         <form onSubmit={handleSave} className="mt-4 space-y-3">
@@ -254,7 +260,7 @@ export function AdminGeofenceManager() {
           />
           <div className="grid grid-cols-2 gap-3 text-sm">
             <label className="block">
-              <span className="text-xs font-medium text-slate-500">Latitude</span>
+              <span className="ella-label text-xs">Latitude</span>
               <input
                 type="number"
                 step="any"
@@ -265,7 +271,7 @@ export function AdminGeofenceManager() {
               />
             </label>
             <label className="block">
-              <span className="text-xs font-medium text-slate-500">Longitude</span>
+              <span className="ella-label text-xs">Longitude</span>
               <input
                 type="number"
                 step="any"
@@ -277,31 +283,31 @@ export function AdminGeofenceManager() {
             </label>
           </div>
           <label className="block">
-            <span className="flex justify-between text-xs font-medium text-slate-600">
+            <span className="flex justify-between ella-label text-xs text-[var(--ella-fg-muted)]">
               <span>How close must they be? (metres)</span>
-              <span className="text-slate-900">{radiusMeters} m</span>
+              <span className="text-[var(--ella-fg)]">{radiusMeters} m</span>
             </span>
             <input
               type="range"
               min={10}
               max={500}
               step={5}
-              className="mt-2 w-full accent-emerald-600"
+              className="mt-2 w-full accent-[var(--ella-accent)]"
               value={radiusMeters}
               onChange={(e) => setRadiusMeters(Number(e.target.value))}
             />
-            <div className="mt-1 flex justify-between text-[10px] text-slate-400">
+            <div className="mt-1 flex justify-between text-[10px] text-[var(--ella-fg-subtle)]">
               <span>10 m</span>
               <span>500 m</span>
             </div>
           </label>
           {error && (
-            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p className="ella-alert-error">
               {error}
             </p>
           )}
           {message && (
-            <p className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
+            <p className="ella-alert-success">
               {message}
             </p>
           )}
@@ -310,7 +316,7 @@ export function AdminGeofenceManager() {
               <button
                 type="button"
                 onClick={resetForm}
-                className="flex-1 rounded-lg border border-slate-200 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                className="flex-1 ella-btn-secondary"
               >
                 Cancel
               </button>
@@ -322,53 +328,53 @@ export function AdminGeofenceManager() {
         </form>
       </section>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <section className="ella-card-padded">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-base font-bold text-slate-900">Your workplaces</h2>
+          <h2 className="ella-heading-section">Your workplaces</h2>
           <div className="flex gap-2">
             <input
               type="search"
               value={siteFilter}
               onChange={(e) => setSiteFilter(e.target.value)}
               placeholder="Filter sites…"
-              className="w-full min-w-[200px] rounded-lg border border-slate-200 px-3 py-2 text-sm sm:w-56"
+              className={`${adminInput} min-w-[200px] sm:w-56`}
             />
             <button
               type="button"
               onClick={loadLocations}
-              className="shrink-0 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-emerald-700 hover:bg-emerald-50"
+              className={`${adminBtnGhost} shrink-0 text-[var(--ella-accent-hover)]`}
             >
               Refresh
             </button>
           </div>
         </div>
         {loading ? (
-          <p className="mt-4 text-sm text-slate-500">Loading…</p>
+          <p className="mt-4 text-sm text-[var(--ella-fg-subtle)]">Loading…</p>
         ) : locations.length === 0 ? (
-          <p className="mt-4 text-sm text-slate-500">
+          <p className="mt-4 text-sm text-[var(--ella-fg-subtle)]">
             No sites yet. Search for your office above, then create a geofence.
           </p>
         ) : filteredLocations.length === 0 ? (
-          <p className="mt-4 text-sm text-slate-500">No sites match your filter.</p>
+          <p className="mt-4 text-sm text-[var(--ella-fg-subtle)]">No sites match your filter.</p>
         ) : (
-          <ul className="mt-4 divide-y divide-slate-100">
+          <ul className="mt-4 divide-y divide-[var(--ella-border)]">
             {filteredLocations.map((loc) => (
               <li
                 key={loc.id}
                 className={`flex flex-col gap-2 py-3 first:pt-0 lg:flex-row lg:items-center lg:justify-between ${
-                  selectedId === loc.id ? "rounded-lg bg-emerald-50/80 px-2 -mx-2" : ""
+                  selectedId === loc.id ? "rounded-lg bg-[var(--ella-accent-subtle)] px-2 -mx-2" : ""
                 }`}
               >
                 <div>
-                  <p className="text-sm font-medium text-slate-900">
+                  <p className="text-sm font-medium text-[var(--ella-fg)]">
                     {loc.name}
                     {!loc.isActive && (
-                      <span className="ml-2 rounded bg-slate-200 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-slate-600">
+                      <span className="ella-chip-neutral ml-2 text-[10px] uppercase">
                         inactive
                       </span>
                     )}
                   </p>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-[var(--ella-fg-subtle)]">
                     {loc.latitude.toFixed(5)}, {loc.longitude.toFixed(5)} ·{" "}
                     {loc.radiusMeters} m radius
                   </p>
@@ -377,14 +383,14 @@ export function AdminGeofenceManager() {
                   <button
                     type="button"
                     onClick={() => selectLocation(loc)}
-                    className="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                    className={adminBtnGhost}
                   >
                     Edit on map
                   </button>
                   <button
                     type="button"
                     onClick={() => toggleActive(loc)}
-                    className="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                    className={adminBtnGhost}
                   >
                     {loc.isActive ? "Disable" : "Enable"}
                   </button>
@@ -392,7 +398,7 @@ export function AdminGeofenceManager() {
                     <button
                       type="button"
                       onClick={() => deactivate(loc)}
-                      className="rounded-lg border border-red-200 px-2.5 py-1 text-xs font-medium text-red-700 hover:bg-red-50"
+                      className={adminBtnDanger}
                     >
                       Remove
                     </button>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { authFetch } from "@/lib/auth-client";
+import { adminStack } from "./admin-ui";
 
 type LogRow = {
   id: string;
@@ -28,56 +29,56 @@ export function AdminAuditLog() {
   }, []);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-slate-900">Audit log</h1>
-      <p className="mt-1 text-slate-600">
-        Who created users, sites, and sessions — for accountability.
-      </p>
+    <div className={adminStack}>
+      <div>
+        <h1 className="ella-heading-page">Audit log</h1>
+        <p className="ella-text-muted mt-1">
+          Who created users, sites, and sessions — for accountability.
+        </p>
+      </div>
 
-      <div className="mt-8 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        <table className="min-w-full text-left text-sm">
-          <thead className="border-b border-slate-200 bg-slate-50 text-xs font-semibold uppercase text-slate-500">
+      <div className="ella-table-wrap">
+        <table className="ella-table">
+          <thead>
             <tr>
-              <th className="px-4 py-3">When</th>
-              <th className="px-4 py-3">Actor</th>
-              <th className="px-4 py-3">Action</th>
-              <th className="px-4 py-3">Target</th>
+              <th>When</th>
+              <th>Actor</th>
+              <th>Action</th>
+              <th>Target</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody>
             {loading ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-slate-500">
+                <td colSpan={4} className="py-8 text-[var(--ella-fg-subtle)]">
                   Loading…
                 </td>
               </tr>
             ) : logs.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-slate-500">
+                <td colSpan={4} className="py-8 text-[var(--ella-fg-subtle)]">
                   No audit entries yet.
                 </td>
               </tr>
             ) : (
               logs.map((l) => (
                 <tr key={l.id}>
-                  <td className="px-4 py-3 text-slate-600">
-                    {new Date(l.createdAt).toLocaleString()}
-                  </td>
-                  <td className="px-4 py-3">
+                  <td>{new Date(l.createdAt).toLocaleString()}</td>
+                  <td className="ella-table-primary">
                     {l.actorName}
-                    <span className="block font-mono text-xs text-slate-500">
+                    <span className="block font-mono text-xs font-normal text-[var(--ella-fg-subtle)]">
                       {l.actorEmployeeId}
                     </span>
                   </td>
-                  <td className="px-4 py-3 font-medium text-slate-900">
+                  <td className="ella-table-primary">
                     {l.action}
                     {l.detail ? (
-                      <span className="block text-xs font-normal text-slate-500">
+                      <span className="block text-xs font-normal text-[var(--ella-fg-subtle)]">
                         {l.detail}
                       </span>
                     ) : null}
                   </td>
-                  <td className="px-4 py-3 text-slate-600">
+                  <td>
                     {l.targetType} / {l.targetId.slice(-6)}
                   </td>
                 </tr>
