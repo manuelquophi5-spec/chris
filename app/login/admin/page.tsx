@@ -105,15 +105,15 @@ export default function AdminLoginPage() {
   return (
     <AuthPageShell
       title="Admin sign in"
-      subtitle="Manage sites, team, and attendance"
+      subtitle="Manage campuses, classes, and attendance"
       footer={
         <p className="text-sm text-slate-600">
-          Staff check-in?{" "}
+          Student check-in?{" "}
           <Link
             href="/login"
             className="font-semibold text-emerald-700 underline-offset-2 hover:underline"
           >
-            Employee sign in
+            Student sign in
           </Link>
         </p>
       }

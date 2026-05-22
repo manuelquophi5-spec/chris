@@ -16,7 +16,7 @@ import {
 
 function SetPasswordForm() {
   const searchParams = useSearchParams();
-  const [employeeId, setEmployeeId] = useState(
+  const [studentId, setStudentId] = useState(
     () => searchParams.get("id")?.toUpperCase() ?? "",
   );
   const [password, setPassword] = useState("");
@@ -43,7 +43,7 @@ function SetPasswordForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          employeeId: employeeId.trim().toUpperCase(),
+          employeeId: studentId.trim().toUpperCase(),
           password,
         }),
       });
@@ -65,24 +65,24 @@ function SetPasswordForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <p className="rounded-xl bg-emerald-50 px-3 py-2.5 text-sm text-emerald-900">
-        Use the employee ID your administrator gave you, then choose a password
+        Use the student ID your administrator gave you, then choose a password
         you will use to sign in.
       </p>
       <div>
         <label
           className="text-sm font-medium text-slate-700"
-          htmlFor="employeeId"
+          htmlFor="studentId"
         >
-          Employee ID
+          Student ID
         </label>
         <input
-          id="employeeId"
+          id="studentId"
           type="text"
           required
           autoCapitalize="characters"
           className={`${mobileInputClass} font-mono uppercase`}
-          value={employeeId}
-          onChange={(e) => setEmployeeId(e.target.value.toUpperCase())}
+          value={studentId}
+          onChange={(e) => setStudentId(e.target.value.toUpperCase())}
         />
       </div>
       <div>

@@ -16,7 +16,7 @@ import {
 
 function LoginForm() {
   const searchParams = useSearchParams();
-  const [employeeId, setEmployeeId] = useState("");
+  const [studentId, setStudentId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ function LoginForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          employeeId: employeeId.trim().toUpperCase(),
+          employeeId: studentId.trim().toUpperCase(),
           password,
         }),
       });
@@ -43,13 +43,13 @@ function LoginForm() {
       }>(res);
 
       if (res.status === 200 && data.requiresPasswordSetup) {
-        const id = data.employeeId ?? employeeId.trim().toUpperCase();
+        const id = data.employeeId ?? studentId.trim().toUpperCase();
         redirectAfterAuth(`/set-password?id=${encodeURIComponent(id)}`);
         return;
       }
 
       if (!res.ok) {
-        setError(data.error ?? "Invalid employee ID or password");
+        setError(data.error ?? "Invalid student ID or password");
         setLoading(false);
         return;
       }
@@ -67,18 +67,18 @@ function LoginForm() {
       <div>
         <label
           className="text-sm font-medium text-slate-700"
-          htmlFor="employeeId"
+          htmlFor="studentId"
         >
-          Employee ID
+          Student ID
         </label>
         <input
-          id="employeeId"
+          id="studentId"
           type="text"
           autoComplete="username"
           autoCapitalize="characters"
           className={`${mobileInputClass} font-mono uppercase`}
-          value={employeeId}
-          onChange={(e) => setEmployeeId(e.target.value.toUpperCase())}
+          value={studentId}
+          onChange={(e) => setStudentId(e.target.value.toUpperCase())}
           required
         />
       </div>
@@ -128,7 +128,7 @@ export default function LoginPage() {
       footer={
         <div className="space-y-2 text-sm text-slate-600">
           <p>
-            New team member?{" "}
+            New student?{" "}
             <Link
               href="/set-password"
               className="font-semibold text-emerald-700 underline-offset-2 hover:underline"

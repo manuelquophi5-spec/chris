@@ -173,7 +173,7 @@ export function AdminCourseManager() {
       <AdminHelpCard title="School setup">
         <ol className="list-inside list-decimal space-y-1">
           <li>Create a workplace (campus) under Workplaces with GPS radius.</li>
-          <li>Add lecturers under Team (role: Supervisor).</li>
+          <li>Add lecturers under Students & staff (role: Lecturer).</li>
           <li>Create a class here and pick days + start/end times (e.g. 15:00).</li>
           <li>Enroll students — they check in only while the class is active.</li>
         </ol>

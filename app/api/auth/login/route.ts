@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     const password = String(body.password ?? "");
 
     if (!employeeId) {
-      return jsonError("Employee ID is required");
+      return jsonError("Student ID is required");
     }
 
     const rateKey = `login:${ip}:${employeeId}`;
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     const doc = await findUserByEmployeeIdForAuth(employeeId);
 
     if (!doc) {
-      return jsonError("Invalid employee ID or password", 401);
+      return jsonError("Invalid student ID or password", 401);
     }
 
     if (isAccountLocked(doc.lockedUntil)) {
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
       if (isAccountLocked(doc.lockedUntil)) {
         return jsonError(lockoutMessage(doc.lockedUntil!), 423);
       }
-      return jsonError("Invalid employee ID or password", 401);
+      return jsonError("Invalid student ID or password", 401);
     }
 
     await clearLoginFailures(doc);

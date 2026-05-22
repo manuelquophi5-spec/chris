@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     const password = String(body.password ?? "");
 
     if (!isValidEmployeeId(employeeId)) {
-      return jsonError("Enter a valid employee ID");
+      return jsonError("Enter a valid student ID");
     }
 
     const limited = checkRateLimit(`set-password:${ip}:${employeeId}`);
@@ -40,12 +40,12 @@ export async function POST(request: Request) {
     await connectDB();
     const doc = await findUserByEmployeeIdForAuth(employeeId);
     if (!doc) {
-      return jsonError("Employee ID not found", 404);
+      return jsonError("Student ID not found", 404);
     }
 
     if (!userNeedsPasswordSetup(doc)) {
       return jsonError(
-        "Password already set. Sign in with your employee ID and password.",
+        "Password already set. Sign in with your student ID and password.",
         409,
       );
     }

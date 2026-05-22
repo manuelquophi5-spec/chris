@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     }
     if (!isValidEmployeeId(employeeId)) {
       return jsonError(
-        "Employee ID must be 3–32 characters (letters, numbers, dash, underscore)",
+        "Student ID must be 3–32 characters (letters, numbers, dash, underscore)",
       );
     }
     if (role === "admin") {
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
     await connectDB();
     const existing = await User.findOne({ employeeId });
     if (existing) {
-      return jsonError("Employee ID already exists", 409);
+      return jsonError("Student ID already exists", 409);
     }
 
     const email = internalEmailFromEmployeeId(employeeId);

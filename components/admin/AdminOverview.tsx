@@ -58,7 +58,7 @@ export function AdminOverview() {
     {
       step: 2,
       title: "Add students & lecturers",
-      body: "Students use employee ID; lecturers use email at Admin sign in.",
+      body: "Students use their student ID; lecturers use email at Admin sign in.",
       href: "/dashboard/admin/users",
       button: "Students & staff",
     },
@@ -80,7 +80,7 @@ export function AdminOverview() {
 
   const cards = [
     {
-      label: "People on the team",
+      label: "Students & staff",
       value: userCount ?? "—",
       href: "/dashboard/admin/users",
     },
@@ -107,20 +107,20 @@ export function AdminOverview() {
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Welcome</h1>
         <p className="mt-2 max-w-2xl text-base text-slate-600">
-          This screen helps you set up Ella for your team. You do not need any
+          This screen helps you set up Ella for your school. You do not need any
           technical knowledge — follow the steps below.
         </p>
       </div>
 
-      <AdminHelpCard title="What staff do on their phones">
+      <AdminHelpCard title="What students do on their phones">
         <p>
           1. Open the Ella link in Chrome or Safari (install to home screen if
           you like).
         </p>
-        <p>2. Sign in with their employee ID and password.</p>
-        <p>3. Tap Check in when they arrive, Check out when they leave.</p>
+        <p>2. Sign in with their student ID and password.</p>
+        <p>3. Select their class and check in during the scheduled time.</p>
         <p className="text-slate-500">
-          The phone must be at the workplace — GPS confirms they are on site.
+          The phone must be on campus — GPS confirms they are at the class site.
         </p>
       </AdminHelpCard>
 

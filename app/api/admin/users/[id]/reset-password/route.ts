@@ -43,6 +43,6 @@ export async function POST(_request: Request, context: RouteContext) {
 
   return jsonOk({
     ok: true,
-    message: `${doc.name} must open Set password and choose a new password (ID: ${doc.employeeId ?? "see team list"}).`,
+    message: `${doc.name} must open Set password and choose a new password (ID: ${doc.employeeId ?? "see students list"}).`,
   });
 }

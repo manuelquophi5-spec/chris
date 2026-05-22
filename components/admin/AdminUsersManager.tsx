@@ -12,7 +12,7 @@ export function AdminUsersManager() {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [firstName, setFirstName] = useState("");
-  const [employeeId, setEmployeeId] = useState("");
+  const [studentId, setStudentId] = useState("");
   const [role, setRole] = useState<"user" | "instructor">("user");
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -23,7 +23,7 @@ export function AdminUsersManager() {
       res,
     );
     if (res.ok) setUsers(data.users ?? []);
-    else setError(data.error ?? "Could not load team list");
+    else setError(data.error ?? "Could not load student list");
     setLoading(false);
   }, []);
 
@@ -42,7 +42,7 @@ export function AdminUsersManager() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           firstName: firstName.trim(),
-          employeeId: employeeId.trim(),
+          employeeId: studentId.trim(),
           role,
         }),
       });
@@ -53,10 +53,10 @@ export function AdminUsersManager() {
       }
       setMessage(
         data.message ??
-          `Added ${firstName}. Tell them to open Ella and tap “Set password” with ID ${employeeId.toUpperCase()}.`,
+          `Added ${firstName}. Tell them to open Ella and tap “Set password” with ID ${studentId.toUpperCase()}.`,
       );
       setFirstName("");
-      setEmployeeId("");
+      setStudentId("");
       await load();
     } finally {
       setSaving(false);
@@ -95,7 +95,7 @@ export function AdminUsersManager() {
   }
 
   function copyInstructions(id: string, name: string) {
-    const text = `Hi ${name}, set up Ella attendance:\n1. Open the Ella website\n2. Tap "Set password"\n3. Employee ID: ${id}\n4. Choose a password, then sign in each day to check in/out.`;
+    const text = `Hi ${name}, set up Ella attendance:\n1. Open the Ella website\n2. Tap "Set password"\n3. Student ID: ${id}\n4. Choose a password, then sign in for class check-in.`;
     void navigator.clipboard.writeText(text).then(() => {
       setCopiedId(id);
       setTimeout(() => setCopiedId(null), 2000);
@@ -105,17 +105,18 @@ export function AdminUsersManager() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Team</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Students & staff</h1>
         <p className="mt-2 text-base text-slate-600">
-          Add employees here. Each person gets an ID number they use to sign in.
+          Add students and lecturers here. Each student gets an ID they use to
+          sign in.
         </p>
       </div>
 
-      <AdminHelpCard title="Tell new staff (copy & send)">
+      <AdminHelpCard title="Tell new students (copy & send)">
         <p>After you add someone, send them:</p>
         <p className="rounded-lg bg-white px-3 py-2 font-medium text-slate-800">
-          “Open Ella → Set password → enter your Employee ID → pick a password →
-          check in when you arrive.”
+          “Open Ella → Set password → enter your Student ID → pick a password →
+          check in during class.”
         </p>
       </AdminHelpCard>
 
@@ -139,14 +140,14 @@ export function AdminUsersManager() {
           </label>
           <label className="block">
             <span className="text-sm font-semibold text-slate-700">
-              Employee ID (they will type this)
+              Student ID (they will type this)
             </span>
             <input
               type="text"
               required
               minLength={3}
-              value={employeeId}
-              onChange={(e) => setEmployeeId(e.target.value.toUpperCase())}
+              value={studentId}
+              onChange={(e) => setStudentId(e.target.value.toUpperCase())}
               className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-3 font-mono text-base uppercase focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
               placeholder="e.g. E10234"
             />
@@ -158,9 +159,9 @@ export function AdminUsersManager() {
               onChange={(e) => setRole(e.target.value as "user" | "instructor")}
               className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-3 text-base"
             >
-              <option value="user">Staff — checks in on phone only</option>
+              <option value="user">Student — checks in on phone during class</option>
               <option value="instructor">
-                Supervisor — can also run class sessions & view attendance
+                Lecturer — teaches classes & views attendance
               </option>
             </select>
           </label>
@@ -180,19 +181,19 @@ export function AdminUsersManager() {
           disabled={saving}
           className="mt-5 w-full rounded-xl bg-emerald-600 py-3.5 text-base font-bold text-white hover:bg-emerald-700 disabled:opacity-50 sm:w-auto sm:px-8"
         >
-          {saving ? "Adding…" : "Add to team"}
+          {saving ? "Adding…" : "Add student or lecturer"}
         </button>
       </form>
 
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         <div className="border-b border-slate-100 px-5 py-4">
-          <h2 className="text-lg font-bold text-slate-900">Everyone on the team</h2>
+          <h2 className="text-lg font-bold text-slate-900">All students & staff</h2>
         </div>
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-slate-200 bg-slate-50 text-xs font-semibold uppercase text-slate-500">
             <tr>
               <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Employee ID</th>
+              <th className="px-4 py-3">Student ID</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3">Actions</th>
             </tr>
@@ -216,7 +217,7 @@ export function AdminUsersManager() {
                   <td className="px-4 py-3 font-medium text-slate-900">
                     {u.name}
                     {u.role === "instructor" && (
-                      <span className="ml-2 text-xs text-slate-500">Supervisor</span>
+                      <span className="ml-2 text-xs text-slate-500">Lecturer</span>
                     )}
                   </td>
                   <td className="px-4 py-3 font-mono text-base text-slate-800">
