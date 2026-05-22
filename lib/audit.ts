@@ -9,7 +9,12 @@ export type AuditAction =
   | "location.update"
   | "location.deactivate"
   | "session.create"
-  | "session.update";
+  | "session.update"
+  | "course.create"
+  | "course.update"
+  | "course.deactivate"
+  | "course.enroll"
+  | "course.unenroll";
 
 export async function writeAudit(
   actorId: string,

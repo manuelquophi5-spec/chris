@@ -72,12 +72,23 @@ Admins sign in with **email + password** at [/login/admin](http://localhost:3000
 
 Create the first admin from your machine (uses `MONGODB_URI` from `.env.local`):
 
+**Git Bash / macOS / Linux** (one line):
+
 ```bash
-# PowerShell — set vars for this command only
+ADMIN_EMAIL=you@company.com ADMIN_PASSWORD='YourSecurePass1' ADMIN_NAME='Admin' npm run create-admin
+```
+
+**PowerShell**:
+
+```powershell
 $env:ADMIN_EMAIL="you@company.com"; $env:ADMIN_PASSWORD="YourSecurePass1"; $env:ADMIN_NAME="Admin"; npm run create-admin
 ```
 
-Or add `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `ADMIN_NAME` to `.env.local`, then run `npm run create-admin`.
+Or add `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `ADMIN_NAME` to `.env.local` (must be a real email like `you@company.com`, not `admin`), then run:
+
+```bash
+npm run create-admin
+```
 
 Password rules: at least 10 characters with letters and numbers. Re-running the command updates the same email’s password.
 

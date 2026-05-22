@@ -6,7 +6,7 @@ export default async function DashboardPage() {
   const user = await getServerSession();
   if (!user) redirect("/login");
   if (user.role === "admin") redirect("/dashboard/admin");
-  if (user.role === "instructor") redirect("/dashboard/admin/sessions");
+  if (user.role === "instructor") redirect("/dashboard/admin/classes");
 
   return (
     <div className="animate-page-enter">

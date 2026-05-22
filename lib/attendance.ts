@@ -1,4 +1,8 @@
 import { getDayKey } from "@/lib/day";
+import {
+  getActiveCoursesForStudent,
+  studentHasCourseEnrollments,
+} from "@/lib/courses";
 import { getActiveSessionsForUser } from "@/lib/sessions";
 import { Attendance } from "@/models/Attendance";
 import type {
@@ -22,6 +26,7 @@ export function parseTimezoneOffset(value: unknown): number {
 
 type PopulatedLocation = { name?: string };
 type PopulatedSession = { title?: string };
+type PopulatedCourse = { title?: string };
 
 export function toAttendanceSummary(
   doc: {
@@ -31,9 +36,12 @@ export function toAttendanceSummary(
     distanceMeters: number;
     locationId?: PopulatedLocation | mongoose.Types.ObjectId | null;
     sessionId?: PopulatedSession | mongoose.Types.ObjectId | null;
+    courseId?: PopulatedCourse | mongoose.Types.ObjectId | null;
+    isLate?: boolean;
   },
   locationName?: string,
   sessionTitle?: string,
+  courseTitle?: string,
 ): AttendanceRecordSummary {
   const locObj = doc.locationId;
   const name =
@@ -61,6 +69,19 @@ export function toAttendanceSummary(
         ? String(sessObj)
         : undefined;
 
+  const courseObj = doc.courseId;
+  const courseTitleResolved =
+    courseTitle ??
+    (courseObj && typeof courseObj === "object" && "title" in courseObj
+      ? String(courseObj.title)
+      : undefined);
+  const courseId =
+    courseObj && typeof courseObj === "object" && "_id" in courseObj
+      ? String(courseObj._id)
+      : courseObj
+        ? String(courseObj)
+        : undefined;
+
   return {
     id: doc._id.toString(),
     type: doc.type,
@@ -70,6 +91,9 @@ export function toAttendanceSummary(
     distanceMeters: doc.distanceMeters,
     sessionId: sessId,
     sessionTitle: title,
+    courseId,
+    courseTitle: courseTitleResolved,
+    isLate: doc.isLate,
   };
 }
 
@@ -117,22 +141,39 @@ export async function buildTodayStatus(
     userId,
     timezoneOffsetMinutes,
   );
-  const activeSessions = await getActiveSessionsForUser(userId);
-  const useSessionMode = activeSessions.length > 0;
+  const hasEnrollments = await studentHasCourseEnrollments(userId);
+  const activeCourses = hasEnrollments
+    ? await getActiveCoursesForStudent(userId, timezoneOffsetMinutes)
+    : [];
+  const useCourseMode =
+    hasEnrollments &&
+    activeCourses.some((c) => c.window.active || c.hasCheckIn);
+
+  const activeSessions = useCourseMode
+    ? []
+    : await getActiveSessionsForUser(userId);
+  const useSessionMode = !useCourseMode && activeSessions.length > 0;
 
   let canCheckIn = !checkIn;
   let canCheckOut = Boolean(checkIn && !checkOut);
 
-  if (useSessionMode) {
+  if (useCourseMode) {
+    canCheckIn = activeCourses.some((c) => c.canCheckIn);
+    canCheckOut = activeCourses.some((c) => c.canCheckOut);
+  } else if (useSessionMode) {
     const open = activeSessions.filter((s) => !s.hasCheckOut);
     canCheckIn = open.some((s) => !s.hasCheckIn);
     canCheckOut = open.some((s) => s.hasCheckIn && !s.hasCheckOut);
   }
 
-  const isComplete = useSessionMode
-    ? activeSessions.length > 0 &&
-      activeSessions.every((s) => s.hasCheckIn && s.hasCheckOut)
-    : Boolean(checkIn && checkOut);
+  const isComplete = useCourseMode
+    ? activeCourses
+        .filter((c) => c.window.active)
+        .every((c) => c.hasCheckIn && c.hasCheckOut)
+    : useSessionMode
+      ? activeSessions.length > 0 &&
+        activeSessions.every((s) => s.hasCheckIn && s.hasCheckOut)
+      : Boolean(checkIn && checkOut);
 
   return {
     dayKey,
@@ -143,5 +184,8 @@ export async function buildTodayStatus(
     isComplete,
     activeSessions,
     useSessionMode,
+    activeCourses,
+    useCourseMode,
+    hasEnrollments,
   };
 }

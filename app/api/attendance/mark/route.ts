@@ -11,6 +11,7 @@ import {
   parseTimezoneOffset,
   toAttendanceSummary,
 } from "@/lib/attendance";
+import { markCourseAttendance } from "@/lib/course-mark";
 import { findSessionById } from "@/lib/sessions";
 import { pickAutoSite, rankSitesByDistance } from "@/lib/site-picker";
 import {
@@ -33,6 +34,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const coords = parseCoordinates(body.latitude, body.longitude);
     let locationId = String(body.locationId ?? "").trim();
+    const courseIdRaw = String(body.courseId ?? "").trim();
     const sessionIdRaw = String(body.sessionId ?? "").trim();
     const type = parseAttendanceType(body.type);
     const timezoneOffset = parseTimezoneOffset(body.timezoneOffset);
@@ -51,6 +53,33 @@ export async function POST(request: Request) {
     if (!photo.ok) return jsonError(photo.message, 400);
 
     await connectDB();
+
+    if (courseIdRaw) {
+      const result = await markCourseAttendance({
+        userId: user.id,
+        courseId: courseIdRaw,
+        type,
+        coords,
+        timezoneOffset,
+        gpsAccuracy: gps.accuracy,
+        photoData: photo.photo,
+        locationIdOverride: locationId || undefined,
+      });
+      if ("error" in result) {
+        return jsonError(
+          result.error ?? "Failed to mark attendance",
+          result.status ?? 400,
+        );
+      }
+      return jsonOk({
+        attendance: {
+          ...result.summary,
+          locationId: result.summary.locationId,
+          withinGeofence: true,
+        },
+        message: result.message,
+      });
+    }
 
     const sessionDoc = sessionIdRaw
       ? await findSessionById(sessionIdRaw)

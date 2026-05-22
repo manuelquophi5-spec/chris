@@ -6,6 +6,8 @@ export interface IAttendance {
   userId: mongoose.Types.ObjectId;
   locationId: mongoose.Types.ObjectId;
   sessionId?: mongoose.Types.ObjectId | null;
+  courseId?: mongoose.Types.ObjectId | null;
+  isLate?: boolean;
   type: AttendanceType;
   dayKey: string;
   latitude: number;
@@ -56,6 +58,14 @@ attendanceSchema.index(
   { unique: true, partialFilterExpression: { sessionId: { $type: "objectId" } } },
 );
 attendanceSchema.index({ sessionId: 1, markedAt: -1 });
+attendanceSchema.index({ courseId: 1, dayKey: 1, markedAt: -1 });
+attendanceSchema.index(
+  { userId: 1, courseId: 1, dayKey: 1, type: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { courseId: { $type: "objectId" } },
+  },
+);
 attendanceSchema.index({ locationId: 1, markedAt: -1 });
 
 export const Attendance: Model<IAttendance> =
