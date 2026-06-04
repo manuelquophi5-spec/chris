@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { authFetch, redirectAfterAuth } from "@/lib/auth-client";
+import { LOGO_SRC } from "@/lib/brand";
 import type { SessionUser } from "@/types";
 import { MobileTabBar } from "./MobileTabBar";
 
@@ -29,13 +31,22 @@ export function DashboardShell({ user, children }: Props) {
       <header className="sticky top-0 z-20 border-b border-[var(--ella-border)] bg-[var(--ella-surface)] pt-[env(safe-area-inset-top)]">
         <div className="mx-auto max-w-lg px-4 pb-3 pt-3">
           <div className="flex items-center justify-between gap-3">
-            <div className="min-w-0 animate-fade-in">
-              <p className="text-xs font-medium text-[var(--ella-fg-muted)]">
-                {getGreeting()}
-              </p>
-              <h1 className="truncate text-lg font-bold tracking-tight text-[var(--ella-fg)]">
-                {user.name.split(" ")[0]}
-              </h1>
+            <div className="flex min-w-0 items-center gap-2.5 animate-fade-in">
+              <Image
+                src={LOGO_SRC}
+                alt=""
+                width={36}
+                height={36}
+                className="shrink-0 object-contain"
+              />
+              <div className="min-w-0">
+                <p className="text-xs font-medium text-[var(--ella-fg-muted)]">
+                  {getGreeting()}
+                </p>
+                <h1 className="truncate text-lg font-bold tracking-tight text-[var(--ella-fg)]">
+                  {user.name.split(" ")[0]}
+                </h1>
+              </div>
             </div>
             <button
               type="button"

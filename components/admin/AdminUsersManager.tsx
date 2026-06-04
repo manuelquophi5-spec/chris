@@ -61,7 +61,7 @@ export function AdminUsersManager() {
       }
       setMessage(
         data.message ??
-          `Added ${firstName}. Tell them to open Ella and tap “Set password” with ID ${studentId.toUpperCase()}.`,
+          `Added ${firstName}. Tell them to open datalink_attend and tap “Set password” with ID ${studentId.toUpperCase()}.`,
       );
       setFirstName("");
       setStudentId("");
@@ -103,7 +103,7 @@ export function AdminUsersManager() {
   }
 
   function copyInstructions(id: string, name: string) {
-    const text = `Hi ${name}, set up Ella attendance:\n1. Open the Ella website\n2. Tap "Set password"\n3. Student ID: ${id}\n4. Choose a password, then sign in for class check-in.`;
+    const text = `Hi ${name}, set up Data Link attendance:\n1. Open datalink_attend\n2. Tap "Set password"\n3. Student ID: ${id}\n4. Choose a password, then sign in for class check-in.`;
     void navigator.clipboard.writeText(text).then(() => {
       setCopiedId(id);
       setTimeout(() => setCopiedId(null), 2000);
@@ -123,7 +123,7 @@ export function AdminUsersManager() {
       <AdminHelpCard title="Tell new students (copy & send)">
         <p>After you add someone, send them:</p>
         <p className="ella-quote">
-          “Open Ella → Set password → enter your Student ID → pick a password →
+          “Open datalink_attend → Set password → enter your Student ID → pick a password →
           check in during class.”
         </p>
       </AdminHelpCard>
@@ -238,7 +238,7 @@ export function AdminUsersManager() {
                     ) : u.passwordMustChange ? (
                       <span className="ella-chip-warning">Needs to set password</span>
                     ) : (
-                      <span className="ella-chip-success">Ready to use Ella</span>
+                      <span className="ella-chip-success">Ready to check in</span>
                     )}
                   </td>
                   <td>

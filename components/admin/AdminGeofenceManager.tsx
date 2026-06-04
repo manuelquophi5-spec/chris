@@ -209,7 +209,7 @@ export function AdminGeofenceManager() {
         <h1 className="ella-heading-page">Workplaces</h1>
         <p className="ella-text-muted mt-2 max-w-2xl">
           Mark where staff are allowed to check in. Search for your building, set
-          how close they must be (the green circle on the map), then save.
+          how close they must be (the highlighted circle on the map), then save.
         </p>
       </div>
 

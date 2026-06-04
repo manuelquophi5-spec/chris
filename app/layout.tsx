@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { PwaProvider } from "@/components/PwaProvider";
+import { APP_NAME, APP_TITLE, LOGO_SRC } from "@/lib/brand";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,21 +15,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ella Attendance",
+  title: APP_TITLE,
   description:
-    "Mobile-first geofenced attendance PWA — verify check-ins with GPS.",
-  applicationName: "Ella",
+    "Mobile-first geofenced attendance for Data Link Institute — verify check-ins with GPS.",
+  applicationName: APP_NAME,
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Ella",
+    title: APP_NAME,
   },
   icons: {
     icon: [
+      { url: LOGO_SRC, sizes: "any", type: "image/png" },
       { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: [{ url: "/icons/icon-192.png", sizes: "180x180", type: "image/png" }],
+    apple: [{ url: LOGO_SRC, sizes: "180x180", type: "image/png" }],
   },
   manifest: "/manifest.webmanifest",
   formatDetection: {
@@ -37,7 +39,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "oklch(0.52 0.13 155)",
+  themeColor: "#6B2D3E",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",

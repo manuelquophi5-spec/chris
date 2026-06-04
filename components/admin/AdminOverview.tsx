@@ -107,13 +107,13 @@ export function AdminOverview() {
       <div>
         <h1 className="ella-heading-page">Welcome</h1>
         <p className="ella-text-muted mt-2 max-w-2xl">
-          Set up Ella for your school. Follow the checklist below; no technical
+          Set up attendance for your school. Follow the checklist below; no technical
           knowledge required.
         </p>
       </div>
 
       <AdminHelpCard title="What students do on their phones">
-        <p>1. Open Ella in Chrome or Safari (add to home screen if you like).</p>
+        <p>1. Open datalink_attend in Chrome or Safari (add to home screen if you like).</p>
         <p>2. Sign in with student ID and password.</p>
         <p>3. Select their class and check in during the scheduled window.</p>
         <p className="text-[var(--ella-fg-subtle)]">

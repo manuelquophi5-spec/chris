@@ -1,4 +1,4 @@
-/* Ella PWA — minimal service worker for installability + light caching */
+/* datalink_attend PWA — minimal service worker for installability + light caching */
 const CACHE = "ella-static-v1";
 const PRECACHE = ["/", "/login", "/dashboard", "/icons/icon-192.png", "/icons/icon-512.png"];
 

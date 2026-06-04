@@ -1,3 +1,5 @@
+import { BrandLogo } from "@/components/BrandLogo";
+
 type Props = {
   title: string;
   subtitle?: string;
@@ -11,12 +13,7 @@ export function AuthPageShell({ title, subtitle, children, footer }: Props) {
       <div className="mobile-app-bg pointer-events-none fixed inset-0 -z-10" aria-hidden />
       <div className="mx-auto w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center text-center">
-          <span className="ella-brand-mark" aria-hidden>
-            E
-          </span>
-          <p className="mt-3 text-lg font-bold tracking-tight text-[var(--ella-fg)]">
-            Ella
-          </p>
+          <BrandLogo size={72} />
           {subtitle && (
             <p className="mt-1 text-sm text-[var(--ella-fg-muted)]">{subtitle}</p>
           )}

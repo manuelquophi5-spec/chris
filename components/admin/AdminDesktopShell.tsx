@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { authFetch, redirectAfterAuth } from "@/lib/auth-client";
+import { APP_SHORT_TITLE, INSTITUTE_NAME, LOGO_SRC } from "@/lib/brand";
 import type { SessionUser } from "@/types";
 
 type NavItem = {
@@ -83,10 +85,24 @@ export function AdminDesktopShell({ user, children }: Props) {
     <div className="admin-app-bg flex min-h-[100dvh]">
       <aside className="hidden w-60 shrink-0 flex-col border-r border-[var(--ella-border-strong)] bg-[var(--ella-sidebar)] text-[var(--ella-sidebar-fg)] md:flex">
         <div className="border-b border-[var(--ella-sidebar-raised)] px-5 py-5">
-          <p className="text-xs font-semibold tracking-wide text-[var(--ella-accent-muted)]">
-            Ella {user.role === "instructor" ? "Instructor" : "Admin"}
+          <div className="flex items-center gap-3">
+            <Image
+              src={LOGO_SRC}
+              alt=""
+              width={40}
+              height={40}
+              className="shrink-0 object-contain"
+            />
+            <div className="min-w-0">
+              <p className="truncate text-sm font-bold">{APP_SHORT_TITLE}</p>
+              <p className="text-xs text-[var(--ella-sidebar-muted)]">
+                {user.role === "instructor" ? "Instructor" : "Admin"}
+              </p>
+            </div>
+          </div>
+          <p className="mt-3 text-xs text-[var(--ella-sidebar-muted)]">
+            {INSTITUTE_NAME}
           </p>
-          <p className="mt-1.5 text-base font-bold">Administration</p>
         </div>
         <nav className="flex-1 space-y-0.5 px-2 py-4">
           {nav.map((item) => {
@@ -121,8 +137,8 @@ export function AdminDesktopShell({ user, children }: Props) {
         <header className="sticky top-0 z-20 border-b border-[var(--ella-border)] bg-[var(--ella-surface)]">
           <div className="flex items-center justify-between gap-4 px-4 py-3.5 sm:px-8">
             <div className="min-w-0 md:hidden">
-              <p className="text-xs font-semibold text-[var(--ella-accent)]">
-                Ella {user.role === "instructor" ? "Instructor" : "Admin"}
+              <p className="text-xs font-semibold text-[var(--ella-accent-muted)]">
+                {APP_SHORT_TITLE} · {user.role === "instructor" ? "Instructor" : "Admin"}
               </p>
             </div>
             <div className="flex flex-1 flex-wrap items-center justify-end gap-2">

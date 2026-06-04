@@ -1,33 +1,32 @@
 @import "leaflet/dist/leaflet.css";
 @import "tailwindcss";
 
-/* Ella design tokens — OKLCH, hue-tinted neutrals, restrained emerald accent */
+/* Data Link Attend — wine primary, navy secondary, cream surfaces */
 :root {
-  --ella-hue: 155;
-  --ella-bg: oklch(0.985 0.008 var(--ella-hue));
-  --ella-fg: oklch(0.25 0.022 var(--ella-hue));
-  --ella-fg-muted: oklch(0.5 0.02 var(--ella-hue));
-  --ella-fg-subtle: oklch(0.62 0.018 var(--ella-hue));
-  --ella-surface: oklch(0.995 0.005 var(--ella-hue));
-  --ella-surface-muted: oklch(0.965 0.012 var(--ella-hue));
-  --ella-border: oklch(0.9 0.014 var(--ella-hue));
-  --ella-border-strong: oklch(0.82 0.018 var(--ella-hue));
-  --ella-accent: oklch(0.52 0.13 var(--ella-hue));
-  --ella-accent-hover: oklch(0.46 0.13 var(--ella-hue));
-  --ella-accent-active: oklch(0.4 0.12 var(--ella-hue));
-  --ella-accent-fg: oklch(0.99 0.008 var(--ella-hue));
-  --ella-accent-subtle: oklch(0.94 0.04 var(--ella-hue));
-  --ella-accent-muted: oklch(0.88 0.06 var(--ella-hue));
-  --ella-sidebar: oklch(0.3 0.04 var(--ella-hue));
-  --ella-sidebar-raised: oklch(0.35 0.038 var(--ella-hue));
-  --ella-sidebar-fg: oklch(0.93 0.015 var(--ella-hue));
-  --ella-sidebar-muted: oklch(0.68 0.03 var(--ella-hue));
+  --ella-bg: oklch(0.96 0.018 85);
+  --ella-fg: oklch(0.28 0.07 265);
+  --ella-fg-muted: oklch(0.45 0.05 265);
+  --ella-fg-subtle: oklch(0.58 0.04 265);
+  --ella-surface: oklch(0.99 0.008 85);
+  --ella-surface-muted: oklch(0.94 0.02 85);
+  --ella-border: oklch(0.88 0.02 265);
+  --ella-border-strong: oklch(0.78 0.03 265);
+  --ella-accent: oklch(0.42 0.13 18);
+  --ella-accent-hover: oklch(0.36 0.13 18);
+  --ella-accent-active: oklch(0.3 0.12 18);
+  --ella-accent-fg: oklch(0.99 0.008 85);
+  --ella-accent-subtle: oklch(0.94 0.04 18);
+  --ella-accent-muted: oklch(0.86 0.06 18);
+  --ella-sidebar: oklch(0.26 0.07 265);
+  --ella-sidebar-raised: oklch(0.32 0.065 265);
+  --ella-sidebar-fg: oklch(0.96 0.01 85);
+  --ella-sidebar-muted: oklch(0.72 0.04 265);
   --ella-danger: oklch(0.48 0.16 25);
   --ella-danger-subtle: oklch(0.96 0.03 25);
   --ella-warning: oklch(0.45 0.12 75);
   --ella-warning-subtle: oklch(0.96 0.04 75);
-  --ella-info-subtle: oklch(0.95 0.03 230);
-  --ella-theme: oklch(0.52 0.13 var(--ella-hue));
+  --ella-info-subtle: oklch(0.95 0.03 265);
+  --ella-theme: oklch(0.42 0.13 18);
   --ella-radius-sm: 0.5rem;
   --ella-radius: 0.75rem;
   --ella-radius-lg: 1rem;
@@ -70,7 +69,7 @@ button {
   background:
     radial-gradient(
       ellipse 100% 60% at 50% -10%,
-      oklch(0.92 0.06 var(--ella-hue) / 0.35),
+      oklch(0.88 0.06 18 / 0.25),
       transparent 70%
     ),
     var(--ella-bg);
@@ -95,14 +94,14 @@ button {
     font-size: 1.125rem;
     font-weight: 700;
     letter-spacing: -0.02em;
-    box-shadow: 0 2px 8px oklch(0.35 0.08 var(--ella-hue) / 0.2);
+    box-shadow: 0 2px 8px oklch(0.3 0.08 18 / 0.2);
   }
 
   .ella-card {
     border-radius: var(--ella-radius-xl);
     border: 1px solid var(--ella-border);
     background: var(--ella-surface);
-    box-shadow: 0 1px 3px oklch(0.25 0.02 var(--ella-hue) / 0.06);
+    box-shadow: 0 1px 3px oklch(0.25 0.02 265 / 0.06);
   }
 
   .ella-card-padded {
@@ -110,7 +109,7 @@ button {
     border: 1px solid var(--ella-border);
     background: var(--ella-surface);
     padding: 1.25rem;
-    box-shadow: 0 1px 3px oklch(0.25 0.02 var(--ella-hue) / 0.06);
+    box-shadow: 0 1px 3px oklch(0.25 0.02 265 / 0.06);
   }
 
   .ella-panel-muted {
@@ -140,7 +139,7 @@ button {
   .ella-input:focus {
     outline: none;
     border-color: var(--ella-accent);
-    box-shadow: 0 0 0 3px oklch(0.52 0.13 var(--ella-hue) / 0.18);
+    box-shadow: 0 0 0 3px oklch(0.42 0.13 18 / 0.22);
   }
 
   .ella-select {
@@ -160,7 +159,7 @@ button {
   .ella-select:focus {
     outline: none;
     border-color: var(--ella-accent);
-    box-shadow: 0 0 0 3px oklch(0.52 0.13 var(--ella-hue) / 0.18);
+    box-shadow: 0 0 0 3px oklch(0.42 0.13 18 / 0.22);
   }
 
   .ella-btn-primary {
@@ -292,7 +291,7 @@ button {
 
   .ella-badge-complete {
     background: var(--ella-accent-subtle);
-    color: oklch(0.38 0.1 var(--ella-hue));
+    color: oklch(0.34 0.11 18);
   }
 
   .ella-badge-open {
@@ -319,7 +318,7 @@ button {
     padding: 0.75rem 1rem;
     font-size: 0.875rem;
     font-weight: 500;
-    color: oklch(0.38 0.1 var(--ella-hue));
+    color: oklch(0.34 0.11 18);
   }
 
   .ella-alert-warning {
@@ -395,7 +394,7 @@ button {
   .ella-nav-item-active {
     background: var(--ella-accent);
     color: var(--ella-accent-fg);
-    box-shadow: 0 2px 8px oklch(0.35 0.08 var(--ella-hue) / 0.25);
+    box-shadow: 0 2px 8px oklch(0.3 0.08 18 / 0.25);
   }
 
   .ella-nav-item-active:hover {
@@ -406,7 +405,7 @@ button {
   .mobile-tab-bar {
     border-top: 1px solid var(--ella-border);
     background: var(--ella-surface);
-    box-shadow: 0 -4px 24px oklch(0.25 0.02 var(--ella-hue) / 0.06);
+    box-shadow: 0 -4px 24px oklch(0.25 0.02 265 / 0.06);
   }
 
   .mobile-tab-item-active-bg {
@@ -418,7 +417,7 @@ button {
     border-radius: var(--ella-radius-lg);
     border: 1px solid var(--ella-border);
     background: var(--ella-surface);
-    box-shadow: 0 1px 3px oklch(0.25 0.02 var(--ella-hue) / 0.06);
+    box-shadow: 0 1px 3px oklch(0.25 0.02 265 / 0.06);
   }
 
   .ella-table-wrap-header {
@@ -456,7 +455,7 @@ button {
   }
 
   .ella-table tbody tr:hover {
-    background: oklch(0.97 0.01 var(--ella-hue) / 0.6);
+    background: oklch(0.97 0.01 85 / 0.6);
   }
 
   .ella-table td {
@@ -474,7 +473,7 @@ button {
     border-radius: var(--ella-radius-lg);
     border: 1px solid var(--ella-border);
     background: var(--ella-surface);
-    box-shadow: 0 1px 3px oklch(0.25 0.02 var(--ella-hue) / 0.06);
+    box-shadow: 0 1px 3px oklch(0.25 0.02 265 / 0.06);
     overflow: hidden;
   }
 
@@ -526,7 +525,7 @@ button {
     padding: 0.25rem 0.625rem;
     font-size: 0.75rem;
     font-weight: 600;
-    color: oklch(0.38 0.1 var(--ella-hue));
+    color: oklch(0.34 0.11 18);
   }
 
   .ella-chip-neutral {

@@ -1,22 +1,22 @@
 ---
-name: Ella Attendance
-description: Mobile-first geofenced attendance — calm, trustworthy product UI for outdoor check-in
+name: Data Link Attend
+description: datalink_attend — wine and navy brand, cream surfaces, campus check-in
 colors:
-  canvas: "oklch(0.985 0.008 155)"
-  surface: "oklch(0.995 0.005 155)"
-  surface-muted: "oklch(0.965 0.012 155)"
-  foreground: "oklch(0.25 0.022 155)"
-  foreground-muted: "oklch(0.5 0.02 155)"
-  foreground-subtle: "oklch(0.62 0.018 155)"
-  border: "oklch(0.9 0.014 155)"
-  border-strong: "oklch(0.82 0.018 155)"
-  primary: "oklch(0.52 0.13 155)"
-  primary-hover: "oklch(0.46 0.13 155)"
-  primary-active: "oklch(0.4 0.12 155)"
-  on-primary: "oklch(0.99 0.008 155)"
-  primary-subtle: "oklch(0.94 0.04 155)"
-  sidebar: "oklch(0.3 0.04 155)"
-  sidebar-foreground: "oklch(0.93 0.015 155)"
+  canvas: "oklch(0.96 0.018 85)"
+  surface: "oklch(0.99 0.008 85)"
+  surface-muted: "oklch(0.94 0.02 85)"
+  foreground: "oklch(0.28 0.07 265)"
+  foreground-muted: "oklch(0.45 0.05 265)"
+  foreground-subtle: "oklch(0.58 0.04 265)"
+  border: "oklch(0.88 0.02 265)"
+  border-strong: "oklch(0.78 0.03 265)"
+  primary: "oklch(0.42 0.13 18)"
+  primary-hover: "oklch(0.36 0.13 18)"
+  primary-active: "oklch(0.3 0.12 18)"
+  on-primary: "oklch(0.99 0.008 85)"
+  primary-subtle: "oklch(0.94 0.04 18)"
+  sidebar: "oklch(0.26 0.07 265)"
+  sidebar-foreground: "oklch(0.96 0.01 85)"
   danger: "oklch(0.48 0.16 25)"
   danger-subtle: "oklch(0.96 0.03 25)"
   warning: "oklch(0.45 0.12 75)"
@@ -106,7 +106,7 @@ Implementation lives in `app/globals.css` as `--ella-*` CSS variables and `ella-
 
 ## Colors
 
-**Strategy:** Restrained. OKLCH neutrals tinted to hue **155** (cool emerald family). Never pure `#000` / `#fff`. Primary accent covers actions, active nav, and positive status only.
+**Strategy:** Restrained. **Wine** (`oklch` hue ~18) for primary actions and status. **Navy** (hue ~265) for text and admin sidebar. **Cream** (hue ~85) for canvas and surfaces. Never pure `#000` / `#fff`.
 
 | Role | Token | Usage |
 |------|-------|--------|
