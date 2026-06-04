@@ -82,7 +82,7 @@ export async function GET(request: Request) {
       id: r._id.toString(),
       userId: typeof u === "object" && u && "_id" in u ? String(u._id) : String(r.userId),
       studentName: typeof u === "object" && u && "name" in u ? String(u.name) : "—",
-      employeeId:
+      studentId:
         typeof u === "object" && u && "employeeId" in u ? String(u.employeeId ?? "") : "",
       courseId: String(r.courseId),
       courseTitle:
@@ -100,7 +100,7 @@ export async function GET(request: Request) {
     rows = rows.filter(
       (r) =>
         r.studentName.toLowerCase().includes(q) ||
-        r.employeeId.toLowerCase().includes(q) ||
+        r.studentId.toLowerCase().includes(q) ||
         r.courseTitle.toLowerCase().includes(q),
     );
   }

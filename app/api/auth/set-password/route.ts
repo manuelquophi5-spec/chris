@@ -19,7 +19,9 @@ export async function POST(request: Request) {
   try {
     const ip = getClientIp(request);
     const body = await request.json();
-    const employeeId = normalizeEmployeeId(String(body.employeeId ?? ""));
+    const employeeId = normalizeEmployeeId(
+      String(body.studentId ?? body.employeeId ?? ""),
+    );
     const password = String(body.password ?? "");
 
     if (!isValidEmployeeId(employeeId)) {

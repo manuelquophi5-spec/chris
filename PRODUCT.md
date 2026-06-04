@@ -6,7 +6,7 @@ product
 
 ## Users
 
-**Students** use phones on campus to check in and out during class or at a work site. They need a fast, obvious flow: open the PWA, see today's status, tap check-in when GPS confirms they are on site. Context is often outdoors, bright light, limited patience for errors.
+**Students** use phones on campus to check in and out during class or for campus-day activities. They need a fast, obvious flow: open the PWA, see today's status, tap check-in when GPS confirms they are on site. Context is often outdoors, bright light, limited patience for errors.
 
 **Lecturers / instructors** review class attendance, see who is late or absent, and work from a desktop-friendly admin view during or after sessions.
 
@@ -14,7 +14,7 @@ product
 
 ## Product Purpose
 
-Ella is a geofenced attendance PWA for schools and training sites. It verifies that check-ins happen inside configured GPS boundaries (Haversine), enforces daily and session rules, and gives admins visibility into attendance without manual roll call.
+Data Link Attend is a geofenced attendance PWA for schools and training sites. It verifies that check-ins happen inside configured GPS boundaries (Haversine), enforces daily and session rules, and gives admins visibility into attendance without manual roll call.
 
 Success looks like: students complete check-in in seconds; admins trust the data; support burden stays low because errors explain what to do next (location, schedule, password).
 

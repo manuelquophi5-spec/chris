@@ -29,7 +29,7 @@ export async function GET(_request: Request, context: RouteContext) {
     students: students.map((s) => ({
       id: s._id.toString(),
       name: s.name,
-      employeeId: s.employeeId ?? "",
+      studentId: s.employeeId ?? "",
       email: s.email,
     })),
   });

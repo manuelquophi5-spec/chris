@@ -24,8 +24,11 @@ type NearbySite = {
   inRange: boolean;
 };
 
+export type DailyAttendanceMode = "auto" | "daily" | "session";
+
 type Props = {
   onUpdate?: () => void;
+  attendanceMode?: DailyAttendanceMode;
 };
 
 const selectClass = "ella-select mt-2";
@@ -52,13 +55,25 @@ function formatDayLabel(dayKey: string) {
   });
 }
 
+function sessionModeActive(
+  today: TodayAttendanceStatus | null,
+  mode: DailyAttendanceMode,
+): boolean {
+  if (mode === "daily") return false;
+  if (mode === "session") {
+    return Boolean(today?.hasActiveSessions && today.activeSessions.length > 0);
+  }
+  return Boolean(today?.useSessionMode);
+}
+
 function checkInButtonLabel(
   today: TodayAttendanceStatus | null,
   loading: boolean,
+  mode: DailyAttendanceMode,
 ): string {
   if (loading) return "Getting your location…";
   if (!today) return "Check in";
-  if (today.useSessionMode) {
+  if (sessionModeActive(today, mode)) {
     const open = today.activeSessions.filter((s) => !s.hasCheckIn);
     if (open.length === 0) return "No session to check in";
     return "Check in to session";
@@ -71,10 +86,11 @@ function checkInButtonLabel(
 function checkOutButtonLabel(
   today: TodayAttendanceStatus | null,
   loading: boolean,
+  mode: DailyAttendanceMode,
 ): string {
   if (loading) return "Getting your location…";
   if (!today) return "Check out";
-  if (today.useSessionMode) {
+  if (sessionModeActive(today, mode)) {
     const open = today.activeSessions.filter(
       (s) => s.hasCheckIn && !s.hasCheckOut,
     );
@@ -87,7 +103,10 @@ function checkOutButtonLabel(
   return "Check out";
 }
 
-export function DailyAttendanceCard({ onUpdate }: Props) {
+export function DailyAttendanceCard({
+  onUpdate,
+  attendanceMode = "auto",
+}: Props) {
   const [locations, setLocations] = useState<LocationOption[]>([]);
   const [locationId, setLocationId] = useState("");
   const [sessionId, setSessionId] = useState("");
@@ -115,12 +134,15 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
       if (data.checkIn?.locationId) {
         setLocationId(data.checkIn.locationId);
       }
-      if (data.useSessionMode && data.activeSessions.length === 1) {
+      if (
+        sessionModeActive(data, attendanceMode) &&
+        data.activeSessions.length === 1
+      ) {
         const s = data.activeSessions[0];
         if (!s.hasCheckOut) setSessionId(s.id);
       }
     }
-  }, [tzOffset]);
+  }, [tzOffset, attendanceMode]);
 
   const loadLocations = useCallback(async () => {
     const res = await authFetch("/api/locations");
@@ -188,7 +210,7 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
     !reminderDismissed &&
     today?.checkIn &&
     !today.checkOut &&
-    !today.useSessionMode &&
+    !sessionModeActive(today, attendanceMode) &&
     new Date().getHours() >= 17;
 
   function placeNameForError(effectiveLocationId: string) {
@@ -196,12 +218,12 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
       locations.find((l) => l.id === effectiveLocationId)?.name ??
       nearby?.name ??
       today?.checkIn?.locationName ??
-      "the office"
+      "campus"
     );
   }
 
   function pickSessionForMark(type: AttendanceType): string | undefined {
-    if (!today?.useSessionMode) return undefined;
+    if (!today || !sessionModeActive(today, attendanceMode)) return undefined;
     if (sessionId) return sessionId;
     if (type === "check_in") {
       const open = today.activeSessions.filter((s) => !s.hasCheckIn);
@@ -238,13 +260,13 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
     const effectiveLocationId = today?.checkIn?.locationId ?? locationId;
     const effectiveSessionId = pickSessionForMark(type);
 
-    if (today?.useSessionMode) {
+    if (sessionModeActive(today, attendanceMode)) {
       if (!effectiveSessionId) {
         setError("Select an active session first");
         return;
       }
     } else if (!effectiveLocationId) {
-      setError("Select a work site first");
+      setError("Select a campus first");
       return;
     }
 
@@ -302,9 +324,19 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
 
   const lockedSite = today?.checkIn?.locationName;
   const busy = loading !== null;
-  const useSessions = Boolean(today?.useSessionMode);
-  const canCheckIn = Boolean(today?.canCheckIn) && (useSessions || locations.length > 0);
-  const canCheckOut = Boolean(today?.canCheckOut);
+  const useSessions = sessionModeActive(today, attendanceMode);
+  const canCheckIn =
+    attendanceMode === "daily"
+      ? !today?.checkIn && locations.length > 0
+      : useSessions
+        ? (today?.activeSessions.some((s) => !s.hasCheckIn) ?? false)
+        : Boolean(today?.canCheckIn) && (locations.length > 0 || Boolean(today?.checkIn));
+  const canCheckOut =
+    attendanceMode === "daily"
+      ? Boolean(today?.checkIn && !today?.checkOut)
+      : useSessions
+        ? (today?.activeSessions.some((s) => s.hasCheckIn && !s.hasCheckOut) ?? false)
+        : Boolean(today?.canCheckOut);
   const checkInDisabled =
     busy ||
     !canCheckIn ||
@@ -346,7 +378,7 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
             </span>
           ) : today?.checkIn || openSessions.some((s) => s.hasCheckIn) ? (
             <span className="ella-badge ella-badge-open animate-fade-in">
-              On site
+              On campus
             </span>
           ) : (
             <span className="ella-badge ella-badge-idle">Not in yet</span>
@@ -384,7 +416,7 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
       >
         <h3 className="ella-heading-section">Mark attendance</h3>
         <p className="ella-text-muted mt-1">
-          Be at the office to check in. GPS must be within the site area.
+          Be on campus to check in. GPS must be within the campus area.
         </p>
 
         {distanceHint && (
@@ -420,7 +452,7 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
           </label>
         ) : locations.length > 0 && !useSessions ? (
           <label className="mt-4 block">
-            <span className="ella-label font-semibold">Work site</span>
+            <span className="ella-label font-semibold">Campus</span>
             {lockedSite ? (
               <p
                 className={`${selectClass} flex items-center bg-[var(--ella-surface-muted)] text-[var(--ella-fg-muted)]`}
@@ -434,7 +466,7 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
                 onChange={(e) => setLocationId(e.target.value)}
                 disabled={busy || Boolean(today?.checkIn)}
               >
-                <option value="">Select site…</option>
+                <option value="">Select campus…</option>
                 {locations.map((loc) => (
                   <option key={loc.id} value={loc.id}>
                     {loc.name}
@@ -445,7 +477,7 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
           </label>
         ) : !useSessions ? (
           <p className="ella-alert-warning mt-4">
-            No sites configured. Contact your administrator.
+            No campuses configured. Contact your administrator.
           </p>
         ) : null}
 
@@ -468,7 +500,7 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
             onClick={() => mark("check_in")}
             className="ella-btn-primary w-full min-h-[52px] text-base disabled:scale-100 disabled:border disabled:border-[var(--ella-border)] disabled:bg-[var(--ella-surface-muted)] disabled:text-[var(--ella-fg-subtle)]"
           >
-            {checkInButtonLabel(today, loading === "check_in")}
+            {checkInButtonLabel(today, loading === "check_in", attendanceMode)}
           </button>
           <button
             type="button"
@@ -476,7 +508,7 @@ export function DailyAttendanceCard({ onUpdate }: Props) {
             onClick={() => mark("check_out")}
             className="ella-btn-secondary w-full min-h-[52px] border-[var(--ella-fg)] bg-[var(--ella-fg)] text-[var(--ella-accent-fg)] hover:bg-[var(--ella-fg-muted)] disabled:border-[var(--ella-border)] disabled:bg-[var(--ella-surface-muted)] disabled:text-[var(--ella-fg-subtle)]"
           >
-            {checkOutButtonLabel(today, loading === "check_out")}
+            {checkOutButtonLabel(today, loading === "check_out", attendanceMode)}
           </button>
         </div>
 

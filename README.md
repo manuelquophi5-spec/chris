@@ -1,6 +1,8 @@
-# Ella — Geofenced Attendance PWA
+# Data Link Attend (`datalink_attend`)
 
-Mobile-first Progressive Web App for attendance management. Users check in via the browser **Geolocation API**; the server verifies they are inside a configured geofence using the **Haversine formula**.
+Mobile-first geofenced attendance PWA for schools. Students check in via the browser **Geolocation API**; the server verifies they are inside a configured campus geofence using the **Haversine formula**.
+
+See [docs/SCHOOL_SETUP_AND_DASHBOARDS.md](docs/SCHOOL_SETUP_AND_DASHBOARDS.md) for admin setup (campuses → users → classes → enrollments).
 
 ## Stack
 

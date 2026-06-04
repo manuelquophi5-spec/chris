@@ -11,6 +11,7 @@ export type AuditAction =
   | "session.create"
   | "session.update"
   | "course.create"
+  | "course.duplicate"
   | "course.update"
   | "course.deactivate"
   | "course.enroll"

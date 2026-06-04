@@ -44,7 +44,7 @@ export function cookieMaxAgeForRole(role: UserRole): number {
 
 export async function signAccessToken(user: SessionUser): Promise<string> {
   return new SignJWT({
-    employeeId: user.employeeId,
+    studentId: user.studentId,
     email: user.email,
     name: user.name,
     role: user.role,
@@ -71,13 +71,15 @@ export async function verifyAccessToken(
     ) {
       return null;
     }
-    const employeeId =
-      typeof payload.employeeId === "string"
-        ? payload.employeeId
-        : payload.email.split("@")[0]?.toUpperCase() ?? "";
+    const studentId =
+      typeof payload.studentId === "string"
+        ? payload.studentId
+        : typeof payload.employeeId === "string"
+          ? payload.employeeId
+          : payload.email.split("@")[0]?.toUpperCase() ?? "";
     return {
       id: payload.sub,
-      employeeId,
+      studentId,
       email: payload.email,
       name: payload.name,
       role: payload.role as UserRole,

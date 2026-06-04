@@ -91,6 +91,48 @@ export function evaluateCourseSchedule(
   };
 }
 
+const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
+
+export function formatScheduleDaysLabel(scheduleDays: number[]): string {
+  const sorted = [...scheduleDays].sort((a, b) => {
+    const aa = a === 0 ? 7 : a;
+    const bb = b === 0 ? 7 : b;
+    return aa - bb;
+  });
+  return sorted.map((d) => DAY_NAMES[d] ?? "?").join(", ");
+}
+
+/** Human-readable hint for when class is not active right now. */
+export function getNextClassStartMessage(
+  scheduleDays: number[],
+  startTime: string,
+  now: Date,
+  timezoneOffsetMinutes: number,
+): string | null {
+  const startMin = parseTimeToMinutes(startTime);
+  if (startMin === null || scheduleDays.length === 0) return null;
+
+  const { dayOfWeek, minutes } = getLocalTimeParts(now, timezoneOffsetMinutes);
+
+  for (let daysAhead = 0; daysAhead < 14; daysAhead++) {
+    const targetDay = (dayOfWeek + daysAhead) % 7;
+    if (!scheduleDays.includes(targetDay)) continue;
+
+    if (daysAhead === 0) {
+      if (minutes < startMin) {
+        return `Starts today at ${startTime}`;
+      }
+      continue;
+    }
+
+    const label =
+      daysAhead === 1 ? "Tomorrow" : DAY_NAMES[targetDay] ?? "soon";
+    return `Next class: ${label} at ${startTime}`;
+  }
+
+  return `Scheduled: ${formatScheduleDaysLabel(scheduleDays)} · ${startTime}`;
+}
+
 export const WEEKDAY_OPTIONS = [
   { value: 1, label: "Monday" },
   { value: 2, label: "Tuesday" },

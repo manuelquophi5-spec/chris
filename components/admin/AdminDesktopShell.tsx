@@ -121,7 +121,7 @@ export function AdminDesktopShell({ user, children }: Props) {
         <div className="border-t border-[var(--ella-sidebar-raised)] px-5 py-4">
           <p className="truncate text-sm font-semibold">{user.name}</p>
           <p className="truncate text-xs text-[var(--ella-sidebar-muted)]">
-            {user.employeeId}
+            {user.studentId}
           </p>
           <button
             type="button"

@@ -51,7 +51,7 @@ export function AdminOverview() {
     {
       step: 1,
       title: "Set up campuses",
-      body: "Add GPS workplaces where students check in.",
+      body: "Add GPS campuses where students check in.",
       href: "/dashboard/admin/sites",
       button: "Campuses",
     },

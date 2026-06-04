@@ -206,7 +206,7 @@ export function AdminGeofenceManager() {
   return (
     <div className={adminStack}>
       <div>
-        <h1 className="ella-heading-page">Workplaces</h1>
+        <h1 className="ella-heading-page">Campuses</h1>
         <p className="ella-text-muted mt-2 max-w-2xl">
           Mark where staff are allowed to check in. Search for your building, set
           how close they must be (the highlighted circle on the map), then save.
@@ -248,7 +248,7 @@ export function AdminGeofenceManager() {
 
       <section className="ella-card-padded">
         <h2 className="ella-heading-section">
-          {isEditing ? "Update this workplace" : "Save a new workplace"}
+          {isEditing ? "Update this campus" : "Save a new campus"}
         </h2>
         <form onSubmit={handleSave} className="mt-4 space-y-3">
           <input
@@ -322,7 +322,7 @@ export function AdminGeofenceManager() {
               </button>
             )}
             <button type="submit" disabled={saving} className={`${btnPrimary} flex-1`}>
-              {saving ? "Saving…" : isEditing ? "Save changes" : "Save workplace"}
+              {saving ? "Saving…" : isEditing ? "Save changes" : "Save campus"}
             </button>
           </div>
         </form>
@@ -330,7 +330,7 @@ export function AdminGeofenceManager() {
 
       <section className="ella-card-padded">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="ella-heading-section">Your workplaces</h2>
+          <h2 className="ella-heading-section">Your campuses</h2>
           <div className="flex gap-2">
             <input
               type="search"

@@ -98,7 +98,7 @@ export async function POST(request: Request) {
         isActive: true,
       });
       if (!location) {
-        return jsonError("Session site not found or inactive", 404);
+        return jsonError("Session campus not found or inactive", 404);
       }
       locationId = location._id.toString();
 
@@ -193,7 +193,7 @@ export async function POST(request: Request) {
       const auto = pickAutoSite(ranked);
       if (auto) locationId = auto.id;
       else {
-        return jsonError("Select a work site — none auto-selected.");
+        return jsonError("Select a campus — none was detected automatically.");
       }
     }
 
@@ -218,7 +218,7 @@ export async function POST(request: Request) {
       }
       if (locationId !== today.checkIn.locationId) {
         return jsonError(
-          "Check out must be at the same site you checked in to.",
+          "Check out must be at the same campus you checked in to.",
           400,
         );
       }
@@ -230,7 +230,7 @@ export async function POST(request: Request) {
     });
 
     if (!location) {
-      return jsonError("Location not found or inactive", 404);
+      return jsonError("Campus not found or inactive", 404);
     }
 
     const { within, distanceMeters } = isWithinGeofence(

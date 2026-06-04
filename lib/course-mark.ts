@@ -54,13 +54,6 @@ export async function markCourseAttendance(params: {
     timezoneOffset,
   );
 
-  if (!window.active) {
-    return {
-      error: window.reason ?? "Class is not active right now",
-      status: 403 as const,
-    };
-  }
-
   const dayKey = getDayKey(new Date(), timezoneOffset);
   const existing = await Attendance.find({
     userId,
@@ -72,6 +65,12 @@ export async function markCourseAttendance(params: {
   const hasOut = existing.some((r) => r.type === "check_out");
 
   if (type === "check_in") {
+    if (!window.active) {
+      return {
+        error: window.reason ?? "Class is not active right now",
+        status: 403 as const,
+      };
+    }
     if (hasIn) {
       return { error: "You already checked in for this class today.", status: 409 as const };
     }

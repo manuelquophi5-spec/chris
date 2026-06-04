@@ -3,6 +3,8 @@ import mongoose, { Schema, type Model } from "mongoose";
 export interface ICourse {
   _id: mongoose.Types.ObjectId;
   title: string;
+  /** Short code shown to students, e.g. BBA101 */
+  courseCode?: string;
   description?: string;
   lecturerId: mongoose.Types.ObjectId;
   locationId?: mongoose.Types.ObjectId | null;
@@ -20,6 +22,7 @@ export interface ICourse {
 const courseSchema = new Schema<ICourse>(
   {
     title: { type: String, required: true, trim: true },
+    courseCode: { type: String, trim: true, uppercase: true, default: "" },
     description: { type: String, trim: true, default: "" },
     lecturerId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     locationId: { type: Schema.Types.ObjectId, ref: "Location", default: null },

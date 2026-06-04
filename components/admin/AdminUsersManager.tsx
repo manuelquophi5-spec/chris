@@ -50,7 +50,7 @@ export function AdminUsersManager() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           firstName: firstName.trim(),
-          employeeId: studentId.trim(),
+          studentId: studentId.trim(),
           role,
         }),
       });
@@ -228,7 +228,7 @@ export function AdminUsersManager() {
                     )}
                   </td>
                   <td className="font-mono text-base text-[var(--ella-fg)]">
-                    {u.employeeId}
+                    {u.studentId}
                   </td>
                   <td>
                     {u.lockedUntil ? (
@@ -245,10 +245,10 @@ export function AdminUsersManager() {
                     <div className="flex flex-wrap gap-2">
                       <button
                         type="button"
-                        onClick={() => copyInstructions(u.employeeId, u.name)}
+                        onClick={() => copyInstructions(u.studentId, u.name)}
                         className={adminBtnGhost}
                       >
-                        {copiedId === u.employeeId ? "Copied!" : "Copy instructions"}
+                        {copiedId === u.studentId ? "Copied!" : "Copy instructions"}
                       </button>
                       {u.lockedUntil ? (
                         <button

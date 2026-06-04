@@ -28,7 +28,7 @@ export async function GET() {
 
   const users: AdminUserRow[] = docs.map((d) => ({
     id: d._id.toString(),
-    employeeId: d.employeeId ?? "",
+    studentId: d.employeeId ?? "",
     name: d.name,
     role: d.role,
     passwordMustChange: Boolean(d.passwordMustChange),
@@ -47,7 +47,9 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const firstName = String(body.firstName ?? body.name ?? "").trim();
-    const employeeId = normalizeEmployeeId(String(body.employeeId ?? ""));
+    const employeeId = normalizeEmployeeId(
+      String(body.studentId ?? body.employeeId ?? ""),
+    );
     const role = parseRole(body.role);
 
     if (!firstName || firstName.length < 2) {

@@ -4,19 +4,26 @@ import { useEffect, useMemo, useState } from "react";
 import { authFetch } from "@/lib/auth-client";
 import type { AttendanceType } from "@/types";
 
+type CourseRef = { id: string; title: string; courseCode: string } | null;
+
 type Row = {
   id: string;
   type: AttendanceType;
   dayKey: string;
   markedAt: string;
   distanceMeters: number;
+  isLate: boolean;
   location: { name?: string } | null;
-  user?: { name: string; email: string; employeeId?: string };
+  course: CourseRef;
+  user?: { name: string; email: string; studentId?: string };
 };
 
 type DayGroup = {
+  groupKey: string;
   dayKey: string;
   label: string;
+  classLabel: string;
+  courseId: string | null;
   checkIn: Row | null;
   checkOut: Row | null;
   locationName: string;
@@ -44,18 +51,33 @@ function dayLabel(dayKey: string) {
   });
 }
 
-function groupByDay(rows: Row[]): DayGroup[] {
+function classLabel(course: CourseRef): string {
+  if (!course) return "Campus day";
+  const code = course.courseCode ? `${course.courseCode} · ` : "";
+  return `${code}${course.title}`;
+}
+
+function groupKeyFor(row: Row): string {
+  const cid = row.course?.id ?? "campus";
+  return `${row.dayKey || row.markedAt.slice(0, 10)}:${cid}`;
+}
+
+function groupByDayAndClass(rows: Row[]): DayGroup[] {
   const map = new Map<string, DayGroup>();
 
   for (const row of rows) {
-    const key = row.dayKey || row.markedAt.slice(0, 10);
+    const key = groupKeyFor(row);
+    const dayKey = row.dayKey || row.markedAt.slice(0, 10);
     if (!map.has(key)) {
       map.set(key, {
-        dayKey: key,
-        label: dayLabel(key),
+        groupKey: key,
+        dayKey,
+        label: dayLabel(dayKey),
+        classLabel: classLabel(row.course),
+        courseId: row.course?.id ?? null,
         checkIn: null,
         checkOut: null,
-        locationName: row.location?.name ?? "Unknown site",
+        locationName: row.location?.name ?? "Unknown campus",
       });
     }
     const g = map.get(key)!;
@@ -87,12 +109,29 @@ function HistorySkeleton() {
 export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) {
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<string>("all");
 
-  const days = useMemo(() => groupByDay(rows), [rows]);
+  const courseFilters = useMemo(() => {
+    const seen = new Map<string, string>();
+    for (const r of rows) {
+      if (r.course) {
+        seen.set(r.course.id, classLabel(r.course));
+      }
+    }
+    return [...seen.entries()].map(([id, label]) => ({ id, label }));
+  }, [rows]);
+
+  const filteredRows = useMemo(() => {
+    if (filter === "all") return rows;
+    if (filter === "campus") return rows.filter((r) => !r.course);
+    return rows.filter((r) => r.course?.id === filter);
+  }, [rows, filter]);
+
+  const days = useMemo(() => groupByDayAndClass(filteredRows), [filteredRows]);
 
   function load() {
     setLoading(true);
-    authFetch("/api/attendance?limit=60")
+    authFetch("/api/attendance?limit=100")
       .then((r) => r.json())
       .then((data) => setRows(data.attendance ?? []))
       .finally(() => setLoading(false));
@@ -107,7 +146,7 @@ export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) 
       <div className="flex items-center justify-between gap-3">
         <div>
           <h2 className="ella-heading-section text-lg">History</h2>
-          <p className="ella-text-muted mt-0.5">Your past check-ins</p>
+          <p className="ella-text-muted mt-0.5">Past check-ins by class and campus</p>
         </div>
         <button
           type="button"
@@ -119,52 +158,91 @@ export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) 
         </button>
       </div>
 
+      <div className="mt-3 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => setFilter("all")}
+          className={`rounded-full px-3 py-1 text-xs font-semibold ${
+            filter === "all"
+              ? "bg-[var(--ella-accent-subtle)] text-[var(--ella-accent-hover)]"
+              : "bg-[var(--ella-surface-muted)] text-[var(--ella-fg-muted)]"
+          }`}
+        >
+          All
+        </button>
+        <button
+          type="button"
+          onClick={() => setFilter("campus")}
+          className={`rounded-full px-3 py-1 text-xs font-semibold ${
+            filter === "campus"
+              ? "bg-[var(--ella-accent-subtle)] text-[var(--ella-accent-hover)]"
+              : "bg-[var(--ella-surface-muted)] text-[var(--ella-fg-muted)]"
+          }`}
+        >
+          Campus day
+        </button>
+        {courseFilters.map((c) => (
+          <button
+            key={c.id}
+            type="button"
+            onClick={() => setFilter(c.id)}
+            className={`rounded-full px-3 py-1 text-xs font-semibold ${
+              filter === c.id
+                ? "bg-[var(--ella-accent-subtle)] text-[var(--ella-accent-hover)]"
+                : "bg-[var(--ella-surface-muted)] text-[var(--ella-fg-muted)]"
+            }`}
+          >
+            {c.label}
+          </button>
+        ))}
+      </div>
+
       {loading ? (
         <HistorySkeleton />
       ) : days.length === 0 ? (
-        <div className="animate-fade-in mt-8 text-center">
-          <p className="text-sm font-medium text-[var(--ella-fg-muted)]">
-            No attendance yet
-          </p>
-          <p className="mt-1 text-xs text-[var(--ella-fg-subtle)]">
-            Check in from Home when you arrive on site
-          </p>
-        </div>
+        <p className="ella-text-muted mt-6 text-center text-sm">
+          No attendance records yet.
+        </p>
       ) : (
-        <ul className="mt-5 divide-y divide-[var(--ella-border)] rounded-xl border border-[var(--ella-border)] bg-[var(--ella-surface)]">
-          {days.map((day, index) => (
+        <ul className="mt-4 space-y-3">
+          {days.map((day) => (
             <li
-              key={day.dayKey}
-              className="animate-slide-up px-4 py-3.5"
-              style={{ animationDelay: `${Math.min(index, 8) * 40}ms` }}
+              key={day.groupKey}
+              className="ella-panel-muted rounded-xl px-4 py-3"
             >
-              <div className="flex items-center justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="text-sm font-bold text-[var(--ella-fg)]">
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <div>
+                  <p className="font-semibold text-[var(--ella-fg)]">
                     {day.label}
                   </p>
-                  <p className="text-xs text-[var(--ella-fg-subtle)]">
-                    {day.locationName}
+                  <p className="text-sm text-[var(--ella-accent-hover)]">
+                    {day.classLabel}
+                  </p>
+                  <p className="ella-text-muted text-sm">{day.locationName}</p>
+                </div>
+                {day.checkIn?.isLate && (
+                  <span className="ella-badge-warning text-xs">Late</span>
+                )}
+              </div>
+              <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
+                <div>
+                  <span className="text-[var(--ella-fg-subtle)]">In</span>
+                  <p className="font-medium">
+                    {day.checkIn ? formatTime(day.checkIn.markedAt) : "—"}
                   </p>
                 </div>
-                {day.checkIn && day.checkOut ? (
-                  <span className="ella-badge ella-badge-complete">Complete</span>
-                ) : day.checkIn ? (
-                  <span className="ella-badge ella-badge-open">Open</span>
-                ) : null}
+                <div>
+                  <span className="text-[var(--ella-fg-subtle)]">Out</span>
+                  <p className="font-medium">
+                    {day.checkOut ? formatTime(day.checkOut.markedAt) : "—"}
+                  </p>
+                </div>
               </div>
-              <p className="mt-2 text-sm tabular-nums text-[var(--ella-fg-muted)]">
-                <span className="text-[var(--ella-fg-subtle)]">In </span>
-                {day.checkIn ? formatTime(day.checkIn.markedAt) : "—"}
-                <span className="mx-2 text-[var(--ella-border-strong)]">·</span>
-                <span className="text-[var(--ella-fg-subtle)]">Out </span>
-                {day.checkOut ? formatTime(day.checkOut.markedAt) : "—"}
-              </p>
               {showUser && day.checkIn?.user && (
-                <p className="mt-1.5 text-xs text-[var(--ella-fg-muted)]">
+                <p className="mt-2 text-xs text-[var(--ella-fg-subtle)]">
                   {day.checkIn.user.name}
-                  {day.checkIn.user.employeeId
-                    ? ` · ${day.checkIn.user.employeeId}`
+                  {day.checkIn.user.studentId
+                    ? ` · ${day.checkIn.user.studentId}`
                     : ""}
                 </p>
               )}

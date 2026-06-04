@@ -46,6 +46,11 @@ export function DashboardShell({ user, children }: Props) {
                 <h1 className="truncate text-lg font-bold tracking-tight text-[var(--ella-fg)]">
                   {user.name.split(" ")[0]}
                 </h1>
+                {user.studentId ? (
+                  <p className="truncate font-mono text-xs text-[var(--ella-fg-subtle)]">
+                    {user.studentId}
+                  </p>
+                ) : null}
               </div>
             </div>
             <button

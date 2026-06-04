@@ -94,7 +94,7 @@ components:
 
 **Creative north star: The Campus Clipboard**
 
-Ella should feel like a dependable field tool: quiet paper, clear stamps for in/out, no spectacle. Students check in outdoors in daylight; admins work through setup and review without visual noise.
+Data Link Attend should feel like a dependable field tool: quiet paper, clear stamps for in/out, no spectacle. Students check in outdoors in daylight; admins work through setup and review without visual noise.
 
 **Register:** product (UI serves attendance tasks, not marketing spectacle).
 

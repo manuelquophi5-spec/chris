@@ -105,7 +105,10 @@ export async function getTodayRecordsForUser(
   const records = await Attendance.find({
     userId,
     dayKey,
-    $or: [{ sessionId: null }, { sessionId: { $exists: false } }],
+    $and: [
+      { $or: [{ sessionId: null }, { sessionId: { $exists: false } }] },
+      { $or: [{ courseId: null }, { courseId: { $exists: false } }] },
+    ],
   })
     .sort({ markedAt: 1 })
     .populate("locationId", "name")
@@ -145,14 +148,11 @@ export async function buildTodayStatus(
   const activeCourses = hasEnrollments
     ? await getActiveCoursesForStudent(userId, timezoneOffsetMinutes)
     : [];
-  const useCourseMode =
-    hasEnrollments &&
-    activeCourses.some((c) => c.window.active || c.hasCheckIn);
+  const useCourseMode = hasEnrollments;
 
-  const activeSessions = useCourseMode
-    ? []
-    : await getActiveSessionsForUser(userId);
-  const useSessionMode = !useCourseMode && activeSessions.length > 0;
+  const activeSessions = await getActiveSessionsForUser(userId);
+  const hasActiveSessions = activeSessions.length > 0;
+  const useSessionMode = !hasEnrollments && hasActiveSessions;
 
   let canCheckIn = !checkIn;
   let canCheckOut = Boolean(checkIn && !checkOut);
@@ -167,9 +167,11 @@ export async function buildTodayStatus(
   }
 
   const isComplete = useCourseMode
-    ? activeCourses
-        .filter((c) => c.window.active)
-        .every((c) => c.hasCheckIn && c.hasCheckOut)
+    ? !activeCourses.some(
+        (c) =>
+          (c.window.active && !c.hasCheckIn) ||
+          (c.hasCheckIn && !c.hasCheckOut),
+      )
     : useSessionMode
       ? activeSessions.length > 0 &&
         activeSessions.every((s) => s.hasCheckIn && s.hasCheckOut)
@@ -184,6 +186,7 @@ export async function buildTodayStatus(
     isComplete,
     activeSessions,
     useSessionMode,
+    hasActiveSessions,
     activeCourses,
     useCourseMode,
     hasEnrollments,

@@ -2,7 +2,7 @@ export type UserRole = "admin" | "instructor" | "user";
 
 export type SessionUser = {
   id: string;
-  employeeId: string;
+  studentId: string;
   email: string;
   name: string;
   role: UserRole;
@@ -10,7 +10,7 @@ export type SessionUser = {
 
 export type AdminUserRow = {
   id: string;
-  employeeId: string;
+  studentId: string;
   name: string;
   role: UserRole;
   passwordMustChange: boolean;
@@ -76,7 +76,10 @@ export type ScheduleWindow = {
 export type ActiveCourseSummary = {
   id: string;
   title: string;
+  courseCode: string;
   description: string;
+  scheduleLabel: string;
+  nextClassHint: string | null;
   lecturerId: string;
   locationId: string | null;
   locationName: string | null;
@@ -100,6 +103,7 @@ export type TodayAttendanceStatus = {
   isComplete: boolean;
   activeSessions: ActiveSessionSummary[];
   useSessionMode: boolean;
+  hasActiveSessions: boolean;
   activeCourses: ActiveCourseSummary[];
   useCourseMode: boolean;
   hasEnrollments: boolean;
@@ -108,6 +112,7 @@ export type TodayAttendanceStatus = {
 export type CourseRow = {
   id: string;
   title: string;
+  courseCode: string;
   description: string;
   lecturerId: string;
   lecturerName: string;
@@ -123,10 +128,29 @@ export type CourseRow = {
   scheduleReason?: string;
 };
 
+export type CourseTodayRosterStudent = {
+  userId: string;
+  name: string;
+  studentId: string;
+  checkedIn: boolean;
+  checkedOut: boolean;
+  checkInAt: string | null;
+  checkOutAt: string | null;
+  isLate: boolean;
+};
+
+export type CourseTodayRoster = {
+  courseId: string;
+  title: string;
+  courseCode: string;
+  isActiveNow: boolean;
+  students: CourseTodayRosterStudent[];
+};
+
 export type StudentCourseAttendanceRow = {
   userId: string;
   name: string;
-  employeeId: string;
+  studentId: string;
   attendedSessions: number;
   missedSessions: number;
   lateSessions: number;
@@ -152,7 +176,7 @@ export type SiteDistancePreview = {
 
 export type AttendanceAlert = {
   userId: string;
-  employeeId: string;
+  studentId: string;
   name: string;
   type: "missing_checkout" | "missing_checkin";
   dayKey: string;

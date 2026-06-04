@@ -1,21 +1,21 @@
 /**
- * Human-friendly copy when the user is outside the geofence.
+ * Human-friendly copy when the student is outside the geofence.
  */
 export function geofenceOutOfRangeMessage(
   distanceMeters: number,
   radiusMeters: number,
-  placeName = "the office",
+  placeName = "campus",
 ): string {
-  const place = placeName.trim() || "the office";
+  const place = placeName.trim() || "campus";
   const dist = Math.round(distanceMeters);
   const radius = Math.round(radiusMeters);
 
   if (dist > 5_000 || dist > radius * 20) {
-    return `You're very far from ${place}. Please get in range of the office to check in.`;
+    return `You're very far from ${place}. Please get within range of campus to check in.`;
   }
 
   if (dist > radius * 3) {
-    return `You're still outside ${place}. Move closer — you need to be within about ${radius}m of the office.`;
+    return `You're still outside ${place}. Move closer — you need to be within about ${radius}m of campus.`;
   }
 
   if (dist > radius) {
@@ -28,7 +28,7 @@ export function geofenceOutOfRangeMessage(
 /** Map legacy API error strings to friendly text on the client. */
 export function softenGeofenceApiError(
   error: string,
-  placeName = "the office",
+  placeName = "campus",
 ): string {
   const match = error.match(
     /You are ([\d.]+)m from .+ Must be within ([\d.]+)m/i,
@@ -41,7 +41,7 @@ export function softenGeofenceApiError(
     );
   }
   if (error.toLowerCase().includes("from the site")) {
-    return `You're very far from ${placeName}. Please get in range of the office.`;
+    return `You're very far from ${placeName}. Please get within range of campus.`;
   }
   return error;
 }
@@ -52,7 +52,7 @@ export function distancePreviewMessage(
   placeName: string,
   inRange: boolean,
 ): string {
-  const place = placeName.trim() || "the office";
+  const place = placeName.trim() || "campus";
   const dist = Math.round(distanceMeters);
   if (dist > 5_000) {
     return `You're very far from ${place}. Move closer to check in.`;
@@ -60,7 +60,7 @@ export function distancePreviewMessage(
   if (inRange) {
     return `You're within range of ${place} (~${dist} m).`;
   }
-  return `You're ~${dist} m from ${place}. Move within the site area to check in.`;
+  return `You're ~${dist} m from ${place}. Move within the campus area to check in.`;
 }
 
 export function gpsAccuracyHint(accuracyMeters: number | null): string | null {

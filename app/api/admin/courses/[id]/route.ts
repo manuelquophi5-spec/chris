@@ -39,6 +39,9 @@ export async function PATCH(request: Request, context: RouteContext) {
     if (body.description !== undefined) {
       course.description = String(body.description).trim();
     }
+    if (body.courseCode !== undefined) {
+      course.courseCode = String(body.courseCode).trim().toUpperCase();
+    }
     if (body.lecturerId !== undefined) {
       const lecturerId = String(body.lecturerId).trim();
       const lecturer = await User.findOne({

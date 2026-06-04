@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const ip = getClientIp(request);
     const body = await request.json();
     const employeeId = normalizeEmployeeId(
-      String(body.employeeId ?? body.email ?? ""),
+      String(body.studentId ?? body.employeeId ?? body.email ?? ""),
     );
     const password = String(body.password ?? "");
 
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     if (userNeedsPasswordSetup(doc)) {
       return NextResponse.json({
         requiresPasswordSetup: true,
-        employeeId: doc.employeeId ?? employeeId,
+        studentId: doc.employeeId ?? employeeId,
         name: doc.name,
       });
     }

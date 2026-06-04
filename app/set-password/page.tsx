@@ -43,7 +43,7 @@ function SetPasswordForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          employeeId: studentId.trim().toUpperCase(),
+          studentId: studentId.trim().toUpperCase(),
           password,
         }),
       });

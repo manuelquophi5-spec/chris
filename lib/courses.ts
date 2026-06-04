@@ -1,4 +1,9 @@
-import { evaluateCourseSchedule } from "@/lib/schedule";
+import { getDayKey } from "@/lib/day";
+import {
+  evaluateCourseSchedule,
+  formatScheduleDaysLabel,
+  getNextClassStartMessage,
+} from "@/lib/schedule";
 import { Attendance } from "@/models/Attendance";
 import { Course, type ICourse } from "@/models/Course";
 import { Enrollment } from "@/models/Enrollment";
@@ -44,26 +49,34 @@ export async function getActiveCoursesForStudent(
       timezoneOffsetMinutes,
     );
 
-    const dayKey = window.active
-      ? (await import("@/lib/day")).getDayKey(now, timezoneOffsetMinutes)
-      : "";
+    const dayKey = getDayKey(now, timezoneOffsetMinutes);
 
-    const marks = dayKey
-      ? await Attendance.find({
-          userId,
-          courseId: c._id,
-          dayKey,
-        }).lean()
-      : [];
+    const marks = await Attendance.find({
+      userId,
+      courseId: c._id,
+      dayKey,
+    }).lean();
 
     const hasCheckIn = marks.some((m) => m.type === "check_in");
     const hasCheckOut = marks.some((m) => m.type === "check_out");
     const loc = c.locationId as { name?: string } | mongoose.Types.ObjectId | null;
 
+    const scheduleLabel = `${formatScheduleDaysLabel(c.scheduleDays)} · ${c.startTime}–${c.endTime}`;
+
     summaries.push({
       id: c._id.toString(),
       title: c.title,
+      courseCode: (c.courseCode ?? "").trim(),
       description: c.description ?? "",
+      scheduleLabel,
+      nextClassHint: window.active
+        ? null
+        : getNextClassStartMessage(
+            c.scheduleDays,
+            c.startTime,
+            now,
+            timezoneOffsetMinutes,
+          ),
       lecturerId: c.lecturerId.toString(),
       locationId:
         loc && typeof loc === "object" && "_id" in loc
@@ -80,13 +93,15 @@ export async function getActiveCoursesForStudent(
       hasCheckIn,
       hasCheckOut,
       canCheckIn: window.active && !hasCheckIn,
-      canCheckOut: window.active && hasCheckIn && !hasCheckOut,
+      canCheckOut: hasCheckIn && !hasCheckOut,
       isLateNext: window.active && !hasCheckIn && window.isLate,
     });
   }
 
   return summaries.sort((a, b) => {
     if (a.window.active !== b.window.active) return a.window.active ? -1 : 1;
+    if (a.canCheckOut !== b.canCheckOut) return a.canCheckOut ? -1 : 1;
+    if (a.canCheckIn !== b.canCheckIn) return a.canCheckIn ? -1 : 1;
     return a.title.localeCompare(b.title);
   });
 }
@@ -142,6 +157,7 @@ export async function listCoursesForAdmin(
     return {
       id: c._id.toString(),
       title: c.title,
+      courseCode: (c.courseCode ?? "").trim(),
       description: c.description ?? "",
       lecturerId,
       lecturerName,
@@ -214,7 +230,7 @@ export async function getCourseStats(
     return {
       userId: uid,
       name: s.name,
-      employeeId: s.employeeId ?? "",
+      studentId: s.employeeId ?? "",
       attendedSessions: attended,
       missedSessions: missed,
       lateSessions: late,

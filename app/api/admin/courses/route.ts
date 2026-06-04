@@ -31,6 +31,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const title = String(body.title ?? "").trim();
+    const courseCode = String(body.courseCode ?? "").trim().toUpperCase();
     const description = String(body.description ?? "").trim();
     const lecturerId = String(body.lecturerId ?? "").trim();
     const locationId = String(body.locationId ?? "").trim() || null;
@@ -71,6 +72,7 @@ export async function POST(request: Request) {
 
     const course = await Course.create({
       title,
+      courseCode,
       description,
       lecturerId: lecturer._id,
       locationId: locationId ? new mongoose.Types.ObjectId(locationId) : null,

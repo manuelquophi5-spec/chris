@@ -31,7 +31,7 @@ function LoginForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          employeeId: studentId.trim().toUpperCase(),
+          studentId: studentId.trim().toUpperCase(),
           password,
         }),
       });
@@ -39,11 +39,11 @@ function LoginForm() {
       const data = await parseJsonResponse<{
         error?: string;
         requiresPasswordSetup?: boolean;
-        employeeId?: string;
+        studentId?: string;
       }>(res);
 
       if (res.status === 200 && data.requiresPasswordSetup) {
-        const id = data.employeeId ?? studentId.trim().toUpperCase();
+        const id = data.studentId ?? studentId.trim().toUpperCase();
         redirectAfterAuth(`/set-password?id=${encodeURIComponent(id)}`);
         return;
       }
