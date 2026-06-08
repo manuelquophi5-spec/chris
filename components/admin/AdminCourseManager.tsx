@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
+import { ACADEMIC_LEVELS, ACADEMIC_PROGRAMS } from "@/lib/academic";
 import { WEEKDAY_OPTIONS } from "@/lib/schedule";
 import type { AdminUserRow, CourseRow, CourseStatsSummary } from "@/types";
 import {
@@ -19,14 +20,16 @@ type LocationOption = { id: string; name: string };
 export function AdminCourseManager() {
   const [courses, setCourses] = useState<CourseRow[]>([]);
   const [lecturers, setLecturers] = useState<AdminUserRow[]>([]);
-  const [students, setStudents] = useState<AdminUserRow[]>([]);
   const [locations, setLocations] = useState<LocationOption[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [enrolled, setEnrolled] = useState<
+  const [eligibleStudents, setEligibleStudents] = useState<
     Array<{ id: string; name: string; studentId: string }>
   >([]);
+  const [eligibleMeta, setEligibleMeta] = useState<{
+    programLabel: string;
+    levelLabel: string;
+  } | null>(null);
   const [stats, setStats] = useState<CourseStatsSummary | null>(null);
-  const [pickStudent, setPickStudent] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -34,6 +37,8 @@ export function AdminCourseManager() {
 
   const [title, setTitle] = useState("");
   const [courseCode, setCourseCode] = useState("");
+  const [program, setProgram] = useState("");
+  const [level, setLevel] = useState<number | "">("");
   const [description, setDescription] = useState("");
   const [lecturerId, setLecturerId] = useState("");
   const [locationId, setLocationId] = useState("");
@@ -43,9 +48,6 @@ export function AdminCourseManager() {
   const [scheduleDays, setScheduleDays] = useState<number[]>([1, 2, 3, 4, 5]);
   const [isActive, setIsActive] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [duplicateIncludeEnrollments, setDuplicateIncludeEnrollments] =
-    useState(true);
-
   const load = useCallback(async () => {
     const [cRes, uRes, lRes] = await Promise.all([
       authFetch("/api/admin/courses"),
@@ -66,7 +68,6 @@ export function AdminCourseManager() {
     if (uRes.ok) {
       const users = uData.users ?? [];
       setLecturers(users.filter((u) => u.role === "instructor"));
-      setStudents(users.filter((u) => u.role === "user"));
     }
     if (lRes.ok) setLocations(lData.locations ?? []);
   }, []);
@@ -78,6 +79,8 @@ export function AdminCourseManager() {
   function hydrateFormFromCourse(c: CourseRow) {
     setTitle(c.title);
     setCourseCode(c.courseCode ?? "");
+    setProgram(c.program ?? "");
+    setLevel(c.level ?? "");
     setDescription(c.description ?? "");
     setLecturerId(c.lecturerId);
     setLocationId(c.locationId ?? "");
@@ -92,6 +95,8 @@ export function AdminCourseManager() {
   function resetCreateForm() {
     setTitle("");
     setCourseCode("");
+    setProgram("");
+    setLevel("");
     setDescription("");
     setLecturerId("");
     setLocationId("");
@@ -113,13 +118,21 @@ export function AdminCourseManager() {
     ]);
     const eData = await parseJsonResponse<{
       error?: string;
+      programLabel?: string;
+      levelLabel?: string;
       students?: Array<{ id: string; name: string; studentId: string }>;
     }>(eRes);
     const sData = await parseJsonResponse<{
       error?: string;
       stats?: CourseStatsSummary;
     }>(sRes);
-    if (eRes.ok) setEnrolled(eData.students ?? []);
+    if (eRes.ok) {
+      setEligibleStudents(eData.students ?? []);
+      setEligibleMeta({
+        programLabel: eData.programLabel ?? "",
+        levelLabel: eData.levelLabel ?? "",
+      });
+    }
     if (sRes.ok) setStats(sData.stats ?? null);
   }
 
@@ -138,6 +151,8 @@ export function AdminCourseManager() {
       const payload = {
         title,
         courseCode: courseCode.trim(),
+        program,
+        level: level === "" ? undefined : level,
         description,
         lecturerId,
         locationId: locationId || null,
@@ -179,33 +194,11 @@ export function AdminCourseManager() {
     }
   }
 
-  async function enrollSelected() {
-    if (!selectedId || pickStudent.length === 0) return;
-    const res = await authFetch(`/api/admin/courses/${selectedId}/enrollments`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userIds: pickStudent }),
-    });
-    const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
-    if (!res.ok) {
-      setError(data.error ?? "Could not enroll");
-      return;
-    }
-    setMessage(data.message ?? "Enrolled");
-    setPickStudent([]);
-    await loadCourseDetail(selectedId);
-    await load();
-  }
-
   async function duplicateCourse(id: string) {
     setError(null);
     setMessage(null);
     const res = await authFetch(`/api/admin/courses/${id}/duplicate`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        includeEnrollments: duplicateIncludeEnrollments,
-      }),
     });
     const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
     if (!res.ok) {
@@ -215,26 +208,6 @@ export function AdminCourseManager() {
     setMessage(data.message ?? "Class duplicated");
     await load();
   }
-
-  function selectAllNotEnrolled() {
-    setPickStudent(notEnrolled.map((s) => s.id));
-  }
-
-  async function removeStudent(userId: string) {
-    if (!selectedId) return;
-    const res = await authFetch(
-      `/api/admin/courses/${selectedId}/enrollments?userId=${userId}`,
-      { method: "DELETE" },
-    );
-    if (res.ok) {
-      await loadCourseDetail(selectedId);
-      await load();
-    }
-  }
-
-  const notEnrolled = students.filter(
-    (s) => !enrolled.some((e) => e.id === s.id),
-  );
 
   const filteredRecords = stats?.students.filter(
     (s) =>
@@ -257,10 +230,12 @@ export function AdminCourseManager() {
         <ol className="list-inside list-decimal space-y-1">
           <li>Create a campus under Campuses with GPS radius.</li>
           <li>Add lecturers under Students & staff (role: Lecturer).</li>
-          <li>Create a class here and pick days + start/end times (e.g. 15:00).</li>
           <li>
-            Enroll students — check-in during class time; check-out allowed later
-            the same day. On weekends they see the timetable only.
+            Create a class with program + level (e.g. Computer Science, Level 200).
+          </li>
+          <li>
+            Students with matching program and level see the class automatically — no
+            manual enrollment.
           </li>
         </ol>
       </AdminHelpCard>
@@ -302,6 +277,40 @@ export function AdminCourseManager() {
               className={`${adminInput} mt-1`}
               placeholder="e.g. Introduction to Computing"
             />
+          </label>
+          <label className="block">
+            <span className="ella-label font-semibold">Program</span>
+            <select
+              required
+              value={program}
+              onChange={(e) => setProgram(e.target.value)}
+              className={`${adminInput} mt-1`}
+            >
+              <option value="">Select program</option>
+              {ACADEMIC_PROGRAMS.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block">
+            <span className="ella-label font-semibold">Level</span>
+            <select
+              required
+              value={level}
+              onChange={(e) =>
+                setLevel(e.target.value ? Number(e.target.value) : "")
+              }
+              className={`${adminInput} mt-1`}
+            >
+              <option value="">Select level</option>
+              {ACADEMIC_LEVELS.map((l) => (
+                <option key={l} value={l}>
+                  Level {l}
+                </option>
+              ))}
+            </select>
           </label>
           <label className="block">
             <span className="ella-label font-semibold">Course code</span>
@@ -423,7 +432,13 @@ export function AdminCourseManager() {
         )}
         <button
           type="submit"
-          disabled={saving || scheduleDays.length === 0 || !lecturerId}
+          disabled={
+            saving ||
+            scheduleDays.length === 0 ||
+            !lecturerId ||
+            !program ||
+            level === ""
+          }
           className={`${adminBtnPrimary} mt-6 px-5 py-3`}
         >
           {saving ? "Saving…" : editingId ? "Save changes" : "Create class"}
@@ -454,8 +469,8 @@ export function AdminCourseManager() {
                     {c.title}
                   </p>
                   <p className="ella-text-muted text-sm">
-                    {c.lecturerName} · {c.startTime}–{c.endTime} · {c.enrolledCount}{" "}
-                    students
+                    {c.programLabel} · Level {c.level} · {c.lecturerName} ·{" "}
+                    {c.enrolledCount} students
                   </p>
                   {c.isActiveNow && (
                     <span className="text-xs font-semibold text-[var(--ella-accent-hover)]">
@@ -473,83 +488,40 @@ export function AdminCourseManager() {
             <>
               <div className="ella-card-padded">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <h3 className="ella-heading-section">Enroll students</h3>
-                  <div className="flex flex-col items-end gap-2 sm:flex-row sm:items-center">
-                    <label className="flex items-center gap-2 text-xs text-[var(--ella-fg-muted)]">
-                      <input
-                        type="checkbox"
-                        checked={duplicateIncludeEnrollments}
-                        onChange={(e) =>
-                          setDuplicateIncludeEnrollments(e.target.checked)
-                        }
-                      />
-                      Include enrolled students
-                    </label>
-                    <button
-                      type="button"
-                      onClick={() => void duplicateCourse(selectedId)}
-                      className={adminBtnGhost}
-                    >
-                      Duplicate class
-                    </button>
-                  </div>
-                </div>
-                <select
-                  multiple
-                  value={pickStudent}
-                  onChange={(e) =>
-                    setPickStudent(
-                      Array.from(e.target.selectedOptions, (o) => o.value),
-                    )
-                  }
-                  className={`${adminInput} mt-2 h-32 py-2`}
-                >
-                  {notEnrolled.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.name} ({s.studentId})
-                    </option>
-                  ))}
-                </select>
-                <p className="mt-1 text-xs text-[var(--ella-fg-subtle)]">
-                  Hold Ctrl (Windows) to select multiple students.
-                </p>
-                <div className="mt-3 flex flex-wrap gap-2">
+                  <h3 className="ella-heading-section">Assigned students</h3>
                   <button
                     type="button"
-                    onClick={selectAllNotEnrolled}
-                    disabled={notEnrolled.length === 0}
-                    className={adminBtnSecondary}
+                    onClick={() => void duplicateCourse(selectedId)}
+                    className={adminBtnGhost}
                   >
-                    Select all ({notEnrolled.length})
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => void enrollSelected()}
-                    disabled={pickStudent.length === 0}
-                    className={adminBtnPrimary}
-                  >
-                    Add to class ({pickStudent.length})
+                    Duplicate class
                   </button>
                 </div>
-                <ul className="mt-4 space-y-1 text-sm">
-                  {enrolled.map((s) => (
-                    <li
-                      key={s.id}
-                      className="ella-panel-muted flex items-center justify-between px-3 py-2"
-                    >
-                      <span>
-                        {s.name}{" "}
-                        <span className="font-mono text-[var(--ella-fg-subtle)]">{s.studentId}</span>
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => void removeStudent(s.id)}
-                        className="text-xs font-semibold text-red-700"
-                      >
-                        Remove
-                      </button>
+                {eligibleMeta && (
+                  <p className="ella-text-muted mt-2 text-sm">
+                    Auto-assigned: {eligibleMeta.programLabel},{" "}
+                    {eligibleMeta.levelLabel} ({eligibleStudents.length} students)
+                  </p>
+                )}
+                <ul className="mt-4 max-h-48 space-y-1 overflow-y-auto text-sm">
+                  {eligibleStudents.length === 0 ? (
+                    <li className="ella-text-muted">
+                      No students with this program and level yet. Add them under
+                      Students & staff.
                     </li>
-                  ))}
+                  ) : (
+                    eligibleStudents.map((s) => (
+                      <li
+                        key={s.id}
+                        className="ella-panel-muted px-3 py-2"
+                      >
+                        {s.name}{" "}
+                        <span className="font-mono text-[var(--ella-fg-subtle)]">
+                          {s.studentId}
+                        </span>
+                      </li>
+                    ))
+                  )}
                 </ul>
               </div>
 
@@ -590,7 +562,7 @@ export function AdminCourseManager() {
             </>
           ) : (
             <p className="ella-panel-muted border-dashed p-8 text-center text-sm text-[var(--ella-fg-subtle)]">
-              Select a class to enroll students and view attendance statistics.
+              Select a class to view assigned students and attendance statistics.
             </p>
           )}
         </div>

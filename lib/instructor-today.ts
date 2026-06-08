@@ -1,19 +1,22 @@
 import { getDayKey } from "@/lib/day";
 import { evaluateCourseSchedule } from "@/lib/schedule";
+import { getEligibleStudentsForCourse } from "@/lib/courses";
 import { Attendance } from "@/models/Attendance";
 import { Course } from "@/models/Course";
-import { Enrollment } from "@/models/Enrollment";
-import { User } from "@/models/User";
 import type { CourseTodayRoster } from "@/types";
 
 export async function getTodayRosterForLecturer(
   lecturerId: string,
   isAdmin: boolean,
   timezoneOffsetMinutes: number,
+  courseIdFilter?: string,
 ): Promise<CourseTodayRoster[]> {
   const filter: Record<string, unknown> = { isActive: true };
   if (!isAdmin) {
     filter.lecturerId = lecturerId;
+  }
+  if (courseIdFilter) {
+    filter._id = courseIdFilter;
   }
 
   const courses = await Course.find(filter).sort({ title: 1 }).lean();
@@ -22,14 +25,8 @@ export async function getTodayRosterForLecturer(
   const rosters: CourseTodayRoster[] = [];
 
   for (const course of courses) {
-    const enrollments = await Enrollment.find({ courseId: course._id }).lean();
-    const studentIds = enrollments.map((e) => e.userId);
-    const students = await User.find({
-      _id: { $in: studentIds },
-      role: "user",
-    })
-      .select("name employeeId")
-      .lean();
+    const students = await getEligibleStudentsForCourse(course);
+    const studentIds = students.map((s) => s._id);
 
     const marks = await Attendance.find({
       courseId: course._id,

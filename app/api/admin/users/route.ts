@@ -7,6 +7,7 @@ import {
   isValidEmployeeId,
   normalizeEmployeeId,
 } from "@/lib/user-account";
+import { parseLevel, parseProgram } from "@/lib/academic";
 import { User } from "@/models/User";
 import type { AdminUserRow, UserRole } from "@/types";
 
@@ -31,6 +32,8 @@ export async function GET() {
     studentId: d.employeeId ?? "",
     name: d.name,
     role: d.role,
+    program: d.program ? String(d.program) : null,
+    level: d.level ?? null,
     passwordMustChange: Boolean(d.passwordMustChange),
     lockedUntil: d.lockedUntil?.toISOString() ?? null,
     failedLoginAttempts: d.failedLoginAttempts ?? 0,
@@ -64,6 +67,21 @@ export async function POST(request: Request) {
       return jsonError("Create staff or users only — not another admin here.");
     }
 
+    let program: string | undefined;
+    let level: number | undefined;
+    if (role === "user") {
+      const parsedProgram = parseProgram(body.program);
+      const parsedLevel = parseLevel(body.level);
+      if (!parsedProgram) {
+        return jsonError("Select a program for the student");
+      }
+      if (parsedLevel === null) {
+        return jsonError("Select an academic level (100–400)");
+      }
+      program = parsedProgram;
+      level = parsedLevel;
+    }
+
     await connectDB();
     const existing = await User.findOne({ employeeId });
     if (existing) {
@@ -76,8 +94,9 @@ export async function POST(request: Request) {
       email,
       name: firstName,
       role,
+      program: program ?? "",
+      ...(level !== undefined ? { level } : {}),
       passwordMustChange: true,
-      // No password yet — staff sets it via /set-password
     });
 
     await writeAudit(

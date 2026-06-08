@@ -3,28 +3,17 @@ import { writeAudit } from "@/lib/audit";
 import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
 import { listCoursesForAdmin } from "@/lib/courses";
 import { Course } from "@/models/Course";
-import { Enrollment } from "@/models/Enrollment";
 import mongoose from "mongoose";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
-export async function POST(request: Request, context: RouteContext) {
+export async function POST(_request: Request, context: RouteContext) {
   const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 
   const { id } = await context.params;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return jsonError("Invalid course id", 400);
-  }
-
-  let includeEnrollments = true;
-  try {
-    const body = await request.json().catch(() => ({}));
-    if (body && typeof body === "object" && "includeEnrollments" in body) {
-      includeEnrollments = Boolean(body.includeEnrollments);
-    }
-  } catch {
-    /* default true */
   }
 
   await connectDB();
@@ -35,6 +24,8 @@ export async function POST(request: Request, context: RouteContext) {
   const copy = await Course.create({
     title: `${source.title} (copy)`,
     courseCode: baseCode ? `${baseCode}-COPY` : "",
+    program: source.program,
+    level: source.level,
     description: source.description,
     lecturerId: source.lecturerId,
     locationId: source.locationId,
@@ -46,26 +37,12 @@ export async function POST(request: Request, context: RouteContext) {
     createdBy: auth.id,
   });
 
-  let enrolledCount = 0;
-  if (includeEnrollments) {
-    const enrollments = await Enrollment.find({ courseId: source._id }).lean();
-    if (enrollments.length > 0) {
-      await Enrollment.insertMany(
-        enrollments.map((e) => ({
-          userId: e.userId,
-          courseId: copy._id,
-        })),
-      );
-      enrolledCount = enrollments.length;
-    }
-  }
-
   await writeAudit(
     auth.id,
     "course.duplicate",
     "course",
     copy._id.toString(),
-    `${copy.title}${enrolledCount ? ` (+${enrolledCount} students)` : ""}`,
+    copy.title,
   );
 
   const courses = await listCoursesForAdmin();
@@ -74,7 +51,7 @@ export async function POST(request: Request, context: RouteContext) {
   return jsonOk(
     {
       course: row,
-      message: `Duplicated as ${copy.title}${enrolledCount ? ` with ${enrolledCount} students` : ""}`,
+      message: `Duplicated as ${copy.title}. Students with matching program and level will see it automatically.`,
     },
     201,
   );

@@ -4,9 +4,9 @@ import {
   formatScheduleDaysLabel,
   getNextClassStartMessage,
 } from "@/lib/schedule";
+import { levelLabel, parseLevel, parseProgram, programLabel } from "@/lib/academic";
 import { Attendance } from "@/models/Attendance";
 import { Course, type ICourse } from "@/models/Course";
-import { Enrollment } from "@/models/Enrollment";
 import { User } from "@/models/User";
 import type {
   ActiveCourseSummary,
@@ -16,22 +16,89 @@ import type {
 } from "@/types";
 import mongoose from "mongoose";
 
-export async function getEnrolledCourseIds(userId: string): Promise<string[]> {
-  const rows = await Enrollment.find({ userId }).select("courseId").lean();
-  return rows.map((r) => r.courseId.toString());
+type StudentProfile = {
+  program: string;
+  level: number;
+};
+
+export async function getStudentProgramLevel(
+  userId: string,
+): Promise<StudentProfile | null> {
+  const user = await User.findById(userId).select("role program level").lean();
+  if (!user || user.role !== "user") return null;
+  const program = parseProgram(user.program);
+  const level = parseLevel(user.level);
+  if (!program || level === null) return null;
+  return { program, level };
+}
+
+/** Students automatically assigned to this course by program + level. */
+export async function getEligibleStudentsForCourse(course: {
+  program?: string;
+  level?: number;
+}) {
+  const program = parseProgram(course.program);
+  const level = parseLevel(course.level);
+  if (!program || level === null) return [];
+
+  return User.find({ role: "user", program, level })
+    .select("name employeeId email program level")
+    .sort({ name: 1 })
+    .lean();
+}
+
+export async function countEligibleStudentsForCourse(
+  courseId: string,
+): Promise<number> {
+  const course = await Course.findById(courseId).select("program level").lean();
+  if (!course) return 0;
+  const program = parseProgram(course.program);
+  const level = parseLevel(course.level);
+  if (!program || level === null) return 0;
+  return User.countDocuments({ role: "user", program, level });
+}
+
+export async function studentCanAccessCourse(
+  userId: string,
+  course: Pick<ICourse, "program" | "level" | "isActive">,
+): Promise<boolean> {
+  if (!course.isActive) return false;
+  const profile = await getStudentProgramLevel(userId);
+  if (!profile) return false;
+  const program = parseProgram(course.program);
+  const level = parseLevel(course.level);
+  return (
+    program === profile.program &&
+    level === profile.level
+  );
+}
+
+export async function getCourseIdsForStudent(userId: string): Promise<string[]> {
+  const profile = await getStudentProgramLevel(userId);
+  if (!profile) return [];
+
+  const courses = await Course.find({
+    isActive: true,
+    program: profile.program,
+    level: profile.level,
+  })
+    .select("_id")
+    .lean();
+
+  return courses.map((c) => c._id.toString());
 }
 
 export async function getActiveCoursesForStudent(
   userId: string,
   timezoneOffsetMinutes: number,
 ): Promise<ActiveCourseSummary[]> {
-  const enrollments = await Enrollment.find({ userId }).lean();
-  if (enrollments.length === 0) return [];
+  const profile = await getStudentProgramLevel(userId);
+  if (!profile) return [];
 
-  const courseIds = enrollments.map((e) => e.courseId);
   const courses = await Course.find({
-    _id: { $in: courseIds },
     isActive: true,
+    program: profile.program,
+    level: profile.level,
   })
     .populate("locationId", "name")
     .lean();
@@ -106,9 +173,10 @@ export async function getActiveCoursesForStudent(
   });
 }
 
-export async function studentHasCourseEnrollments(userId: string): Promise<boolean> {
-  const n = await Enrollment.countDocuments({ userId });
-  return n > 0;
+/** True when student has program + level set (automatic course access). */
+export async function studentHasCourseAccess(userId: string): Promise<boolean> {
+  const profile = await getStudentProgramLevel(userId);
+  return profile !== null;
 }
 
 export async function listCoursesForAdmin(
@@ -120,20 +188,16 @@ export async function listCoursesForAdmin(
   }
 
   const courses = await Course.find(filter)
-    .sort({ title: 1 })
+    .sort({ program: 1, level: 1, title: 1 })
     .populate("lecturerId", "name email")
     .populate("locationId", "name")
     .lean();
 
-  const counts = await Enrollment.aggregate<{ _id: mongoose.Types.ObjectId; n: number }>([
-    { $group: { _id: "$courseId", n: { $sum: 1 } } },
-  ]);
-  const countMap = new Map(counts.map((c) => [c._id.toString(), c.n]));
-
   const now = new Date();
   const offset = new Date().getTimezoneOffset();
 
-  return courses.map((c) => {
+  const rows: CourseRow[] = [];
+  for (const c of courses) {
     const lecturerPop = c.lecturerId as
       | { _id?: mongoose.Types.ObjectId; name?: string; email?: string }
       | mongoose.Types.ObjectId;
@@ -154,10 +218,14 @@ export async function listCoursesForAdmin(
       now,
       offset,
     );
-    return {
+    const enrolledCount = await countEligibleStudentsForCourse(c._id.toString());
+    rows.push({
       id: c._id.toString(),
       title: c.title,
       courseCode: (c.courseCode ?? "").trim(),
+      program: c.program ?? "",
+      programLabel: programLabel(c.program),
+      level: c.level ?? 0,
       description: c.description ?? "",
       lecturerId,
       lecturerName,
@@ -171,11 +239,13 @@ export async function listCoursesForAdmin(
       endTime: c.endTime,
       lateAfterMinutes: c.lateAfterMinutes ?? 15,
       isActive: c.isActive,
-      enrolledCount: countMap.get(c._id.toString()) ?? 0,
+      enrolledCount,
       isActiveNow: window.active,
       scheduleReason: window.reason,
-    };
-  });
+    });
+  }
+
+  return rows;
 }
 
 export async function getCourseStats(
@@ -188,11 +258,7 @@ export async function getCourseStats(
     .lean();
   if (!course) throw new Error("Course not found");
 
-  const enrollments = await Enrollment.find({ courseId: course._id }).lean();
-  const studentIds = enrollments.map((e) => e.userId);
-  const students = await User.find({ _id: { $in: studentIds }, role: "user" })
-    .select("name employeeId email")
-    .lean();
+  const students = await getEligibleStudentsForCourse(course);
 
   const dayFilter: Record<string, string> = {};
   if (fromDayKey) dayFilter.$gte = fromDayKey;
@@ -242,6 +308,8 @@ export async function getCourseStats(
   return {
     courseId: course._id.toString(),
     title: course.title,
+    programLabel: programLabel(course.program),
+    levelLabel: levelLabel(course.level),
     lecturerName:
       lecturer && typeof lecturer === "object" && "name" in lecturer
         ? String(lecturer.name)
@@ -287,4 +355,14 @@ export async function canLecturerAccessCourse(
   if (isAdmin) return true;
   const c = await Course.findById(courseId).select("lecturerId").lean();
   return Boolean(c && c.lecturerId.toString() === lecturerId);
+}
+
+/** @deprecated Use getCourseIdsForStudent */
+export async function getEnrolledCourseIds(userId: string): Promise<string[]> {
+  return getCourseIdsForStudent(userId);
+}
+
+/** @deprecated Use studentHasCourseAccess */
+export async function studentHasCourseEnrollments(userId: string): Promise<boolean> {
+  return studentHasCourseAccess(userId);
 }

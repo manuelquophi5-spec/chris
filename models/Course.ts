@@ -5,6 +5,10 @@ export interface ICourse {
   title: string;
   /** Short code shown to students, e.g. BBA101 */
   courseCode?: string;
+  /** Program slug matching student.program */
+  program: string;
+  /** Academic level: 100, 200, 300, or 400 */
+  level: number;
   description?: string;
   lecturerId: mongoose.Types.ObjectId;
   locationId?: mongoose.Types.ObjectId | null;
@@ -23,6 +27,12 @@ const courseSchema = new Schema<ICourse>(
   {
     title: { type: String, required: true, trim: true },
     courseCode: { type: String, trim: true, uppercase: true, default: "" },
+    program: { type: String, required: true, trim: true, lowercase: true },
+    level: {
+      type: Number,
+      required: true,
+      enum: [100, 200, 300, 400],
+    },
     description: { type: String, trim: true, default: "" },
     lecturerId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     locationId: { type: Schema.Types.ObjectId, ref: "Location", default: null },
@@ -48,6 +58,7 @@ const courseSchema = new Schema<ICourse>(
 
 courseSchema.index({ lecturerId: 1, isActive: 1 });
 courseSchema.index({ isActive: 1 });
+courseSchema.index({ program: 1, level: 1, isActive: 1 });
 
 if (process.env.NODE_ENV !== "production") {
   if (mongoose.models.Course) {

@@ -143,7 +143,8 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
   if (!today?.hasEnrollments) {
     return (
       <p className="ella-panel-muted px-4 py-3 text-sm text-[var(--ella-fg-muted)]">
-        No classes assigned yet. Ask your administrator to enroll you.
+        Your program and level are not set, or no classes match yet. Ask your
+        administrator to add your program and level under Students & staff.
       </p>
     );
   }

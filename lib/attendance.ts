@@ -1,7 +1,7 @@
 import { getDayKey } from "@/lib/day";
 import {
   getActiveCoursesForStudent,
-  studentHasCourseEnrollments,
+  studentHasCourseAccess,
 } from "@/lib/courses";
 import { getActiveSessionsForUser } from "@/lib/sessions";
 import { Attendance } from "@/models/Attendance";
@@ -144,7 +144,7 @@ export async function buildTodayStatus(
     userId,
     timezoneOffsetMinutes,
   );
-  const hasEnrollments = await studentHasCourseEnrollments(userId);
+  const hasEnrollments = await studentHasCourseAccess(userId);
   const activeCourses = hasEnrollments
     ? await getActiveCoursesForStudent(userId, timezoneOffsetMinutes)
     : [];

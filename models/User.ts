@@ -11,6 +11,10 @@ export interface IUser {
   lockedUntil?: Date | null;
   name: string;
   role: UserRole;
+  /** Student program slug, e.g. computer-science */
+  program?: string;
+  /** Student academic level: 100, 200, 300, or 400 */
+  level?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -42,6 +46,8 @@ const userSchema = new Schema<IUser>(
       enum: ["admin", "instructor", "user"],
       default: "user",
     },
+    program: { type: String, trim: true, lowercase: true, default: "" },
+    level: { type: Number, enum: [100, 200, 300, 400], required: false },
   },
   { timestamps: true },
 );

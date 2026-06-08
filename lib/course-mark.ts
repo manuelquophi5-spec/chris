@@ -5,7 +5,8 @@ import { evaluateCourseSchedule } from "@/lib/schedule";
 import { toAttendanceSummary } from "@/lib/attendance";
 import { Attendance } from "@/models/Attendance";
 import { Course } from "@/models/Course";
-import { Enrollment } from "@/models/Enrollment";
+import { studentCanAccessCourse } from "@/lib/courses";
+import { User } from "@/models/User";
 import { Location } from "@/models/Location";
 import type { AttendanceType } from "@/types";
 import mongoose from "mongoose";
@@ -35,14 +36,25 @@ export async function markCourseAttendance(params: {
     return { error: "Invalid class", status: 400 as const };
   }
 
-  const enrolled = await Enrollment.findOne({ userId, courseId });
-  if (!enrolled) {
-    return { error: "You are not enrolled in this class", status: 403 as const };
-  }
-
   const course = await Course.findOne({ _id: courseId, isActive: true });
   if (!course) {
     return { error: "Class not found or inactive", status: 404 as const };
+  }
+
+  const allowed = await studentCanAccessCourse(userId, course);
+  if (!allowed) {
+    const student = await User.findById(userId).select("program level role").lean();
+    if (student?.role === "user" && (!student.program || student.level == null)) {
+      return {
+        error:
+          "Your program and level are not set — ask your administrator to update your profile.",
+        status: 403 as const,
+      };
+    }
+    return {
+      error: "This class is not assigned to your program and level.",
+      status: 403 as const,
+    };
   }
 
   const window = evaluateCourseSchedule(

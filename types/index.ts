@@ -8,11 +8,20 @@ export type SessionUser = {
   role: UserRole;
 };
 
+export type AcademicProgramId =
+  | "computer-science"
+  | "information-technology"
+  | "business-administration";
+
+export type AcademicLevel = 100 | 200 | 300 | 400;
+
 export type AdminUserRow = {
   id: string;
   studentId: string;
   name: string;
   role: UserRole;
+  program: string | null;
+  level: number | null;
   passwordMustChange: boolean;
   lockedUntil: string | null;
   failedLoginAttempts: number;
@@ -113,6 +122,9 @@ export type CourseRow = {
   id: string;
   title: string;
   courseCode: string;
+  program: string;
+  programLabel: string;
+  level: number;
   description: string;
   lecturerId: string;
   lecturerName: string;
@@ -160,6 +172,8 @@ export type StudentCourseAttendanceRow = {
 export type CourseStatsSummary = {
   courseId: string;
   title: string;
+  programLabel?: string;
+  levelLabel?: string;
   lecturerName: string;
   enrolledCount: number;
   expectedSessions: number;

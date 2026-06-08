@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/db";
 import { writeAudit } from "@/lib/audit";
 import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
+import { parseLevel, parseProgram } from "@/lib/academic";
 import { listCoursesForAdmin } from "@/lib/courses";
 import { parseTimeToMinutes } from "@/lib/schedule";
 import { Course } from "@/models/Course";
@@ -43,7 +44,12 @@ export async function POST(request: Request) {
       Math.max(0, Number(body.lateAfterMinutes ?? 15)),
     );
 
+    const program = parseProgram(body.program);
+    const level = parseLevel(body.level);
+
     if (!title) return jsonError("Course title is required");
+    if (!program) return jsonError("Select a program for this class");
+    if (level === null) return jsonError("Select an academic level (100–400)");
     if (!mongoose.Types.ObjectId.isValid(lecturerId)) {
       return jsonError("Select a lecturer");
     }
@@ -73,6 +79,8 @@ export async function POST(request: Request) {
     const course = await Course.create({
       title,
       courseCode,
+      program,
+      level,
       description,
       lecturerId: lecturer._id,
       locationId: locationId ? new mongoose.Types.ObjectId(locationId) : null,

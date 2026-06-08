@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/db";
 import { writeAudit } from "@/lib/audit";
 import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
+import { parseLevel, parseProgram } from "@/lib/academic";
 import { parseTimeToMinutes } from "@/lib/schedule";
 import { Course } from "@/models/Course";
 import { User } from "@/models/User";
@@ -41,6 +42,16 @@ export async function PATCH(request: Request, context: RouteContext) {
     }
     if (body.courseCode !== undefined) {
       course.courseCode = String(body.courseCode).trim().toUpperCase();
+    }
+    if (body.program !== undefined) {
+      const program = parseProgram(body.program);
+      if (!program) return jsonError("Select a valid program");
+      course.program = program;
+    }
+    if (body.level !== undefined) {
+      const level = parseLevel(body.level);
+      if (level === null) return jsonError("Select a valid level (100–400)");
+      course.level = level;
     }
     if (body.lecturerId !== undefined) {
       const lecturerId = String(body.lecturerId).trim();

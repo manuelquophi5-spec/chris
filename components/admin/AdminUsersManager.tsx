@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
+import { ACADEMIC_LEVELS, ACADEMIC_PROGRAMS } from "@/lib/academic";
 import type { AdminUserRow } from "@/types";
 import {
   adminBtnGhost,
@@ -22,6 +23,8 @@ export function AdminUsersManager() {
   const [firstName, setFirstName] = useState("");
   const [studentId, setStudentId] = useState("");
   const [role, setRole] = useState<"user" | "instructor">("user");
+  const [program, setProgram] = useState("");
+  const [level, setLevel] = useState<number | "">("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
@@ -52,6 +55,8 @@ export function AdminUsersManager() {
           firstName: firstName.trim(),
           studentId: studentId.trim(),
           role,
+          program: role === "user" ? program : undefined,
+          level: role === "user" && level !== "" ? level : undefined,
         }),
       });
       const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
@@ -65,6 +70,8 @@ export function AdminUsersManager() {
       );
       setFirstName("");
       setStudentId("");
+      setProgram("");
+      setLevel("");
       await load();
     } finally {
       setSaving(false);
@@ -115,8 +122,8 @@ export function AdminUsersManager() {
       <div>
         <h1 className="ella-heading-page">Students & staff</h1>
         <p className="ella-text-muted mt-2">
-          Add students and lecturers here. Each student gets an ID they use to
-          sign in.
+          Add students with program and level — they automatically see matching
+          courses. Lecturers are assigned to classes by admin.
         </p>
       </div>
 
@@ -170,6 +177,44 @@ export function AdminUsersManager() {
               </option>
             </select>
           </label>
+          {role === "user" && (
+            <>
+              <label className="block">
+                <span className="ella-label font-semibold">Program</span>
+                <select
+                  required
+                  value={program}
+                  onChange={(e) => setProgram(e.target.value)}
+                  className={`${adminSelect} text-base py-3`}
+                >
+                  <option value="">Select program</option>
+                  {ACADEMIC_PROGRAMS.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="block">
+                <span className="ella-label font-semibold">Level</span>
+                <select
+                  required
+                  value={level}
+                  onChange={(e) =>
+                    setLevel(e.target.value ? Number(e.target.value) : "")
+                  }
+                  className={`${adminSelect} text-base py-3`}
+                >
+                  <option value="">Select level</option>
+                  {ACADEMIC_LEVELS.map((l) => (
+                    <option key={l} value={l}>
+                      Level {l}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </>
+          )}
         </div>
         {error && (
           <p className="ella-alert-error mt-3" role="alert">
@@ -183,7 +228,10 @@ export function AdminUsersManager() {
         )}
         <button
           type="submit"
-          disabled={saving}
+          disabled={
+            saving ||
+            (role === "user" && (!program || level === ""))
+          }
           className={`${adminBtnPrimary} mt-5 w-full py-3.5 text-base font-bold sm:w-auto sm:px-8`}
         >
           {saving ? "Adding…" : "Add student or lecturer"}
@@ -199,6 +247,7 @@ export function AdminUsersManager() {
             <tr>
               <th>Name</th>
               <th>Student ID</th>
+              <th>Program / level</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -206,13 +255,13 @@ export function AdminUsersManager() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={4} className="py-8 text-[var(--ella-fg-subtle)]">
+                <td colSpan={5} className="py-8 text-[var(--ella-fg-subtle)]">
                   Loading…
                 </td>
               </tr>
             ) : users.length === 0 ? (
               <tr>
-                <td colSpan={4} className="py-8 text-[var(--ella-fg-subtle)]">
+                <td colSpan={5} className="py-8 text-[var(--ella-fg-subtle)]">
                   No one added yet. Use the form above.
                 </td>
               </tr>
@@ -229,6 +278,13 @@ export function AdminUsersManager() {
                   </td>
                   <td className="font-mono text-base text-[var(--ella-fg)]">
                     {u.studentId}
+                  </td>
+                  <td className="text-sm text-[var(--ella-fg-muted)]">
+                    {u.role === "user"
+                      ? u.program && u.level
+                        ? `${ACADEMIC_PROGRAMS.find((p) => p.id === u.program)?.label ?? u.program} · L${u.level}`
+                        : "—"
+                      : "—"}
                   </td>
                   <td>
                     {u.lockedUntil ? (
