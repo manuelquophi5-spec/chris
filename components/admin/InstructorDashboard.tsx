@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
+import { toastError } from "@/lib/toast";
 import type { CourseRow, CourseStatsSummary, CourseTodayRoster } from "@/types";
 import { adminBtnPrimary, adminBtnSecondary, adminInput, adminStack } from "./admin-ui";
 import { AdminHelpCard } from "./AdminHelpCard";
@@ -21,7 +22,6 @@ export function InstructorDashboard() {
   const [todayRoster, setTodayRoster] = useState<CourseTodayRoster | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [exportFrom, setExportFrom] = useState(() => {
     const d = new Date();
     d.setDate(d.getDate() - 27);
@@ -40,7 +40,7 @@ export function InstructorDashboard() {
     const res = await authFetch("/api/instructor/overview");
     const data = await parseJsonResponse<Overview & { error?: string }>(res);
     if (res.ok) setOverview(data);
-    else setError(data.error ?? "Could not load classes");
+    else toastError(data.error ?? "Could not load classes");
     return data;
   }, []);
 
@@ -63,7 +63,7 @@ export function InstructorDashboard() {
       error?: string;
     }>(todayRes);
     if (statsRes.ok) setStats(statsData.stats ?? null);
-    else setError(statsData.error ?? "Could not load attendance");
+    else toastError(statsData.error ?? "Could not load attendance");
     if (todayRes.ok) setTodayRoster(todayData.rosters?.[0] ?? null);
   }, []);
 
@@ -79,7 +79,6 @@ export function InstructorDashboard() {
 
   async function selectCourse(courseId: string) {
     setSelectedId(courseId);
-    setError(null);
     await loadCourseDetail(courseId);
   }
 
@@ -120,8 +119,6 @@ export function InstructorDashboard() {
         <p>Students are assigned automatically by program and level.</p>
         <p>Check-in during class time at the campus geofence; check-out same day.</p>
       </AdminHelpCard>
-
-      {error && <p className="ella-alert-error">{error}</p>}
 
       {loading ? (
         <p className="text-[var(--ella-fg-muted)]">Loading…</p>

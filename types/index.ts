@@ -116,6 +116,8 @@ export type TodayAttendanceStatus = {
   activeCourses: ActiveCourseSummary[];
   useCourseMode: boolean;
   hasEnrollments: boolean;
+  studentProgramLabel: string | null;
+  studentLevel: number | null;
 };
 
 export type CourseRow = {

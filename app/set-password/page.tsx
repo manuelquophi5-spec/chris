@@ -13,6 +13,7 @@ import {
   parseJsonResponse,
   redirectAfterAuth,
 } from "@/lib/auth-client";
+import { toastError, toastSuccess } from "@/lib/toast";
 
 function SetPasswordForm() {
   const searchParams = useSearchParams();
@@ -21,19 +22,17 @@ function SetPasswordForm() {
   );
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
 
     if (password !== confirm) {
-      setError("Passwords do not match");
+      toastError("Passwords do not match");
       return;
     }
     if (password.length < 10) {
-      setError("Password must be at least 10 characters with letters and numbers");
+      toastError("Password must be at least 10 characters with letters and numbers");
       return;
     }
 
@@ -50,29 +49,27 @@ function SetPasswordForm() {
       const data = await parseJsonResponse<{ error?: string }>(res);
 
       if (!res.ok) {
-        setError(data.error ?? "Could not set password");
+        toastError(data.error ?? "Could not set password");
         setLoading(false);
         return;
       }
 
+      toastSuccess("Password saved. Signing you in…");
       redirectAfterAuth("/dashboard");
     } catch {
-      setError("Network error. Try again.");
+      toastError("Network error. Try again.");
       setLoading(false);
     }
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <p className="ella-alert-success">
-        Use the student ID your administrator gave you, then choose a password
+      <p className="ella-text-muted text-sm">
+        Use the Student ID your administrator gave you, then choose a password
         you will use to sign in.
       </p>
       <div>
-        <label
-          className="ella-label"
-          htmlFor="studentId"
-        >
+        <label className="ella-label" htmlFor="studentId">
           Student ID
         </label>
         <input
@@ -86,10 +83,7 @@ function SetPasswordForm() {
         />
       </div>
       <div>
-        <label
-          className="ella-label"
-          htmlFor="password"
-        >
+        <label className="ella-label" htmlFor="password">
           New password
         </label>
         <input
@@ -104,10 +98,7 @@ function SetPasswordForm() {
         />
       </div>
       <div>
-        <label
-          className="ella-label"
-          htmlFor="confirm"
-        >
+        <label className="ella-label" htmlFor="confirm">
           Confirm password
         </label>
         <input
@@ -121,14 +112,6 @@ function SetPasswordForm() {
           onChange={(e) => setConfirm(e.target.value)}
         />
       </div>
-      {error && (
-        <p
-          className="ella-alert-error"
-          role="alert"
-        >
-          {error}
-        </p>
-      )}
       <button type="submit" disabled={loading} className={mobileButtonClass}>
         {loading ? "Saving…" : "Create password & sign in"}
       </button>
@@ -144,10 +127,7 @@ export default function SetPasswordPage() {
       footer={
         <p className="text-sm text-[var(--ella-fg-muted)]">
           Already have a password?{" "}
-          <Link
-            href="/login"
-            className="ella-link"
-          >
+          <Link href="/login" className="ella-link">
             Sign in
           </Link>
         </p>

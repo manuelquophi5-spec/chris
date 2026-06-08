@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
 import { ACADEMIC_LEVELS, ACADEMIC_PROGRAMS } from "@/lib/academic";
 import { WEEKDAY_OPTIONS } from "@/lib/schedule";
+import { toastError, toastSuccess } from "@/lib/toast";
 import type { AdminUserRow, CourseRow, CourseStatsSummary } from "@/types";
 import {
   adminBtnGhost,
@@ -31,8 +32,6 @@ export function AdminCourseManager() {
   } | null>(null);
   const [stats, setStats] = useState<CourseStatsSummary | null>(null);
   const [search, setSearch] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
   const [title, setTitle] = useState("");
@@ -144,8 +143,6 @@ export function AdminCourseManager() {
 
   async function handleSaveClass(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
-    setMessage(null);
     setSaving(true);
     try {
       const payload = {
@@ -180,12 +177,10 @@ export function AdminCourseManager() {
 
       const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
       if (!res.ok) {
-        setError(data.error ?? (editingId ? "Could not update class" : "Could not create class"));
+        toastError(data.error ?? (editingId ? "Could not update class" : "Could not create class"));
         return;
       }
-      setMessage(
-        data.message ?? (editingId ? "Class updated" : "Class created"),
-      );
+      toastSuccess(data.message ?? (editingId ? "Class updated" : "Class created"));
       if (!editingId) resetCreateForm();
       await load();
       if (editingId) await loadCourseDetail(editingId);
@@ -195,17 +190,15 @@ export function AdminCourseManager() {
   }
 
   async function duplicateCourse(id: string) {
-    setError(null);
-    setMessage(null);
     const res = await authFetch(`/api/admin/courses/${id}/duplicate`, {
       method: "POST",
     });
     const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
     if (!res.ok) {
-      setError(data.error ?? "Could not duplicate class");
+      toastError(data.error ?? "Could not duplicate class");
       return;
     }
-    setMessage(data.message ?? "Class duplicated");
+    toastSuccess(data.message ?? "Class duplicated");
     await load();
   }
 
@@ -239,15 +232,6 @@ export function AdminCourseManager() {
           </li>
         </ol>
       </AdminHelpCard>
-
-      {message && (
-        <p className="ella-alert-success">
-          {message}
-        </p>
-      )}
-      {error && (
-        <p className="ella-alert-error">{error}</p>
-      )}
 
       <form
         onSubmit={(e) => void handleSaveClass(e)}

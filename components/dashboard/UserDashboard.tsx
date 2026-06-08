@@ -1,7 +1,7 @@
 "use client";
 
-import { StudentAttendanceHub } from "./StudentAttendanceHub";
+import { CourseAttendanceCard } from "./CourseAttendanceCard";
 
 export function UserDashboard() {
-  return <StudentAttendanceHub />;
+  return <CourseAttendanceCard />;
 }

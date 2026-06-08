@@ -1,7 +1,8 @@
 import { getDayKey } from "@/lib/day";
+import { programLabel } from "@/lib/academic";
 import {
   getActiveCoursesForStudent,
-  studentHasCourseAccess,
+  getStudentProgramLevel,
 } from "@/lib/courses";
 import { getActiveSessionsForUser } from "@/lib/sessions";
 import { Attendance } from "@/models/Attendance";
@@ -144,7 +145,8 @@ export async function buildTodayStatus(
     userId,
     timezoneOffsetMinutes,
   );
-  const hasEnrollments = await studentHasCourseAccess(userId);
+  const profile = await getStudentProgramLevel(userId);
+  const hasEnrollments = profile !== null;
   const activeCourses = hasEnrollments
     ? await getActiveCoursesForStudent(userId, timezoneOffsetMinutes)
     : [];
@@ -190,5 +192,7 @@ export async function buildTodayStatus(
     activeCourses,
     useCourseMode,
     hasEnrollments,
+    studentProgramLabel: profile ? programLabel(profile.program) : null,
+    studentLevel: profile?.level ?? null,
   };
 }

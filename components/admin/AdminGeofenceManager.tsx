@@ -10,6 +10,7 @@ import {
 } from "@/lib/geolocation";
 import { GeofenceMapLoader } from "./GeofenceMapLoader";
 import { LocationSearch } from "./LocationSearch";
+import { toastError, toastSuccess } from "@/lib/toast";
 import type { GeofenceLocation } from "@/types/location";
 
 const DEFAULT_LAT = 5.6037;
@@ -31,8 +32,6 @@ export function AdminGeofenceManager() {
   const [locations, setLocations] = useState<GeofenceLocation[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
   const [siteFilter, setSiteFilter] = useState("");
   const [mapViewKey, setMapViewKey] = useState(0);
 
@@ -64,7 +63,7 @@ export function AdminGeofenceManager() {
       if (!res.ok) throw new Error(data.error ?? "Failed to load locations");
       setLocations(data.locations ?? []);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to load");
+      toastError(e instanceof Error ? e.message : "Failed to load");
     } finally {
       setLoading(false);
     }
@@ -88,8 +87,6 @@ export function AdminGeofenceManager() {
     setLatitude(loc.latitude);
     setLongitude(loc.longitude);
     setRadiusMeters(loc.radiusMeters);
-    setError(null);
-    setMessage(null);
     setMapViewKey((k) => k + 1);
   }
 
@@ -105,12 +102,10 @@ export function AdminGeofenceManager() {
     if (!name.trim()) {
       setName(place.shortName.slice(0, 80));
     }
-    setError(null);
     setMapViewKey((k) => k + 1);
   }
 
   async function useMyLocation() {
-    setError(null);
     try {
       const pos = await getDevicePosition();
       setLatitude(pos.latitude);
@@ -121,18 +116,15 @@ export function AdminGeofenceManager() {
         err && typeof err === "object" && "code" in err
           ? (err.code as GeoErrorCode)
           : "unknown";
-      setError(geolocationErrorMessage(code));
+      toastError(geolocationErrorMessage(code));
     }
   }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
-    setMessage(null);
-
     const trimmedName = name.trim();
     if (!trimmedName) {
-      setError("Site name is required");
+      toastError("Site name is required");
       return;
     }
 
@@ -158,11 +150,11 @@ export function AdminGeofenceManager() {
     setSaving(false);
 
     if (!res.ok) {
-      setError(data.error ?? "Save failed");
+      toastError(data.error ?? "Save failed");
       return;
     }
 
-    setMessage(
+    toastSuccess(
       isEditing
         ? "Location updated"
         : `Created “${data.location?.name ?? trimmedName}”`,
@@ -172,7 +164,6 @@ export function AdminGeofenceManager() {
   }
 
   async function toggleActive(loc: GeofenceLocation) {
-    setError(null);
     const res = await authFetch(`/api/locations/${loc.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -180,9 +171,10 @@ export function AdminGeofenceManager() {
     });
     const data = await res.json();
     if (!res.ok) {
-      setError(data.error ?? "Update failed");
+      toastError(data.error ?? "Update failed");
       return;
     }
+    toastSuccess(loc.isActive ? "Campus deactivated" : "Campus activated");
     if (selectedId === loc.id && !loc.isActive) resetForm();
     await loadLocations();
   }
@@ -191,15 +183,14 @@ export function AdminGeofenceManager() {
     if (!confirm(`Deactivate “${loc.name}”? Users will no longer check in here.`)) {
       return;
     }
-    setError(null);
     const res = await authFetch(`/api/locations/${loc.id}`, { method: "DELETE" });
     const data = await res.json();
     if (!res.ok) {
-      setError(data.error ?? "Deactivate failed");
+      toastError(data.error ?? "Deactivate failed");
       return;
     }
     if (selectedId === loc.id) resetForm();
-    setMessage(`“${loc.name}” deactivated`);
+    toastSuccess(`“${loc.name}” deactivated`);
     await loadLocations();
   }
 
@@ -301,16 +292,6 @@ export function AdminGeofenceManager() {
               <span>500 m</span>
             </div>
           </label>
-          {error && (
-            <p className="ella-alert-error">
-              {error}
-            </p>
-          )}
-          {message && (
-            <p className="ella-alert-success">
-              {message}
-            </p>
-          )}
           <div className="flex gap-2">
             {isEditing && (
               <button

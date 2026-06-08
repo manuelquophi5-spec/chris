@@ -1,100 +1,35 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
+import { usePwaInstall } from "@/hooks/usePwaInstall";
 import { APP_SHORT_TITLE } from "@/lib/brand";
-
-type BeforeInstallPromptEvent = Event & {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
-};
-
-function isIos(): boolean {
-  if (typeof navigator === "undefined") return false;
-  return /iphone|ipad|ipod/i.test(navigator.userAgent);
-}
-
-function isStandalone(): boolean {
-  if (typeof window === "undefined") return false;
-  return (
-    window.matchMedia("(display-mode: standalone)").matches ||
-    // @ts-expect-error iOS legacy
-    window.navigator.standalone === true
-  );
-}
+import { toastInfo, toastSuccess } from "@/lib/toast";
 
 export function PwaProvider() {
-  const [installEvent, setInstallEvent] =
-    useState<BeforeInstallPromptEvent | null>(null);
-  const [standalone, setStandalone] = useState(false);
-  const [ios, setIos] = useState(false);
+  const { standalone, ios, installing, canPromptInstall, promptInstall } =
+    usePwaInstall();
   const [showHelp, setShowHelp] = useState(false);
-  const [installing, setInstalling] = useState(false);
-
-  const refreshStandalone = useCallback(() => {
-    setStandalone(isStandalone());
-  }, []);
-
-  useEffect(() => {
-    setStandalone(isStandalone());
-    setIos(isIos());
-
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/sw.js", { scope: "/" })
-        .catch((err) => console.warn("[pwa] SW register failed", err));
-    }
-
-    const onBeforeInstall = (e: Event) => {
-      e.preventDefault();
-      setInstallEvent(e as BeforeInstallPromptEvent);
-    };
-
-    const onInstalled = () => {
-      setInstallEvent(null);
-      refreshStandalone();
-    };
-
-    window.addEventListener("beforeinstallprompt", onBeforeInstall);
-    window.addEventListener("appinstalled", onInstalled);
-    window
-      .matchMedia("(display-mode: standalone)")
-      .addEventListener("change", refreshStandalone);
-
-    return () => {
-      window.removeEventListener("beforeinstallprompt", onBeforeInstall);
-      window.removeEventListener("appinstalled", onInstalled);
-      window
-        .matchMedia("(display-mode: standalone)")
-        .removeEventListener("change", refreshStandalone);
-    };
-  }, [refreshStandalone]);
-
-  async function handleInstall() {
-    if (installEvent) {
-      setInstalling(true);
-      try {
-        await installEvent.prompt();
-        const { outcome } = await installEvent.userChoice;
-        if (outcome === "accepted") {
-          setInstallEvent(null);
-          refreshStandalone();
-        }
-      } catch (err) {
-        console.warn("[pwa] install prompt failed", err);
-        setShowHelp(true);
-      } finally {
-        setInstalling(false);
-      }
-      return;
-    }
-
-    setShowHelp(true);
-  }
 
   if (standalone) return null;
 
+  async function handleInstall() {
+    const outcome = await promptInstall();
+    if (outcome === "accepted") {
+      toastSuccess(`${APP_SHORT_TITLE} installed. Open it from your home screen.`);
+      setShowHelp(false);
+      return;
+    }
+    if (outcome === "dismissed") return;
+    setShowHelp(true);
+    toastInfo(
+      ios
+        ? "On iPhone: Safari → Share → Add to Home Screen."
+        : "Use your browser menu to install this app, or look for the install icon in the address bar.",
+    );
+  }
+
   const barClass =
-    "fixed bottom-20 left-0 right-0 z-50 border-t border-[var(--ella-border)] bg-[var(--ella-surface)] px-4 py-3 shadow-[0_-4px_24px_oklch(0.25_0.02_265_/_0.08)] sm:bottom-0 sm:left-auto sm:right-4 sm:bottom-4 sm:max-w-sm sm:rounded-xl sm:border";
+    "fixed bottom-20 left-0 right-0 z-40 border-t border-[var(--ella-border)] bg-[var(--ella-surface)] px-4 py-3 shadow-[0_-4px_24px_oklch(0.25_0.02_265_/_0.08)] sm:bottom-0 sm:left-auto sm:right-4 sm:bottom-4 sm:max-w-sm sm:rounded-xl sm:border";
 
   return (
     <div className={barClass} role="region" aria-label="Install app">
@@ -115,7 +50,7 @@ export function PwaProvider() {
           disabled={installing}
           className="ella-btn-primary shrink-0 px-5 py-2.5 text-sm"
         >
-          {installing ? "…" : "Install"}
+          {installing ? "…" : canPromptInstall ? "Install" : "How to"}
         </button>
       </div>
 

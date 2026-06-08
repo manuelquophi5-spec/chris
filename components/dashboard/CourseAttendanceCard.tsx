@@ -7,6 +7,7 @@ import {
   getDevicePosition,
   type GeoErrorCode,
 } from "@/lib/geolocation";
+import { toastError, toastSuccess, toastWarning } from "@/lib/toast";
 import type { ActiveCourseSummary, AttendanceType, TodayAttendanceStatus } from "@/types";
 
 const selectClass = "ella-select mt-2";
@@ -40,8 +41,6 @@ function pickDefaultCourse(courses: ActiveCourseSummary[]): string | null {
 export function CourseAttendanceCard({ onUpdate }: Props) {
   const [today, setToday] = useState<TodayAttendanceStatus | null>(null);
   const [courseId, setCourseId] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<AttendanceType | null>(null);
 
   const tzOffset = new Date().getTimezoneOffset();
@@ -83,25 +82,23 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
 
   async function mark(type: AttendanceType) {
     if (!courseId || !selected) {
-      setError("Select a class.");
+      toastWarning("Select a class.");
       return;
     }
     if (type === "check_in") {
       if (!selected.window.active) {
-        setError(selected.window.reason ?? "This class is not active right now.");
+        toastWarning(selected.window.reason ?? "This class is not active right now.");
         return;
       }
       if (!selected.canCheckIn) {
-        setError("You already checked in for this class today.");
+        toastWarning("You already checked in for this class today.");
         return;
       }
     } else if (!selected.canCheckOut) {
-      setError("Check in to this class first, or you already checked out.");
+      toastWarning("Check in to this class first, or you already checked out.");
       return;
     }
 
-    setError(null);
-    setMessage(null);
     setLoading(type);
 
     try {
@@ -123,10 +120,10 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
         res,
       );
       if (!res.ok) {
-        setError(data.error ?? "Could not mark attendance");
+        toastError(data.error ?? "Could not mark attendance");
         return;
       }
-      setMessage(data.message ?? "Recorded");
+      toastSuccess(data.message ?? "Attendance recorded");
       await loadToday(true);
       onUpdate?.();
     } catch (err: unknown) {
@@ -134,115 +131,163 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
         err && typeof err === "object" && "code" in err
           ? (err.code as GeoErrorCode)
           : "unknown";
-      setError(geolocationErrorMessage(code));
+      toastError(geolocationErrorMessage(code));
     } finally {
       setLoading(null);
     }
   }
 
-  if (!today?.hasEnrollments) {
+  if (!today) {
     return (
-      <p className="ella-panel-muted px-4 py-3 text-sm text-[var(--ella-fg-muted)]">
-        Your program and level are not set, or no classes match yet. Ask your
-        administrator to add your program and level under Students & staff.
-      </p>
+      <div className="space-y-3">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className="h-16 animate-pulse rounded-xl bg-[var(--ella-surface-muted)]"
+            style={{ animationDelay: `${i * 80}ms` }}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  if (!today.hasEnrollments) {
+    return (
+      <div className="ella-card-padded">
+        <h2 className="ella-heading-section text-lg">Class check-in</h2>
+        <p className="ella-text-muted mt-2">
+          Your program and level are not set yet. Ask your administrator to update
+          your profile under Students & staff, then sign in again.
+        </p>
+      </div>
+    );
+  }
+
+  if (courses.length === 0) {
+    return (
+      <div className="ella-card-padded">
+        <h2 className="ella-heading-section text-lg">Class check-in</h2>
+        {today.studentProgramLabel && today.studentLevel ? (
+          <p className="mt-2 text-sm font-medium text-[var(--ella-fg)]">
+            {today.studentProgramLabel} · Level {today.studentLevel}
+          </p>
+        ) : null}
+        <p className="ella-text-muted mt-2">
+          No classes are scheduled for your program and level yet. Check back when
+          your administrator adds them.
+        </p>
+      </div>
     );
   }
 
   return (
-    <div className="space-y-4">
-      <p className="ella-text-muted">
-        Check in during class time at your campus. You can check out later the same
-        day if class has ended.
-      </p>
-
-      {activeNow.length > 1 && (
-        <p className="ella-alert-warning" role="status">
-          {activeNow.length} classes in session — pick the class you are attending.
-          Each class has its own check-in and check-out today.
+    <div className="space-y-4 animate-page-enter">
+      {today.studentProgramLabel && today.studentLevel ? (
+        <p className="text-sm font-medium text-[var(--ella-fg-muted)]">
+          {today.studentProgramLabel} · Level {today.studentLevel}
         </p>
-      )}
+      ) : null}
 
-      {activeNow.length === 0 && !courses.some((c) => c.canCheckOut) && (
-        <p className="ella-alert-warning">
-          No class is in session right now. Use your timetable below for the next
-          class time — check-in opens when class starts.
-        </p>
-      )}
-
-      <label className="ella-label block">
-        {activeNow.length > 0 ? "Class in session" : "Your class"}
-      </label>
-      <select
-        className={selectClass}
-        value={courseId}
-        onChange={(e) => setCourseId(e.target.value)}
-      >
-        {(selectable.length > 0 ? selectable : courses).map((c) => (
-          <option key={c.id} value={c.id}>
-            {courseLabel(c)}
-            {c.window.active ? " — active" : ""}
-            {c.hasCheckIn && !c.hasCheckOut ? " — check out pending" : ""}
-            {c.hasCheckIn && c.hasCheckOut ? " — done today" : ""}
-          </option>
-        ))}
-      </select>
-
-      {selected && (
-        <div className="ella-panel-muted space-y-1 px-4 py-3 text-sm text-[var(--ella-fg-muted)]">
-          <p>
-            <span className="font-semibold">Schedule:</span> {selected.scheduleLabel}
+      <div className="ella-card-padded space-y-4">
+        <div>
+          <h2 className="ella-heading-section text-lg">Check in to class</h2>
+          <p className="ella-text-muted mt-1 text-sm">
+            Be at your campus during class time. You can check out later the same
+            day.
           </p>
-          <p>
-            <span className="font-semibold">Status:</span>{" "}
-            {selected.window.active
-              ? "Active now"
-              : selected.nextClassHint ?? selected.window.reason}
-          </p>
-          {selected.locationName && (
-            <p>
-              <span className="font-semibold">Campus:</span> {selected.locationName}
-            </p>
-          )}
-          {selected.hasCheckIn && !selected.hasCheckOut && !selected.window.active && (
-            <p className="text-[var(--ella-warning)]">
-              Class ended — you can still check out for today.
-            </p>
-          )}
-          {selected.isLateNext && !selected.hasCheckIn && selected.window.active && (
-            <p className="text-[var(--ella-warning)]">
-              Past the on-time window — check-in will count as late.
-            </p>
-          )}
         </div>
-      )}
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <button
-          type="button"
-          disabled={!selected?.canCheckIn || loading !== null}
-          onClick={() => void mark("check_in")}
-          className="ella-btn-primary min-h-[52px] disabled:opacity-50"
+        {activeNow.length > 1 && (
+          <p className="ella-panel-muted px-3 py-2.5 text-sm" role="status">
+            {activeNow.length} classes in session. Pick the one you are
+            attending.
+          </p>
+        )}
+
+        {activeNow.length === 0 && !courses.some((c) => c.canCheckOut) && (
+          <p className="ella-panel-muted px-3 py-2.5 text-sm">
+            No class in session right now. See your timetable below for the next
+            start time.
+          </p>
+        )}
+
+        <label className="ella-label block">
+          {activeNow.length > 0 ? "Class in session" : "Select class"}
+        </label>
+        <select
+          className={selectClass}
+          value={courseId}
+          onChange={(e) => setCourseId(e.target.value)}
         >
-          {loading === "check_in" ? "Checking in…" : "Check in to class"}
-        </button>
-        <button
-          type="button"
-          disabled={!selected?.canCheckOut || loading !== null}
-          onClick={() => void mark("check_out")}
-          className="ella-btn-secondary min-h-[52px] disabled:opacity-50"
-        >
-          {loading === "check_out" ? "Checking out…" : "Check out of class"}
-        </button>
+          {(selectable.length > 0 ? selectable : courses).map((c) => (
+            <option key={c.id} value={c.id}>
+              {courseLabel(c)}
+              {c.window.active ? " — active" : ""}
+              {c.hasCheckIn && !c.hasCheckOut ? " — check out pending" : ""}
+              {c.hasCheckIn && c.hasCheckOut ? " — done today" : ""}
+            </option>
+          ))}
+        </select>
+
+        {selected && (
+          <div className="ella-panel-muted space-y-1 px-4 py-3 text-sm text-[var(--ella-fg-muted)]">
+            <p>
+              <span className="font-semibold text-[var(--ella-fg)]">Schedule:</span>{" "}
+              {selected.scheduleLabel}
+            </p>
+            <p>
+              <span className="font-semibold text-[var(--ella-fg)]">Status:</span>{" "}
+              {selected.window.active
+                ? "Active now"
+                : selected.nextClassHint ?? selected.window.reason}
+            </p>
+            {selected.locationName && (
+              <p>
+                <span className="font-semibold text-[var(--ella-fg)]">Campus:</span>{" "}
+                {selected.locationName}
+              </p>
+            )}
+            {selected.hasCheckIn && !selected.hasCheckOut && !selected.window.active && (
+              <p className="text-[var(--ella-warning)]">
+                Class ended. You can still check out for today.
+              </p>
+            )}
+            {selected.isLateNext && !selected.hasCheckIn && selected.window.active && (
+              <p className="text-[var(--ella-warning)]">
+                Past the on-time window. Check-in will count as late.
+              </p>
+            )}
+          </div>
+        )}
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          <button
+            type="button"
+            disabled={!selected?.canCheckIn || loading !== null}
+            onClick={() => void mark("check_in")}
+            className="ella-btn-primary min-h-[52px] disabled:opacity-50"
+          >
+            {loading === "check_in" ? "Checking in…" : "Check in"}
+          </button>
+          <button
+            type="button"
+            disabled={!selected?.canCheckOut || loading !== null}
+            onClick={() => void mark("check_out")}
+            className="ella-btn-secondary min-h-[52px] disabled:opacity-50"
+          >
+            {loading === "check_out" ? "Checking out…" : "Check out"}
+          </button>
+        </div>
+
       </div>
 
-      <section>
+      <section className="ella-card-padded">
         <h2 className="ella-heading-section text-base">Your timetable</h2>
-        <ul className="mt-2 space-y-2">
+        <ul className="mt-3 space-y-2">
           {courses.map((c) => (
             <li
               key={c.id}
-              className={`ella-panel-muted px-3 py-2 text-sm ${
+              className={`ella-panel-muted px-3 py-2.5 text-sm ${
                 c.id === courseId ? "ring-1 ring-[var(--ella-accent)]" : ""
               }`}
             >
@@ -274,7 +319,7 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
                 {c.window.active
                   ? "In session now"
                   : c.hasCheckIn && !c.hasCheckOut
-                    ? "Checked in — check out when you leave"
+                    ? "Checked in. Check out when you leave."
                     : c.hasCheckIn && c.hasCheckOut
                       ? "Completed today"
                       : c.nextClassHint ?? c.window.reason}
@@ -283,13 +328,6 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
           ))}
         </ul>
       </section>
-
-      {error && (
-        <p className="ella-alert-error" role="alert">
-          {error}
-        </p>
-      )}
-      {message && <p className="ella-alert-success">{message}</p>}
     </div>
   );
 }

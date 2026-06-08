@@ -12,6 +12,7 @@ import {
   getDevicePosition,
   type GeoErrorCode,
 } from "@/lib/geolocation";
+import { toastError, toastSuccess, toastWarning } from "@/lib/toast";
 import type { ActiveSessionSummary, AttendanceType, TodayAttendanceStatus } from "@/types";
 
 type LocationOption = { id: string; name: string };
@@ -114,8 +115,6 @@ export function DailyAttendanceCard({
   const [nearby, setNearby] = useState<NearbySite | null>(null);
   const [distanceHint, setDistanceHint] = useState<string | null>(null);
   const [gpsHint, setGpsHint] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<AttendanceType | null>(null);
   const [photoData, setPhotoData] = useState<string | null>(null);
   const [reminderDismissed, setReminderDismissed] = useState(false);
@@ -242,7 +241,7 @@ export function DailyAttendanceCard({
       return;
     }
     if (!file.type.startsWith("image/")) {
-      setError("Choose a photo (JPEG or PNG)");
+      toastWarning("Choose a photo (JPEG or PNG)");
       return;
     }
     const reader = new FileReader();
@@ -254,19 +253,16 @@ export function DailyAttendanceCard({
   }
 
   async function mark(type: AttendanceType) {
-    setError(null);
-    setMessage(null);
-
     const effectiveLocationId = today?.checkIn?.locationId ?? locationId;
     const effectiveSessionId = pickSessionForMark(type);
 
     if (sessionModeActive(today, attendanceMode)) {
       if (!effectiveSessionId) {
-        setError("Select an active session first");
+        toastWarning("Select an active session first");
         return;
       }
     } else if (!effectiveLocationId) {
-      setError("Select a campus first");
+      toastWarning("Select a campus first");
       return;
     }
 
@@ -296,7 +292,7 @@ export function DailyAttendanceCard({
 
       if (!res.ok) {
         const raw = data.error ?? "Could not record attendance";
-        setError(
+        toastError(
           softenGeofenceApiError(
             raw,
             placeNameForError(effectiveLocationId ?? ""),
@@ -305,7 +301,7 @@ export function DailyAttendanceCard({
         return;
       }
 
-      setMessage(
+      toastSuccess(
         data.message ?? (type === "check_in" ? "Checked in" : "Checked out"),
       );
       setPhotoData(null);
@@ -316,7 +312,7 @@ export function DailyAttendanceCard({
         err && typeof err === "object" && "code" in err
           ? (err.code as GeoErrorCode)
           : "unknown";
-      setError(geolocationErrorMessage(code));
+      toastError(geolocationErrorMessage(code));
     } finally {
       setLoading(null);
     }
@@ -349,7 +345,7 @@ export function DailyAttendanceCard({
   return (
     <div className="space-y-5">
       {showCheckoutReminder && (
-        <div className="ella-alert-warning animate-fade-in" role="status">
+        <div className="ella-panel-muted animate-fade-in px-4 py-3" role="status">
           <p className="font-semibold">Remember to check out</p>
           <p className="mt-1">
             You checked in earlier but haven&apos;t checked out yet.
@@ -476,7 +472,7 @@ export function DailyAttendanceCard({
             )}
           </label>
         ) : !useSessions ? (
-          <p className="ella-alert-warning mt-4">
+          <p className="ella-panel-muted mt-4 px-4 py-3 text-sm">
             No campuses configured. Contact your administrator.
           </p>
         ) : null}
@@ -518,16 +514,6 @@ export function DailyAttendanceCard({
           </p>
         )}
 
-        {message && (
-          <p className="ella-alert-success animate-fade-in mt-4" role="status">
-            {message}
-          </p>
-        )}
-        {error && (
-          <p className="ella-alert-error animate-shake mt-4 leading-relaxed" role="alert">
-            {error}
-          </p>
-        )}
       </section>
     </div>
   );

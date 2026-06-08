@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
+import { toastError, toastSuccess } from "@/lib/toast";
 import {
   adminBtnPrimary,
   adminInput,
@@ -29,8 +30,6 @@ export function SessionManager() {
   const [locationId, setLocationId] = useState("");
   const [startAt, setStartAt] = useState("");
   const [endAt, setEndAt] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
   const load = useCallback(async () => {
@@ -58,8 +57,6 @@ export function SessionManager() {
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
-    setMessage(null);
     setSaving(true);
     try {
       const res = await authFetch("/api/admin/sessions", {
@@ -77,10 +74,10 @@ export function SessionManager() {
         res,
       );
       if (!res.ok) {
-        setError(data.error ?? "Could not create session");
+        toastError(data.error ?? "Could not create session");
         return;
       }
-      setMessage("Session created");
+      toastSuccess("Session created");
       setTitle("");
       setCourseCode("");
       await load();
@@ -159,16 +156,6 @@ export function SessionManager() {
             />
           </label>
         </div>
-        {error && (
-          <p className="ella-alert-error mt-3" role="alert">
-            {error}
-          </p>
-        )}
-        {message && (
-          <p className="ella-alert-success mt-3" role="status">
-            {message}
-          </p>
-        )}
         <button
           type="submit"
           disabled={saving}

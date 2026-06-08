@@ -6,7 +6,7 @@ product
 
 ## Users
 
-**Students** use phones on campus to check in and out during class or for campus-day activities. They need a fast, obvious flow: open the PWA, see today's status, tap check-in when GPS confirms they are on site. Context is often outdoors, bright light, limited patience for errors.
+**Students** use phones on campus to check in and out during scheduled classes for their program and level. They need a fast, obvious flow: open the PWA, see today's status, tap check-in when GPS confirms they are on site. Context is often outdoors, bright light, limited patience for errors.
 
 **Lecturers / instructors** review class attendance, see who is late or absent, and work from a desktop-friendly admin view during or after sessions.
 

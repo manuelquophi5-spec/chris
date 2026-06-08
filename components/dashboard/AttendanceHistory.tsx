@@ -52,7 +52,7 @@ function dayLabel(dayKey: string) {
 }
 
 function classLabel(course: CourseRef): string {
-  if (!course) return "Campus day";
+  if (!course) return "Other";
   const code = course.courseCode ? `${course.courseCode} · ` : "";
   return `${code}${course.title}`;
 }
@@ -179,7 +179,7 @@ export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) 
               : "bg-[var(--ella-surface-muted)] text-[var(--ella-fg-muted)]"
           }`}
         >
-          Campus day
+          Other
         </button>
         {courseFilters.map((c) => (
           <button

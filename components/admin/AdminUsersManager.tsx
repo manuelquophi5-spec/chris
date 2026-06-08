@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
 import { ACADEMIC_LEVELS, ACADEMIC_PROGRAMS } from "@/lib/academic";
+import { toastError, toastSuccess } from "@/lib/toast";
 import type { AdminUserRow } from "@/types";
 import {
   adminBtnGhost,
@@ -18,8 +19,6 @@ export function AdminUsersManager() {
   const [users, setUsers] = useState<AdminUserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
   const [firstName, setFirstName] = useState("");
   const [studentId, setStudentId] = useState("");
   const [role, setRole] = useState<"user" | "instructor">("user");
@@ -34,7 +33,7 @@ export function AdminUsersManager() {
       res,
     );
     if (res.ok) setUsers(data.users ?? []);
-    else setError(data.error ?? "Could not load student list");
+    else toastError(data.error ?? "Could not load student list");
     setLoading(false);
   }, []);
 
@@ -44,8 +43,6 @@ export function AdminUsersManager() {
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
-    setMessage(null);
     setSaving(true);
     try {
       const res = await authFetch("/api/admin/users", {
@@ -61,10 +58,10 @@ export function AdminUsersManager() {
       });
       const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
       if (!res.ok) {
-        setError(data.error ?? "Could not add this person");
+        toastError(data.error ?? "Could not add this person");
         return;
       }
-      setMessage(
+      toastSuccess(
         data.message ??
           `Added ${firstName}. Tell them to open datalink_attend and tap “Set password” with ID ${studentId.toUpperCase()}.`,
       );
@@ -79,32 +76,30 @@ export function AdminUsersManager() {
   }
 
   async function unlockUser(id: string) {
-    setError(null);
     const res = await authFetch(`/api/admin/users/${id}/unlock`, {
       method: "POST",
     });
     const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
     if (!res.ok) {
-      setError(data.error ?? "Could not unlock account");
+      toastError(data.error ?? "Could not unlock account");
       return;
     }
-    setMessage(data.message ?? "Account unlocked — they can try signing in again.");
+    toastSuccess(data.message ?? "Account unlocked. They can try signing in again.");
     await load();
   }
 
   async function resetPassword(id: string) {
-    setError(null);
     const res = await authFetch(`/api/admin/users/${id}/reset-password`, {
       method: "POST",
     });
     const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
     if (!res.ok) {
-      setError(data.error ?? "Could not reset password");
+      toastError(data.error ?? "Could not reset password");
       return;
     }
-    setMessage(
+    toastSuccess(
       data.message ??
-        "Password cleared — tell them to open Set password and choose a new one.",
+        "Password cleared. Tell them to open Set password and choose a new one.",
     );
     await load();
   }
@@ -113,6 +108,7 @@ export function AdminUsersManager() {
     const text = `Hi ${name}, set up Data Link attendance:\n1. Open datalink_attend\n2. Tap "Set password"\n3. Student ID: ${id}\n4. Choose a password, then sign in for class check-in.`;
     void navigator.clipboard.writeText(text).then(() => {
       setCopiedId(id);
+      toastSuccess("Instructions copied to clipboard.");
       setTimeout(() => setCopiedId(null), 2000);
     });
   }
@@ -216,16 +212,6 @@ export function AdminUsersManager() {
             </>
           )}
         </div>
-        {error && (
-          <p className="ella-alert-error mt-3" role="alert">
-            {error}
-          </p>
-        )}
-        {message && (
-          <p className="ella-alert-success mt-3" role="status">
-            {message}
-          </p>
-        )}
         <button
           type="submit"
           disabled={

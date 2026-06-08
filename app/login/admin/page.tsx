@@ -13,17 +13,16 @@ import {
   parseJsonResponse,
   redirectAfterAuth,
 } from "@/lib/auth-client";
+import { toastError, toastSuccess } from "@/lib/toast";
 
 function AdminLoginForm() {
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
     setLoading(true);
 
     try {
@@ -39,15 +38,16 @@ function AdminLoginForm() {
       const data = await parseJsonResponse<{ error?: string }>(res);
 
       if (!res.ok) {
-        setError(data.error ?? "Invalid email or password");
+        toastError(data.error ?? "Invalid email or password");
         setLoading(false);
         return;
       }
 
+      toastSuccess("Signed in as administrator.");
       const from = searchParams.get("from") ?? "/dashboard/admin";
       redirectAfterAuth(from.startsWith("/dashboard") ? from : "/dashboard/admin");
     } catch {
-      setError("Network error. Check your connection and try again.");
+      toastError("Network error. Check your connection and try again.");
       setLoading(false);
     }
   }
@@ -70,10 +70,7 @@ function AdminLoginForm() {
         />
       </div>
       <div>
-        <label
-          className="ella-label"
-          htmlFor="password"
-        >
+        <label className="ella-label" htmlFor="password">
           Password
         </label>
         <input
@@ -86,14 +83,6 @@ function AdminLoginForm() {
           required
         />
       </div>
-      {error && (
-        <p
-          className="ella-alert-error"
-          role="alert"
-        >
-          {error}
-        </p>
-      )}
       <button type="submit" disabled={loading} className={mobileButtonClass}>
         {loading ? "Signing in…" : "Sign in as admin"}
       </button>
@@ -109,10 +98,7 @@ export default function AdminLoginPage() {
       footer={
         <p className="text-sm text-[var(--ella-fg-muted)]">
           Student check-in?{" "}
-          <Link
-            href="/login"
-            className="ella-link"
-          >
+          <Link href="/login" className="ella-link">
             Student sign in
           </Link>
         </p>

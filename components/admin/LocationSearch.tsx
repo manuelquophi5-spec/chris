@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
 import type { GeocodeResult } from "@/lib/geocode";
+import { toastError } from "@/lib/toast";
 import { adminInput } from "./admin-ui";
 
 type Props = {
@@ -14,7 +15,6 @@ export function LocationSearch({ onSelect, disabled }: Props) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GeocodeResult[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -26,7 +26,6 @@ export function LocationSearch({ onSelect, disabled }: Props) {
     if (trimmed.length < 2) {
       setResults([]);
       setLoading(false);
-      setError(null);
       return;
     }
 
@@ -42,15 +41,14 @@ export function LocationSearch({ onSelect, disabled }: Props) {
             error?: string;
           }>(res);
           if (!res.ok) {
-            setError(data.error ?? "Search failed");
+            toastError(data.error ?? "Search failed");
             setResults([]);
             return;
           }
-          setError(null);
           setResults(data.results ?? []);
           setOpen(true);
         } catch {
-          setError("Search failed. Check your connection.");
+          toastError("Search failed. Check your connection.");
           setResults([]);
         } finally {
           setLoading(false);
@@ -117,12 +115,6 @@ export function LocationSearch({ onSelect, disabled }: Props) {
         )}
       </div>
 
-      {error && (
-        <p className="ella-alert-error mt-1.5 text-xs" role="alert">
-          {error}
-        </p>
-      )}
-
       {open && results.length > 0 && (
         <ul
           className="absolute z-50 mt-1 max-h-56 w-full overflow-auto rounded-lg border border-[var(--ella-border)] bg-[var(--ella-surface)] py-1 shadow-lg"
@@ -148,7 +140,7 @@ export function LocationSearch({ onSelect, disabled }: Props) {
         </ul>
       )}
 
-      {open && !loading && query.trim().length >= 2 && results.length === 0 && !error && (
+      {open && !loading && query.trim().length >= 2 && results.length === 0 && (
         <p className="absolute z-50 mt-1 w-full rounded-lg border border-[var(--ella-border)] bg-[var(--ella-surface)] px-3 py-2 text-xs text-[var(--ella-fg-subtle)] shadow-lg">
           No places found. Try a city, street, or building name.
         </p>

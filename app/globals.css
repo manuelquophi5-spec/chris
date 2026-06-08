@@ -639,3 +639,50 @@ button {
     animation: none;
   }
 }
+
+/* ——— Toastify (Data Link Attend) ——— */
+
+.ella-toast-container {
+  width: min(22rem, calc(100vw - 1.5rem));
+  padding: 0.75rem;
+  z-index: 10000;
+}
+
+.ella-toast-container .Toastify__toast {
+  border-radius: var(--ella-radius);
+  font-family: var(--font-geist-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: 0 8px 28px oklch(0.25 0.02 265 / 0.14);
+  min-height: 3.25rem;
+  padding: 0.75rem 0.875rem;
+}
+
+.ella-toast-container .Toastify__toast--success {
+  background: oklch(0.38 0.12 18);
+  color: var(--ella-accent-fg);
+}
+
+.ella-toast-container .Toastify__toast--error {
+  background: var(--ella-danger);
+  color: oklch(0.99 0.008 85);
+}
+
+.ella-toast-container .Toastify__toast--warning {
+  background: oklch(0.52 0.11 75);
+  color: oklch(0.2 0.04 75);
+}
+
+.ella-toast-container .Toastify__toast--info {
+  background: oklch(0.34 0.07 265);
+  color: oklch(0.96 0.01 85);
+}
+
+.ella-toast-container .Toastify__close-button {
+  color: inherit;
+  opacity: 0.75;
+}
+
+.ella-toast-container .Toastify__progress-bar {
+  background: oklch(0.99 0.008 85 / 0.35);
+}

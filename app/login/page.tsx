@@ -1,29 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react";
 import {
   AuthPageShell,
-  mobileButtonClass,
   mobileInputClass,
 } from "@/components/auth/AuthPageShell";
+import { usePwaInstall } from "@/hooks/usePwaInstall";
 import {
   authFetch,
   parseJsonResponse,
   redirectAfterAuth,
 } from "@/lib/auth-client";
+import { APP_SHORT_TITLE } from "@/lib/brand";
+import { toastError, toastInfo, toastSuccess } from "@/lib/toast";
 
 function LoginForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const { standalone, ios, installing, canPromptInstall, promptInstall } =
+    usePwaInstall();
   const [studentId, setStudentId] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
     setLoading(true);
 
     try {
@@ -44,22 +47,55 @@ function LoginForm() {
 
       if (res.status === 200 && data.requiresPasswordSetup) {
         const id = data.studentId ?? studentId.trim().toUpperCase();
+        toastInfo("Set your password to finish signing in.");
         redirectAfterAuth(`/set-password?id=${encodeURIComponent(id)}`);
         return;
       }
 
       if (!res.ok) {
-        setError(data.error ?? "Invalid student ID or password");
+        toastError(data.error ?? "Invalid student ID or password");
         setLoading(false);
         return;
       }
 
+      toastSuccess("Signed in. Welcome back.");
       const from = searchParams.get("from") ?? "/dashboard";
       redirectAfterAuth(from);
     } catch {
-      setError("Network error. Check your connection and try again.");
+      toastError("Network error. Check your connection and try again.");
       setLoading(false);
     }
+  }
+
+  async function handleInstall() {
+    if (standalone) {
+      toastInfo(`${APP_SHORT_TITLE} is already installed.`);
+      return;
+    }
+
+    const outcome = await promptInstall();
+    if (outcome === "accepted") {
+      toastSuccess(`${APP_SHORT_TITLE} installed. Open it from your home screen.`);
+      return;
+    }
+    if (outcome === "dismissed") return;
+
+    toastInfo(
+      ios
+        ? "On iPhone: open in Safari, tap Share, then Add to Home Screen."
+        : "Use your browser menu (⋮) → Install app, or the install icon in the address bar.",
+    );
+  }
+
+  function handleSkip() {
+    toastInfo("Set up your password first, then return here to sign in.");
+    router.push("/set-password");
+  }
+
+  function handleForgotPassword() {
+    toastInfo(
+      "Open Set password with your Student ID. If you already have a password, ask your administrator to reset it.",
+    );
   }
 
   return (
@@ -80,9 +116,18 @@ function LoginForm() {
         />
       </div>
       <div>
-        <label className="ella-label" htmlFor="password">
-          Password
-        </label>
+        <div className="flex items-center justify-between gap-2">
+          <label className="ella-label" htmlFor="password">
+            Password
+          </label>
+          <Link
+            href="/set-password"
+            onClick={handleForgotPassword}
+            className="ella-link text-xs font-semibold"
+          >
+            Forgot password?
+          </Link>
+        </div>
         <input
           id="password"
           type="password"
@@ -92,20 +137,40 @@ function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <p className="mt-1.5 text-xs text-[var(--ella-fg-subtle)]">
-          First time? Leave password empty and submit — or use{" "}
-          <Link href="/set-password" className="ella-link">
-            Set password
-          </Link>
-          .
+          First time? Leave password empty and submit.
         </p>
       </div>
-      {error && (
-        <p className="ella-alert-error" role="alert">
-          {error}
-        </p>
-      )}
-      <button type="submit" disabled={loading} className={mobileButtonClass}>
-        {loading ? "Signing in…" : "Sign in"}
+
+      <div className="grid grid-cols-2 gap-3 pt-1">
+        <button
+          type="submit"
+          disabled={loading}
+          className="ella-btn-primary min-h-[48px] w-full"
+        >
+          {loading ? "Signing in…" : "Sign in"}
+        </button>
+        <button
+          type="button"
+          onClick={() => void handleInstall()}
+          disabled={installing || standalone}
+          className="ella-btn-secondary min-h-[48px] w-full disabled:opacity-50"
+        >
+          {standalone
+            ? "Installed"
+            : installing
+              ? "Installing…"
+              : canPromptInstall
+                ? "Install app"
+                : "Install app"}
+        </button>
+      </div>
+
+      <button
+        type="button"
+        onClick={handleSkip}
+        className="ella-btn-ghost w-full min-h-[44px] text-sm"
+      >
+        Skip
       </button>
     </form>
   );

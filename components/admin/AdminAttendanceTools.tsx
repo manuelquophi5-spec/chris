@@ -110,7 +110,7 @@ export function AdminAttendanceTools() {
       </div>
 
       {!loading && alerts.length > 0 && (
-        <div className="ella-alert-warning w-full">
+        <div className="ella-panel-muted w-full px-4 py-3">
           <p className="font-semibold">
             {alerts.length} alert{alerts.length === 1 ? "" : "s"} today
           </p>

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { PwaProvider } from "@/components/PwaProvider";
+import { ToastProvider } from "@/components/ToastProvider";
 import { APP_NAME, APP_TITLE, LOGO_SRC } from "@/lib/brand";
 import "./globals.css";
 
@@ -43,6 +44,7 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased">
       <body className="min-h-[100dvh] flex flex-col font-sans antialiased">
         {children}
+        <ToastProvider />
         <PwaProvider />
       </body>
     </html>
