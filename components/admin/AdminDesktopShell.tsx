@@ -161,7 +161,7 @@ export function AdminDesktopShell({ user, children }: Props) {
                 })}
               </nav>
               <Link
-                href="/dashboard"
+                href="/dashboard?mobile=1"
                 className="hidden rounded-lg border border-[var(--ella-border)] px-3 py-2 text-xs font-semibold text-[var(--ella-fg-muted)] transition hover:bg-[var(--ella-surface-muted)] sm:inline-block"
               >
                 Mobile check-in

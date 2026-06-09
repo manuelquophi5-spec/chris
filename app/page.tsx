@@ -1,7 +1,14 @@
 import { getServerSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 
+function dashboardHomeForRole(role: string) {
+  if (role === "admin") return "/dashboard/admin";
+  if (role === "instructor") return "/dashboard/admin/classes";
+  return "/dashboard";
+}
+
 export default async function HomePage() {
   const user = await getServerSession();
-  redirect(user ? "/dashboard" : "/login");
+  if (!user) redirect("/login");
+  redirect(dashboardHomeForRole(user.role));
 }

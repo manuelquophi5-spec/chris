@@ -23,6 +23,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(login);
   }
 
+  if (pathname === "/dashboard" && !request.nextUrl.searchParams.has("mobile")) {
+    if (user.role === "admin") {
+      return NextResponse.redirect(new URL("/dashboard/admin", request.url));
+    }
+    if (user.role === "instructor") {
+      return NextResponse.redirect(
+        new URL("/dashboard/admin/classes", request.url),
+      );
+    }
+  }
+
   return NextResponse.next();
 }
 
