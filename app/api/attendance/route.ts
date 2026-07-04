@@ -5,79 +5,87 @@ import mongoose from "mongoose";
 
 /** List attendance records (own history for users, all for staff). */
 export async function GET(request: Request) {
-  const auth = await getAuthUser();
-  if (!auth) return jsonError("Unauthorized", 401);
+  try {
+    const auth = await getAuthUser();
+    if (!auth) return jsonError("Unauthorized", 401);
 
-  const { searchParams } = new URL(request.url);
-  const limit = Math.min(Number(searchParams.get("limit") ?? 50), 100);
-  const courseIdFilter = searchParams.get("courseId")?.trim() ?? "";
+    const { searchParams } = new URL(request.url);
+    const limit = Math.min(Number(searchParams.get("limit") ?? 50), 100);
+    const courseIdFilter = searchParams.get("courseId")?.trim() ?? "";
 
-  await connectDB();
+    await connectDB();
 
-  const isStaff = auth.role === "admin" || auth.role === "instructor";
-  const filter: Record<string, unknown> = isStaff ? {} : { userId: auth.id };
+    const isStaff = auth.role === "admin" || auth.role === "instructor";
+    const filter: Record<string, unknown> = isStaff ? {} : { userId: auth.id };
 
-  if (courseIdFilter === "campus") {
-    filter.$or = [{ courseId: null }, { courseId: { $exists: false } }];
-  } else if (courseIdFilter && mongoose.Types.ObjectId.isValid(courseIdFilter)) {
-    filter.courseId = new mongoose.Types.ObjectId(courseIdFilter);
-  }
+    if (courseIdFilter === "campus") {
+      filter.$or = [{ courseId: null }, { courseId: { $exists: false } }];
+    } else if (courseIdFilter && mongoose.Types.ObjectId.isValid(courseIdFilter)) {
+      filter.courseId = new mongoose.Types.ObjectId(courseIdFilter);
+    }
 
-  const records = await Attendance.find(filter)
-    .sort({ markedAt: -1 })
-    .limit(limit)
-    .populate("locationId", "name")
-    .populate("userId", "name email employeeId")
-    .populate("courseId", "title courseCode")
-    .lean();
+    const records = await Attendance.find(filter)
+      .sort({ markedAt: -1 })
+      .limit(limit)
+      .populate("locationId", "name")
+      .populate("userId", "name email employeeId")
+      .populate("courseId", "title courseCode")
+      .lean();
 
-  return jsonOk({
-    attendance: records.map((r) => {
-      const loc = r.locationId as
-        | { _id: unknown; name?: string }
-        | null
-        | undefined;
-      const usr = r.userId as
-        | { _id: unknown; name?: string; email?: string; employeeId?: string }
-        | null
-        | undefined;
-      const course = r.courseId as
-        | { _id: unknown; title?: string; courseCode?: string }
-        | null
-        | undefined;
+    return jsonOk({
+      attendance: records.map((r) => {
+        const loc = r.locationId as
+          | { _id: unknown; name?: string }
+          | null
+          | undefined;
+        const usr = r.userId as
+          | { _id: unknown; name?: string; email?: string; employeeId?: string }
+          | null
+          | undefined;
+        const course = r.courseId as
+          | { _id: unknown; title?: string; courseCode?: string }
+          | null
+          | undefined;
 
-      const courseObj =
-        course && typeof course === "object" && "_id" in course
-          ? {
-              id: String(course._id),
-              title: String(course.title ?? ""),
-              courseCode: String(course.courseCode ?? "").trim(),
-            }
-          : null;
-
-      return {
-        id: String(r._id),
-        type: r.type ?? "check_in",
-        dayKey: r.dayKey ?? "",
-        markedAt: r.markedAt.toISOString(),
-        distanceMeters: r.distanceMeters,
-        withinGeofence: r.withinGeofence,
-        isLate: Boolean(r.isLate),
-        location:
-          loc && typeof loc === "object" && "name" in loc
-            ? { id: String(loc._id), name: loc.name }
-            : null,
-        course: courseObj,
-        user:
-          isStaff && usr && typeof usr === "object"
+        const courseObj =
+          course && typeof course === "object" && "_id" in course
             ? {
-                id: String(usr._id),
-                name: usr.name ?? "",
-                email: usr.email ?? "",
-                studentId: usr.employeeId ?? "",
+                id: String(course._id),
+                title: String(course.title ?? ""),
+                courseCode: String(course.courseCode ?? "").trim(),
               }
-            : undefined,
-      };
-    }),
-  });
+            : null;
+
+        return {
+          id: String(r._id),
+          type: r.type ?? "check_in",
+          dayKey: r.dayKey ?? "",
+          markedAt: r.markedAt.toISOString(),
+          distanceMeters: r.distanceMeters,
+          withinGeofence: r.withinGeofence,
+          isLate: Boolean(r.isLate),
+          location:
+            loc && typeof loc === "object" && "name" in loc
+              ? { id: String(loc._id), name: loc.name }
+              : null,
+          course: courseObj,
+          user:
+            isStaff && usr && typeof usr === "object"
+              ? {
+                  id: String(usr._id),
+                  name: usr.name ?? "",
+                  email: usr.email ?? "",
+                  studentId: usr.employeeId ?? "",
+                }
+              : undefined,
+        };
+      }),
+    });
+  } catch (error) {
+    console.error("[api/attendance] GET error:", error);
+    return jsonError(
+      error instanceof Error ? error.message : "Internal Server Error",
+      500,
+    );
+  }
 }

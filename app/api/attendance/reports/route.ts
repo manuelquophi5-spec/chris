@@ -8,40 +8,41 @@ import mongoose from "mongoose";
 
 /** Staff: search/filter attendance by course and student. */
 export async function GET(request: Request) {
-  const auth = await requireStaff();
-  if (auth instanceof Response) return auth;
+  try {
+    const auth = await requireStaff();
+    if (auth instanceof Response) return auth;
 
-  const { searchParams } = new URL(request.url);
-  const courseId = searchParams.get("courseId")?.trim() ?? "";
-  const userId = searchParams.get("userId")?.trim() ?? "";
-  const q = searchParams.get("q")?.trim().toLowerCase() ?? "";
-  const from = searchParams.get("from")?.trim() || undefined;
-  const to = searchParams.get("to")?.trim() || undefined;
-  const format = searchParams.get("format")?.trim() ?? "json";
+    const { searchParams } = new URL(request.url);
+    const courseId = searchParams.get("courseId")?.trim() ?? "";
+    const userId = searchParams.get("userId")?.trim() ?? "";
+    const q = searchParams.get("q")?.trim().toLowerCase() ?? "";
+    const from = searchParams.get("from")?.trim() || undefined;
+    const to = searchParams.get("to")?.trim() || undefined;
+    const format = searchParams.get("format")?.trim() ?? "json";
 
-  await connectDB();
+    await connectDB();
 
-  if (courseId && format === "stats") {
-    const allowed = await canLecturerAccessCourse(
-      auth.id,
-      courseId,
-      auth.role === "admin",
-    );
-    if (!allowed) return jsonError("Forbidden", 403);
-    try {
-      const stats = await getCourseStats(courseId, from, to);
-      return jsonOk({ stats });
-    } catch {
-      return jsonError("Course not found", 404);
+    if (courseId && format === "stats") {
+      const allowed = await canLecturerAccessCourse(
+        auth.id,
+        courseId,
+        auth.role === "admin",
+      );
+      if (!allowed) return jsonError("Forbidden", 403);
+      try {
+        const stats = await getCourseStats(courseId, from, to);
+        return jsonOk({ stats });
+      } catch {
+        return jsonError("Course not found", 404);
+      }
     }
-  }
 
-  const courseFilter: Record<string, unknown> = { isActive: true };
-  if (auth.role === "instructor") {
-    courseFilter.lecturerId = auth.id;
-  }
-  const staffCourses = await Course.find(courseFilter).select("_id title").lean();
-  const allowedCourseIds = staffCourses.map((c) => c._id);
+    const courseFilter: Record<string, unknown> = { isActive: true };
+    if (auth.role === "instructor") {
+      courseFilter.lecturerId = auth.id;
+    }
+    const staffCourses = await Course.find(courseFilter).select("_id title").lean();
+    const allowedCourseIds = staffCourses.map((c) => c._id);
 
   const query: Record<string, unknown> = {
     courseId: { $in: allowedCourseIds },
@@ -111,4 +112,11 @@ export async function GET(request: Request) {
   }));
 
   return jsonOk({ records: rows, courses });
+  } catch (error) {
+    console.error("[api/attendance/reports] GET error:", error);
+    return jsonError(
+      error instanceof Error ? error.message : "Internal Server Error",
+      500,
+    );
+  }
 }

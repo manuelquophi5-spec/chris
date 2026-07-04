@@ -129,12 +129,24 @@ export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) 
 
   const days = useMemo(() => groupByDayAndClass(filteredRows), [filteredRows]);
 
-  function load() {
+  async function load() {
     setLoading(true);
-    authFetch("/api/attendance?limit=100")
-      .then((r) => r.json())
-      .then((data) => setRows(data.attendance ?? []))
-      .finally(() => setLoading(false));
+    try {
+      const res = await authFetch("/api/attendance?limit=100");
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Attendance API Error:", res.status, text);
+        setRows([]);
+        return;
+      }
+      const data = await res.json();
+      setRows(data.attendance ?? []);
+    } catch (err) {
+      console.error("Attendance fetch failed:", err);
+      setRows([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
