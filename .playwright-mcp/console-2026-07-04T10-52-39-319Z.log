@@ -1,0 +1,60 @@
+[    1933ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    2012ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    2268ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[    2285ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ http://localhost:3000/login:0
+[    2442ms] [LOG] [Fast Refresh] done in 359ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   16343ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   18340ms] [LOG] [Fast Refresh] done in 2107ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   18369ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/api/auth/login:0
+[   39923ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   40047ms] [LOG] [Fast Refresh] done in 241ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:2477
+[   49206ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=O9hNEv_1wV8APUxE2GUTO' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[   52546ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=O9hNEv_1wV8APUxE2GUTO' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[   55908ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=O9hNEv_1wV8APUxE2GUTO' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[   59276ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=O9hNEv_1wV8APUxE2GUTO' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[   62613ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=O9hNEv_1wV8APUxE2GUTO' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[   69950ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=O9hNEv_1wV8APUxE2GUTO' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[   77286ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=O9hNEv_1wV8APUxE2GUTO' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[   84647ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=O9hNEv_1wV8APUxE2GUTO' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[   91992ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=O9hNEv_1wV8APUxE2GUTO' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[   99346ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=O9hNEv_1wV8APUxE2GUTO' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  106722ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=O9hNEv_1wV8APUxE2GUTO' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  114118ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=O9hNEv_1wV8APUxE2GUTO' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_client_0fhqo1d._.js:13322
+[  118789ms] Unexpected token '<'
+[  118805ms] Unexpected token '<'
+[  118821ms] Unexpected token '<'
+[  118821ms] Unexpected token '<'
+[  118822ms] Unexpected token '<'
+[  119042ms] [ERROR] Manifest: Line: 1, column: 1, Syntax error. @ http://localhost:3000/manifest.webmanifest:0
+[  121146ms] Unexpected token '<'
+[  121162ms] Unexpected token '<'
+[  121178ms] Unexpected token '<'
+[  121178ms] Unexpected token '<'
+[  121193ms] Unexpected token '<'
+[  121398ms] Unexpected token '<'
+[  123490ms] Unexpected token '<'
+[  123522ms] Unexpected token '<'
+[  123539ms] Unexpected token '<'
+[  123539ms] Unexpected token '<'
+[  123539ms] Unexpected token '<'
+[  123756ms] Unexpected token '<'
+[  126090ms] [ERROR] Manifest: Line: 1, column: 1, Syntax error. @ http://localhost:3000/manifest.webmanifest:0
+[  627684ms] Unexpected token '<'
+[  627687ms] Unexpected token '<'
+[  627687ms] Unexpected token '<'
+[  627687ms] Unexpected token '<'
+[  627931ms] [ERROR] Manifest: Line: 1, column: 1, Syntax error. @ http://localhost:3000/manifest.webmanifest:0
+[  630022ms] Unexpected token '<'
+[  630022ms] Unexpected token '<'
+[  630023ms] Unexpected token '<'
+[  630037ms] Unexpected token '<'
+[  630037ms] Unexpected token '<'
+[  630300ms] Unexpected token '<'
+[  632351ms] Unexpected token '<'
+[  632368ms] Unexpected token '<'
+[  632370ms] Unexpected token '<'
+[  632370ms] Unexpected token '<'
+[  632370ms] Unexpected token '<'
+[  632633ms] Unexpected token '<'
+[  634701ms] Unexpected token '<'
+[  637044ms] [ERROR] Manifest: Line: 1, column: 1, Syntax error. @ http://localhost:3000/manifest.webmanifest:0

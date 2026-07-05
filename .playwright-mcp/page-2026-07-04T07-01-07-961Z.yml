@@ -1,0 +1,130 @@
+- generic [active] [ref=f25e1]:
+  - generic [ref=f25e2]:
+    - complementary [ref=f25e3]:
+      - generic [ref=f25e4]:
+        - generic [ref=f25e6]:
+          - paragraph [ref=f25e7]: datalink_attend
+          - paragraph [ref=f25e8]: Admin
+        - paragraph [ref=f25e9]: Data Link Institute
+      - navigation [ref=f25e10]:
+        - link "Start here" [ref=f25e11] [cursor=pointer]:
+          - /url: /dashboard/admin
+        - link "Classes" [ref=f25e12] [cursor=pointer]:
+          - /url: /dashboard/admin/courses
+        - link "Students & staff" [ref=f25e13] [cursor=pointer]:
+          - /url: /dashboard/admin/users
+        - link "Campuses" [ref=f25e14] [cursor=pointer]:
+          - /url: /dashboard/admin/sites
+        - link "Attendance log" [ref=f25e15] [cursor=pointer]:
+          - /url: /dashboard/admin/attendance
+        - link "One-off sessions" [ref=f25e16] [cursor=pointer]:
+          - /url: /dashboard/admin/sessions
+        - link "Activity history" [ref=f25e17] [cursor=pointer]:
+          - /url: /dashboard/admin/audit
+      - generic [ref=f25e18]:
+        - paragraph [ref=f25e19]: Admin
+        - paragraph [ref=f25e20]: ADMIN
+        - button "Sign out" [ref=f25e21]
+    - generic [ref=f25e22]:
+      - banner [ref=f25e23]:
+        - link "Mobile check-in" [ref=f25e26] [cursor=pointer]:
+          - /url: /dashboard?mobile=1
+      - main [ref=f25e27]:
+        - generic [ref=f25e29]:
+          - generic [ref=f25e30]:
+            - heading "Classes & courses" [level=1] [ref=f25e31]
+            - paragraph [ref=f25e32]: Create classes, set schedules, assign lecturers, enroll students, and review attendance.
+          - generic [ref=f25e33]:
+            - paragraph [ref=f25e34]: School setup
+            - list [ref=f25e36]:
+              - listitem [ref=f25e37]: Create a campus under Campuses with GPS radius.
+              - listitem [ref=f25e38]: "Add lecturers under Students & staff (role: Lecturer)."
+              - listitem [ref=f25e39]: Create a class with program + level (e.g. Computer Science, Level 200).
+              - listitem [ref=f25e40]: Students with matching program and level see the class automatically — no manual enrollment.
+          - generic [ref=f25e41]:
+            - heading "Create a class" [level=2] [ref=f25e43]
+            - generic [ref=f25e44]:
+              - generic [ref=f25e45]:
+                - text: Course title
+                - textbox "Course title" [ref=f25e46]:
+                  - /placeholder: e.g. Introduction to Computing
+              - generic [ref=f25e47]:
+                - text: Program
+                - combobox "Program" [ref=f25e48]:
+                  - option "Select program" [selected]
+                  - option "Computer Science"
+                  - option "Information Technology"
+                  - option "Business Administration"
+              - generic [ref=f25e49]:
+                - text: Level
+                - combobox "Level" [ref=f25e50]:
+                  - option "Select level" [selected]
+                  - option "Level 100"
+                  - option "Level 200"
+                  - option "Level 300"
+                  - option "Level 400"
+              - generic [ref=f25e51]:
+                - text: Course code
+                - textbox "Course code" [ref=f25e52]:
+                  - /placeholder: e.g. BBA101
+              - generic [ref=f25e53]:
+                - text: Description
+                - textbox "Description" [ref=f25e54]
+              - generic [ref=f25e55]:
+                - text: Lecturer
+                - combobox "Lecturer" [ref=f25e56]:
+                  - option "Select lecturer" [selected]
+              - generic [ref=f25e57]:
+                - text: Campus / room GPS
+                - combobox "Campus / room GPS" [ref=f25e58]:
+                  - option "Select campus" [selected]
+              - generic [ref=f25e59]:
+                - text: Start time
+                - textbox "Start time" [ref=f25e60]: 09:00
+              - generic [ref=f25e61]:
+                - text: End time
+                - textbox "End time" [ref=f25e62]: 11:00
+              - generic [ref=f25e63]:
+                - text: Late after (minutes)
+                - spinbutton "Late after (minutes)" [ref=f25e64]: "15"
+            - group "Class days" [ref=f25e65]:
+              - generic [ref=f25e66]: Class days
+              - generic [ref=f25e67]:
+                - generic [ref=f25e68] [cursor=pointer]:
+                  - checkbox "Mon" [checked] [ref=f25e69]
+                  - text: Mon
+                - generic [ref=f25e70] [cursor=pointer]:
+                  - checkbox "Tue" [checked] [ref=f25e71]
+                  - text: Tue
+                - generic [ref=f25e72] [cursor=pointer]:
+                  - checkbox "Wed" [checked] [ref=f25e73]
+                  - text: Wed
+                - generic [ref=f25e74] [cursor=pointer]:
+                  - checkbox "Thu" [checked] [ref=f25e75]
+                  - text: Thu
+                - generic [ref=f25e76] [cursor=pointer]:
+                  - checkbox "Fri" [checked] [ref=f25e77]
+                  - text: Fri
+                - generic [ref=f25e78] [cursor=pointer]:
+                  - checkbox "Sat" [ref=f25e79]
+                  - text: Sat
+                - generic [ref=f25e80] [cursor=pointer]:
+                  - checkbox "Sun" [ref=f25e81]
+                  - text: Sun
+            - button "Create class" [disabled] [ref=f25e82]
+          - generic [ref=f25e83]:
+            - generic [ref=f25e84]:
+              - heading "All classes" [level=2] [ref=f25e86]
+              - textbox "Search by title, code, or lecturer…" [ref=f25e88]
+              - list [ref=f25e89]:
+                - listitem [ref=f25e90]: No classes yet.
+            - paragraph [ref=f25e92]: Select a class to view assigned students and attendance statistics.
+  - region "Notifications Alt+T"
+  - region "Install app" [ref=f25e93]:
+    - generic [ref=f25e94]:
+      - generic [ref=f25e95]:
+        - paragraph [ref=f25e96]: Install datalink_attend
+        - paragraph [ref=f25e97]: Works like an app — faster check-in on site.
+      - button "How to" [ref=f25e98]
+  - button "Open Next.js Dev Tools" [ref=f25e104] [cursor=pointer]:
+    - img [ref=f25e105]

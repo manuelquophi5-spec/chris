@@ -3,7 +3,7 @@
 export const APP_NAME = "datalink_attend";
 export const APP_TITLE = "Data Link Attend";
 export const APP_SHORT_TITLE = "datalink_attend";
-export const INSTITUTE_NAME = "Data Link Institute";
+export const INSTITUTE_NAME = process.env.SCHOOL_NAME || "Data Link Institute";
 export const LOGO_SRC = "/logo.png";
 export const LOGO_URL =
   "https://datalink.edu.gh/assets/images/only_logo.png";

@@ -1,4 +1,8 @@
 import mongoose from "mongoose";
+import dns from "node:dns";
+
+// Use Google DNS to work around networks that block MongoDB Atlas SRV lookups
+try { dns.setServers(["8.8.8.8", "8.8.4.4"]); } catch { /* ignore if already set */ }
 
 function getMongoUri(): string {
   const uri = process.env.MONGODB_URI;

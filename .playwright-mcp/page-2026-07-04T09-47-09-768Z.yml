@@ -1,0 +1,112 @@
+- generic [active] [ref=f27e1]:
+  - generic [ref=f27e2]:
+    - complementary [ref=f27e3]:
+      - generic [ref=f27e4]:
+        - generic [ref=f27e6]:
+          - paragraph [ref=f27e7]: datalink_attend
+          - paragraph [ref=f27e8]: Admin
+        - paragraph [ref=f27e9]: Data Link Institute
+      - navigation [ref=f27e10]:
+        - link "Start here" [ref=f27e11] [cursor=pointer]:
+          - /url: /dashboard/admin
+        - link "Classes" [ref=f27e12] [cursor=pointer]:
+          - /url: /dashboard/admin/courses
+        - link "Students & staff" [ref=f27e13] [cursor=pointer]:
+          - /url: /dashboard/admin/users
+        - link "Campuses" [ref=f27e14] [cursor=pointer]:
+          - /url: /dashboard/admin/sites
+        - link "Attendance log" [ref=f27e15] [cursor=pointer]:
+          - /url: /dashboard/admin/attendance
+        - link "One-off sessions" [ref=f27e16] [cursor=pointer]:
+          - /url: /dashboard/admin/sessions
+        - link "Activity history" [ref=f27e17] [cursor=pointer]:
+          - /url: /dashboard/admin/audit
+      - generic [ref=f27e18]:
+        - paragraph [ref=f27e19]: Admin
+        - paragraph [ref=f27e20]: ADMIN
+        - button "Sign out" [ref=f27e21]
+    - generic [ref=f27e22]:
+      - banner [ref=f27e23]:
+        - link "Mobile check-in" [ref=f27e26] [cursor=pointer]:
+          - /url: /dashboard?mobile=1
+      - main [ref=f27e27]:
+        - generic [ref=f27e29]:
+          - generic [ref=f27e30]:
+            - heading "Students & staff" [level=1] [ref=f27e31]
+            - paragraph [ref=f27e32]: Add students with program and level — they automatically see matching courses. Lecturers are assigned to classes by admin.
+          - generic [ref=f27e33]:
+            - paragraph [ref=f27e34]: Tell new students (copy & send)
+            - generic [ref=f27e35]:
+              - paragraph [ref=f27e36]: "After you add someone, send them:"
+              - paragraph [ref=f27e37]: “Open datalink_attend → Set password → enter your Student ID → pick a password → check in during class.”
+          - generic [ref=f27e38]:
+            - heading "Add a new person" [level=2] [ref=f27e39]
+            - generic [ref=f27e40]:
+              - generic [ref=f27e41]:
+                - text: First name
+                - textbox "First name" [ref=f27e42]:
+                  - /placeholder: e.g. Ama
+              - generic [ref=f27e43]:
+                - text: Student ID (they will type this)
+                - textbox "Student ID (they will type this)" [ref=f27e44]:
+                  - /placeholder: e.g. E10234
+              - generic [ref=f27e45]:
+                - text: Job type
+                - combobox "Job type" [ref=f27e46]:
+                  - option "Student — checks in on phone during class" [selected]
+                  - option "Lecturer — teaches classes & views attendance"
+              - generic [ref=f27e47]:
+                - text: Program
+                - combobox "Program" [ref=f27e48]:
+                  - option "Select program" [selected]
+                  - option "Computer Science"
+                  - option "Information Technology"
+                  - option "Business Administration"
+              - generic [ref=f27e49]:
+                - text: Level
+                - combobox "Level" [ref=f27e50]:
+                  - option "Select level" [selected]
+                  - option "Level 100"
+                  - option "Level 200"
+                  - option "Level 300"
+                  - option "Level 400"
+            - button "Add student or lecturer" [disabled] [ref=f27e51]
+          - generic [ref=f27e52]:
+            - heading "Import from CSV" [level=2] [ref=f27e53]
+            - paragraph [ref=f27e54]:
+              - text: "Upload a spreadsheet exported from your student records system. CSV must have columns:"
+              - strong [ref=f27e55]: Name
+              - text: ","
+              - strong [ref=f27e56]: Student ID
+              - text: ","
+              - strong [ref=f27e57]: Program
+              - text: ","
+              - strong [ref=f27e58]: Level
+              - text: ","
+              - strong [ref=f27e59]: Role
+              - text: (optional — defaults to "user"). Use "instructor" or "lecturer" for lecturers.
+            - generic [ref=f27e60]:
+              - button "Choose File" [ref=f27e61]
+              - button "Import CSV" [ref=f27e62]
+          - generic [ref=f27e63]:
+            - heading "All students & staff" [level=2] [ref=f27e65]
+            - table [ref=f27e66]:
+              - rowgroup [ref=f27e67]:
+                - row "Name Student ID Program / level Status Actions" [ref=f27e68]:
+                  - columnheader "Name" [ref=f27e69]
+                  - columnheader "Student ID" [ref=f27e70]
+                  - columnheader "Program / level" [ref=f27e71]
+                  - columnheader "Status" [ref=f27e72]
+                  - columnheader "Actions" [ref=f27e73]
+              - rowgroup [ref=f27e74]:
+                - row "Loading…" [ref=f27e75]:
+                  - cell "Loading…" [ref=f27e76]
+  - region "Notifications Alt+T"
+  - region "Install app" [ref=f27e77]:
+    - generic [ref=f27e78]:
+      - generic [ref=f27e79]:
+        - paragraph [ref=f27e80]: Install datalink_attend
+        - paragraph [ref=f27e81]: Works like an app — faster check-in on site.
+      - button "How to" [ref=f27e82]
+  - button "Open Next.js Dev Tools" [ref=f27e88] [cursor=pointer]:
+    - img [ref=f27e89]

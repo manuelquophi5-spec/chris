@@ -37,7 +37,8 @@ export function DashboardShell({ user, children }: Props) {
                 alt=""
                 width={36}
                 height={36}
-                className="shrink-0 object-contain"
+                className="shrink-0 object-contain h-auto w-auto"
+                style={{ width: "auto", height: "auto" }}
               />
               <div className="min-w-0">
                 <p className="text-xs font-medium text-[var(--ella-fg-muted)]">

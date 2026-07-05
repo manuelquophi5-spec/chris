@@ -3,24 +3,47 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { authFetch } from "@/lib/auth-client";
+import { APP_SHORT_TITLE } from "@/lib/brand";
 import { AdminHelpCard } from "./AdminHelpCard";
+
+function StatSkeleton() {
+  return (
+    <div className="ella-stat-cell animate-pulse">
+      <div className="mb-2 h-3 w-20 rounded bg-[var(--ella-surface-muted)]" />
+      <div className="h-6 w-12 rounded bg-[var(--ella-surface-muted)]" />
+    </div>
+  );
+}
+
+type ActiveClass = {
+  id: string;
+  title: string;
+  courseCode: string;
+  checkedIn: number;
+  enrolled: number;
+};
 
 export function AdminOverview() {
   const [userCount, setUserCount] = useState<number | null>(null);
   const [pendingSetup, setPendingSetup] = useState<number | null>(null);
   const [siteCount, setSiteCount] = useState<number | null>(null);
   const [todayMarks, setTodayMarks] = useState<number | null>(null);
+  const [activeClasses, setActiveClasses] = useState<ActiveClass[]>([]);
+  const [loadingStats, setLoadingStats] = useState(true);
 
   useEffect(() => {
     void (async () => {
-      const [usersRes, locRes, attRes] = await Promise.all([
+      setLoadingStats(true);
+      const [usersRes, locRes, attRes, activeRes] = await Promise.all([
         authFetch("/api/admin/users"),
         authFetch("/api/locations?all=1"),
         authFetch("/api/attendance?limit=100"),
+        authFetch("/api/admin/courses/active-now"),
       ]);
       const usersData = await usersRes.json();
       const locData = await locRes.json();
       const attData = await attRes.json();
+      const activeData = await activeRes.json();
 
       const users = usersData.users ?? [];
       setUserCount(users.length);
@@ -44,6 +67,8 @@ export function AdminOverview() {
           (r.dayKey || r.markedAt.slice(0, 10)) === dayKey,
       );
       setTodayMarks(marks.length);
+      setActiveClasses(activeData.classes ?? []);
+      setLoadingStats(false);
     })();
   }, []);
 
@@ -113,7 +138,7 @@ export function AdminOverview() {
       </div>
 
       <AdminHelpCard title="What students do on their phones">
-        <p>1. Open datalink_attend in Chrome or Safari (add to home screen if you like).</p>
+        <p>1. Open {APP_SHORT_TITLE} in Chrome or Safari (add to home screen if you like).</p>
         <p>2. Sign in with student ID and password.</p>
         <p>3. Select their class and check in during the scheduled window.</p>
         <p className="text-[var(--ella-fg-subtle)]">
@@ -121,19 +146,47 @@ export function AdminOverview() {
         </p>
       </AdminHelpCard>
 
+      {activeClasses.length > 0 && (
+        <div className="ella-card-padded border-l-4 border-[var(--ella-accent)]">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse" />
+            <h2 className="text-sm font-bold text-[var(--ella-fg)]">
+              {activeClasses.length} class{activeClasses.length !== 1 ? "es" : ""} in session now
+            </h2>
+          </div>
+          <ul className="mt-3 space-y-2">
+            {activeClasses.map((c) => (
+              <li key={c.id} className="flex items-center justify-between text-sm">
+                <span className="font-medium text-[var(--ella-fg)]">
+                  {c.courseCode ? (
+                    <span className="font-mono text-[var(--ella-fg-subtle)]">{c.courseCode} </span>
+                  ) : null}
+                  {c.title}
+                </span>
+                <span className="text-[var(--ella-fg-muted)] tabular-nums">
+                  {c.checkedIn} / {c.enrolled} checked in
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div className="ella-stat-row">
-        {stats.map((stat) => (
-          <Link
-            key={stat.label}
-            href={stat.href}
-            className={`ella-stat-cell transition hover:bg-[var(--ella-surface-muted)] ${
-              stat.warn ? "bg-[var(--ella-warning-subtle)]" : ""
-            }`}
-          >
-            <p className="ella-stat-label">{stat.label}</p>
-            <p className="ella-stat-value">{stat.value}</p>
-          </Link>
-        ))}
+        {loadingStats
+          ? [0, 1, 2, 3].map((i) => <StatSkeleton key={i} />)
+          : stats.map((stat) => (
+              <Link
+                key={stat.label}
+                href={stat.href}
+                className={`ella-stat-cell transition hover:bg-[var(--ella-surface-muted)] ${
+                  stat.warn ? "bg-[var(--ella-warning-subtle)]" : ""
+                }`}
+              >
+                <p className="ella-stat-label">{stat.label}</p>
+                <p className="ella-stat-value">{stat.value}</p>
+              </Link>
+            ))}
       </div>
 
       <div>

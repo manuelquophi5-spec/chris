@@ -1,0 +1,28 @@
+- generic [active] [ref=f33e1]:
+  - generic [ref=f33e3]:
+    - generic [ref=f33e4]:
+      - generic [ref=f33e5]:
+        - img "datalink_attend logo" [ref=f33e6]
+        - paragraph [ref=f33e7]: datalink_attend
+      - paragraph [ref=f33e8]: Manage campuses, classes, and attendance
+    - generic [ref=f33e9]:
+      - heading "Admin sign in" [level=1] [ref=f33e10]
+      - generic [ref=f33e12]:
+        - generic [ref=f33e13]:
+          - text: Email
+          - textbox "Email" [ref=f33e14]: admin@ella.local
+        - generic [ref=f33e15]:
+          - text: Password
+          - textbox "Password" [ref=f33e16]: Admin12345
+        - button "Sign in as admin" [ref=f33e17]
+    - paragraph [ref=f33e19]:
+      - text: Student check-in?
+      - link "Student sign in" [ref=f33e20] [cursor=pointer]:
+        - /url: /login
+  - region "Notifications Alt+T"
+  - region "Install app" [ref=f33e21]:
+    - generic [ref=f33e22]:
+      - generic [ref=f33e23]:
+        - paragraph [ref=f33e24]: Install datalink_attend
+        - paragraph [ref=f33e25]: Works like an app — faster check-in on site.
+      - button "How to" [ref=f33e26]

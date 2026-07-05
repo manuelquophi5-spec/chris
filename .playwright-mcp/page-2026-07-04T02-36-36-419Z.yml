@@ -1,0 +1,77 @@
+- generic [active] [ref=f10e1]:
+  - generic [ref=f10e2]:
+    - complementary [ref=f10e3]:
+      - generic [ref=f10e4]:
+        - generic [ref=f10e6]:
+          - paragraph [ref=f10e7]: datalink_attend
+          - paragraph [ref=f10e8]: Admin
+        - paragraph [ref=f10e9]: Data Link Institute
+      - navigation [ref=f10e10]:
+        - link "Start here" [ref=f10e11] [cursor=pointer]:
+          - /url: /dashboard/admin
+        - link "Classes" [ref=f10e12] [cursor=pointer]:
+          - /url: /dashboard/admin/courses
+        - link "Students & staff" [ref=f10e13] [cursor=pointer]:
+          - /url: /dashboard/admin/users
+        - link "Campuses" [ref=f10e14] [cursor=pointer]:
+          - /url: /dashboard/admin/sites
+        - link "Attendance log" [ref=f10e15] [cursor=pointer]:
+          - /url: /dashboard/admin/attendance
+        - link "One-off sessions" [ref=f10e16] [cursor=pointer]:
+          - /url: /dashboard/admin/sessions
+        - link "Activity history" [ref=f10e17] [cursor=pointer]:
+          - /url: /dashboard/admin/audit
+      - generic [ref=f10e18]:
+        - paragraph [ref=f10e19]: Admin
+        - paragraph [ref=f10e20]: ADMIN
+        - button "Sign out" [ref=f10e21]
+    - generic [ref=f10e22]:
+      - banner [ref=f10e23]:
+        - link "Mobile check-in" [ref=f10e26] [cursor=pointer]:
+          - /url: /dashboard?mobile=1
+      - main [ref=f10e27]:
+        - generic [ref=f10e29]:
+          - generic [ref=f10e30]:
+            - heading "Classes (optional)" [level=1] [ref=f10e31]
+            - paragraph [ref=f10e32]: Only needed for schools or timed meetings. Staff check in when class starts and out when it ends. For a normal office, use daily check-in on the phone instead — you can skip this page.
+          - generic [ref=f10e33]:
+            - heading "New session" [level=2] [ref=f10e34]
+            - generic [ref=f10e35]:
+              - generic [ref=f10e36]:
+                - text: Title
+                - textbox "Title" [ref=f10e37]:
+                  - /placeholder: Intro to Computing — Week 5
+              - generic [ref=f10e38]:
+                - text: Course code (optional)
+                - textbox "Course code (optional)" [ref=f10e39]:
+                  - /placeholder: CS101
+              - generic [ref=f10e40]:
+                - text: Site
+                - combobox "Site" [ref=f10e41]:
+                  - option "Select site…" [selected]
+              - generic [ref=f10e42]:
+                - text: Starts
+                - textbox "Starts" [ref=f10e43]
+              - generic [ref=f10e44]:
+                - text: Ends
+                - textbox "Ends" [ref=f10e45]
+            - button "Create session" [ref=f10e46]
+          - table [ref=f10e48]:
+            - rowgroup [ref=f10e49]:
+              - row "Session Site Window Status" [ref=f10e50]:
+                - columnheader "Session" [ref=f10e51]
+                - columnheader "Site" [ref=f10e52]
+                - columnheader "Window" [ref=f10e53]
+                - columnheader "Status" [ref=f10e54]
+            - rowgroup [ref=f10e55]:
+              - row "No sessions yet." [ref=f10e56]:
+                - cell "No sessions yet." [ref=f10e57]
+  - region "Notifications Alt+T"
+  - region "Install app" [ref=f10e58]:
+    - generic [ref=f10e59]:
+      - generic [ref=f10e60]:
+        - paragraph [ref=f10e61]: Install datalink_attend
+        - paragraph [ref=f10e62]: Works like an app — faster check-in on site.
+      - button "How to" [ref=f10e63]
+  - button "Open Next.js Dev Tools" [ref=f10e69] [cursor=pointer]:
+    - img [ref=f10e70]

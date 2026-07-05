@@ -1,0 +1,41 @@
+- generic [active] [ref=f35e1]:
+  - generic [ref=f35e3]:
+    - generic [ref=f35e4]:
+      - generic [ref=f35e5]:
+        - img "datalink_attend logo" [ref=f35e6]
+        - paragraph [ref=f35e7]: datalink_attend
+      - paragraph [ref=f35e8]: Attendance check-in
+    - generic [ref=f35e9]:
+      - heading "Sign in" [level=1] [ref=f35e10]
+      - generic [ref=f35e12]:
+        - generic [ref=f35e13]:
+          - text: Student ID
+          - textbox "Student ID" [ref=f35e14]: ADMIN@ELLA.LOCAL
+        - generic [ref=f35e15]:
+          - generic [ref=f35e16]:
+            - generic [ref=f35e17]: Password
+            - link "Forgot password?" [ref=f35e18] [cursor=pointer]:
+              - /url: /set-password
+          - textbox "Password" [ref=f35e19]: Admin12345
+          - paragraph [ref=f35e20]: First time? Leave password empty and submit.
+        - generic [ref=f35e21]:
+          - button "Sign in" [ref=f35e22]
+          - button "Install app" [ref=f35e23]
+        - button "Skip" [ref=f35e24]
+    - generic [ref=f35e26]:
+      - paragraph [ref=f35e27]:
+        - text: New student?
+        - link "Set your password" [ref=f35e28] [cursor=pointer]:
+          - /url: /set-password
+      - paragraph [ref=f35e29]:
+        - text: Administrator?
+        - link "Admin sign in (email)" [ref=f35e30] [cursor=pointer]:
+          - /url: /login/admin
+  - region "Notifications Alt+T"
+  - region "Install app" [ref=f35e31]:
+    - generic [ref=f35e32]:
+      - generic [ref=f35e33]:
+        - paragraph [ref=f35e34]: Install datalink_attend
+        - paragraph [ref=f35e35]: Works like an app — faster check-in on site.
+      - button "How to" [ref=f35e36]
+  - alert [ref=f35e37]

@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 type Tab = {
   href: string;
   label: string;
-  icon: "home" | "history";
+  icon: "home" | "history" | "profile";
   match: (path: string) => boolean;
 };
 
@@ -31,6 +31,21 @@ const icons = {
       />
     </svg>
   ),
+  profile: (
+    <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden>
+      <path
+        d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+      />
+      <path
+        d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+    </svg>
+  ),
 };
 
 export function MobileTabBar() {
@@ -48,6 +63,12 @@ export function MobileTabBar() {
       label: "History",
       icon: "history",
       match: (p) => p.startsWith("/dashboard/history"),
+    },
+    {
+      href: "/dashboard/profile",
+      label: "Profile",
+      icon: "profile",
+      match: (p) => p.startsWith("/dashboard/profile"),
     },
   ];
 

@@ -1,0 +1,55 @@
+- generic [active] [ref=f11e1]:
+  - generic [ref=f11e2]:
+    - complementary [ref=f11e3]:
+      - generic [ref=f11e4]:
+        - generic [ref=f11e6]:
+          - paragraph [ref=f11e7]: datalink_attend
+          - paragraph [ref=f11e8]: Admin
+        - paragraph [ref=f11e9]: Data Link Institute
+      - navigation [ref=f11e10]:
+        - link "Start here" [ref=f11e11] [cursor=pointer]:
+          - /url: /dashboard/admin
+        - link "Classes" [ref=f11e12] [cursor=pointer]:
+          - /url: /dashboard/admin/courses
+        - link "Students & staff" [ref=f11e13] [cursor=pointer]:
+          - /url: /dashboard/admin/users
+        - link "Campuses" [ref=f11e14] [cursor=pointer]:
+          - /url: /dashboard/admin/sites
+        - link "Attendance log" [ref=f11e15] [cursor=pointer]:
+          - /url: /dashboard/admin/attendance
+        - link "One-off sessions" [ref=f11e16] [cursor=pointer]:
+          - /url: /dashboard/admin/sessions
+        - link "Activity history" [ref=f11e17] [cursor=pointer]:
+          - /url: /dashboard/admin/audit
+      - generic [ref=f11e18]:
+        - paragraph [ref=f11e19]: Admin
+        - paragraph [ref=f11e20]: ADMIN
+        - button "Sign out" [ref=f11e21]
+    - generic [ref=f11e22]:
+      - banner [ref=f11e23]:
+        - link "Mobile check-in" [ref=f11e26] [cursor=pointer]:
+          - /url: /dashboard?mobile=1
+      - main [ref=f11e27]:
+        - generic [ref=f11e29]:
+          - generic [ref=f11e30]:
+            - heading "Audit log" [level=1] [ref=f11e31]
+            - paragraph [ref=f11e32]: Who created users, sites, and sessions — for accountability.
+          - table [ref=f11e34]:
+            - rowgroup [ref=f11e35]:
+              - row "When Actor Action Target" [ref=f11e36]:
+                - columnheader "When" [ref=f11e37]
+                - columnheader "Actor" [ref=f11e38]
+                - columnheader "Action" [ref=f11e39]
+                - columnheader "Target" [ref=f11e40]
+            - rowgroup [ref=f11e41]:
+              - row "Loading…" [ref=f11e42]:
+                - cell "Loading…" [ref=f11e43]
+  - region "Notifications Alt+T"
+  - region "Install app" [ref=f11e44]:
+    - generic [ref=f11e45]:
+      - generic [ref=f11e46]:
+        - paragraph [ref=f11e47]: Install datalink_attend
+        - paragraph [ref=f11e48]: Works like an app — faster check-in on site.
+      - button "How to" [ref=f11e49]
+  - button "Open Next.js Dev Tools" [ref=f11e55] [cursor=pointer]:
+    - img [ref=f11e56]

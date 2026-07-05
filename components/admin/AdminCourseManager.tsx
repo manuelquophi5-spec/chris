@@ -47,6 +47,7 @@ export function AdminCourseManager() {
   const [scheduleDays, setScheduleDays] = useState<number[]>([1, 2, 3, 4, 5]);
   const [isActive, setIsActive] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [courseSearch, setCourseSearch] = useState("");
   const load = useCallback(async () => {
     const [cRes, uRes, lRes] = await Promise.all([
       authFetch("/api/admin/courses"),
@@ -208,6 +209,17 @@ export function AdminCourseManager() {
       s.name.toLowerCase().includes(search.toLowerCase()) ||
       s.studentId.toLowerCase().includes(search.toLowerCase()),
   );
+
+  const filteredCourses = courses.filter((c) => {
+    if (!courseSearch) return true;
+    const q = courseSearch.toLowerCase();
+    return (
+      c.title.toLowerCase().includes(q) ||
+      (c.courseCode ?? "").toLowerCase().includes(q) ||
+      c.lecturerName.toLowerCase().includes(q) ||
+      c.programLabel.toLowerCase().includes(q)
+    );
+  });
 
   return (
     <div className={adminStack}>
@@ -434,36 +446,51 @@ export function AdminCourseManager() {
           <div className="ella-list-panel-header">
             <h2 className="ella-heading-section text-lg">All classes</h2>
           </div>
-          <ul className="max-h-[420px] divide-y divide-[var(--ella-border)] overflow-y-auto">
-            {courses.map((c) => (
-              <li key={c.id}>
-                <button
-                  type="button"
-                  onClick={() => void loadCourseDetail(c.id)}
-                  className={`ella-list-item ${
-                    selectedId === c.id ? "ella-list-item-active" : ""
-                  }`}
-                >
-                  <p className="font-semibold text-[var(--ella-fg)]">
-                    {c.courseCode ? (
-                      <span className="font-mono text-[var(--ella-fg-subtle)]">
-                        {c.courseCode}{" "}
-                      </span>
-                    ) : null}
-                    {c.title}
-                  </p>
-                  <p className="ella-text-muted text-sm">
-                    {c.programLabel} · Level {c.level} · {c.lecturerName} ·{" "}
-                    {c.enrolledCount} students
-                  </p>
-                  {c.isActiveNow && (
-                    <span className="text-xs font-semibold text-[var(--ella-accent-hover)]">
-                      Active now
-                    </span>
-                  )}
-                </button>
+          <div className="px-4 py-2">
+            <input
+              type="text"
+              value={courseSearch}
+              onChange={(e) => setCourseSearch(e.target.value)}
+              placeholder="Search by title, code, or lecturer…"
+              className={`${adminInput}`}
+            />
+          </div>
+          <ul className="max-h-[380px] divide-y divide-[var(--ella-border)] overflow-y-auto">
+            {filteredCourses.length === 0 ? (
+              <li className="px-4 py-6 text-center text-sm text-[var(--ella-fg-muted)]">
+                {courseSearch ? "No classes match your search." : "No classes yet."}
               </li>
-            ))}
+            ) : (
+              filteredCourses.map((c) => (
+                <li key={c.id}>
+                  <button
+                    type="button"
+                    onClick={() => void loadCourseDetail(c.id)}
+                    className={`ella-list-item ${
+                      selectedId === c.id ? "ella-list-item-active" : ""
+                    }`}
+                  >
+                    <p className="font-semibold text-[var(--ella-fg)]">
+                      {c.courseCode ? (
+                        <span className="font-mono text-[var(--ella-fg-subtle)]">
+                          {c.courseCode}{" "}
+                        </span>
+                      ) : null}
+                      {c.title}
+                    </p>
+                    <p className="ella-text-muted text-sm">
+                      {c.programLabel} · Level {c.level} · {c.lecturerName} ·{" "}
+                      {c.enrolledCount} students
+                    </p>
+                    {c.isActiveNow && (
+                      <span className="text-xs font-semibold text-[var(--ella-accent-hover)]">
+                        Active now
+                      </span>
+                    )}
+                  </button>
+                </li>
+              ))
+            )}
           </ul>
         </div>
 

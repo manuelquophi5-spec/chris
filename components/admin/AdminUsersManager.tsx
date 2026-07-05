@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
 import { ACADEMIC_LEVELS, ACADEMIC_PROGRAMS } from "@/lib/academic";
-import { toastError, toastSuccess } from "@/lib/toast";
+import { toastError, toastSuccess, toastWarning } from "@/lib/toast";
 import type { AdminUserRow } from "@/types";
 import {
   adminBtnGhost,
@@ -15,6 +15,30 @@ import {
 } from "./admin-ui";
 import { AdminHelpCard } from "./AdminHelpCard";
 
+function parseCsv(text: string): Array<Record<string, string>> {
+  const lines = text.trim().split(/\r?\n/);
+  if (lines.length < 2) return [];
+  const headers = lines[0].split(",").map((h) => h.trim().toLowerCase());
+  const nameIdx = headers.findIndex((h) => h === "name" || h === "first name");
+  const idIdx = headers.findIndex((h) => h === "studentid" || h === "student id" || h === "id" || h === "employeeid");
+  const progIdx = headers.findIndex((h) => h === "program");
+  const levelIdx = headers.findIndex((h) => h === "level");
+  const roleIdx = headers.findIndex((h) => h === "role" || h === "type" || h === "job type");
+
+  if (nameIdx === -1 || idIdx === -1) return [];
+
+  return lines.slice(1).map((line) => {
+    const cols = line.split(",").map((c) => c.trim());
+    return {
+      name: cols[nameIdx] ?? "",
+      studentId: cols[idIdx] ?? "",
+      program: progIdx >= 0 ? (cols[progIdx] ?? "") : "",
+      level: levelIdx >= 0 ? (cols[levelIdx] ?? "") : "",
+      role: roleIdx >= 0 ? (cols[roleIdx] ?? "") : "user",
+    };
+  }).filter((r) => r.name && r.studentId);
+}
+
 export function AdminUsersManager() {
   const [users, setUsers] = useState<AdminUserRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -25,6 +49,9 @@ export function AdminUsersManager() {
   const [program, setProgram] = useState("");
   const [level, setLevel] = useState<number | "">("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [csvImporting, setCsvImporting] = useState(false);
+  const [csvResult, setCsvResult] = useState<{ created: number; skipped: number; message: string } | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -111,6 +138,51 @@ export function AdminUsersManager() {
       toastSuccess("Instructions copied to clipboard.");
       setTimeout(() => setCopiedId(null), 2000);
     });
+  }
+
+  async function handleCsvUpload() {
+    const file = fileRef.current?.files?.[0];
+    if (!file) {
+      toastWarning("Select a CSV file first.");
+      return;
+    }
+    setCsvImporting(true);
+    setCsvResult(null);
+    try {
+      const text = await file.text();
+      const rows = parseCsv(text);
+      if (rows.length === 0) {
+        toastError("CSV must have 'Name' and 'Student ID' columns.");
+        return;
+      }
+      const res = await authFetch("/api/admin/users/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rows }),
+      });
+      const data = await parseJsonResponse<{
+        error?: string;
+        created?: number;
+        skipped?: number;
+        message?: string;
+      }>(res);
+      if (!res.ok) {
+        toastError(data.error ?? "Import failed");
+        return;
+      }
+      setCsvResult({
+        created: data.created ?? 0,
+        skipped: data.skipped ?? 0,
+        message: data.message ?? "",
+      });
+      toastSuccess(data.message ?? "Import complete");
+      await load();
+      if (fileRef.current) fileRef.current.value = "";
+    } catch {
+      toastError("Could not read the CSV file. Make sure it's a valid CSV.");
+    } finally {
+      setCsvImporting(false);
+    }
   }
 
   return (
@@ -223,6 +295,37 @@ export function AdminUsersManager() {
           {saving ? "Adding…" : "Add student or lecturer"}
         </button>
       </form>
+
+      <div className="ella-card-padded">
+        <h2 className="ella-heading-section text-lg">Import from CSV</h2>
+        <p className="ella-text-muted mt-1 text-sm">
+          Upload a spreadsheet exported from your student records system. CSV must have columns: <strong>Name</strong>, <strong>Student ID</strong>, <strong>Program</strong>, <strong>Level</strong>, <strong>Role</strong> (optional — defaults to "user"). Use "instructor" or "lecturer" for lecturers.
+        </p>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <input
+            type="file"
+            accept=".csv,text/csv"
+            ref={fileRef}
+            className="rounded-lg border border-[var(--ella-border)] bg-[var(--ella-surface)] px-4 py-2 text-sm"
+          />
+          <button
+            type="button"
+            onClick={() => void handleCsvUpload()}
+            disabled={csvImporting}
+            className={adminBtnSecondary}
+          >
+            {csvImporting ? "Importing…" : "Import CSV"}
+          </button>
+        </div>
+        {csvResult && (
+          <div className="mt-3 rounded-lg bg-[var(--ella-surface-muted)] px-4 py-3 text-sm">
+            <p className="font-semibold text-[var(--ella-fg)]">{csvResult.message}</p>
+            <p className="mt-1 text-[var(--ella-fg-muted)]">
+              Created: {csvResult.created} · Skipped: {csvResult.skipped}
+            </p>
+          </div>
+        )}
+      </div>
 
       <div className="ella-table-wrap">
         <div className="ella-table-wrap-header">

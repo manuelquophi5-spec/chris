@@ -42,6 +42,7 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
   const [today, setToday] = useState<TodayAttendanceStatus | null>(null);
   const [courseId, setCourseId] = useState("");
   const [loading, setLoading] = useState<AttendanceType | null>(null);
+  const [requestingManual, setRequestingManual] = useState(false);
 
   const tzOffset = new Date().getTimezoneOffset();
 
@@ -134,6 +135,27 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
       toastError(geolocationErrorMessage(code));
     } finally {
       setLoading(null);
+    }
+  }
+
+  async function requestManual() {
+    setRequestingManual(true);
+    try {
+      const res = await authFetch("/api/attendance/request-manual", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reason: "GPS not available" }),
+      });
+      const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
+      if (!res.ok) {
+        toastError(data.error ?? "Could not send request");
+        return;
+      }
+      toastSuccess(data.message ?? "Request sent to administrator");
+    } catch {
+      toastError("Network error. Try again.");
+    } finally {
+      setRequestingManual(false);
     }
   }
 
@@ -278,6 +300,15 @@ export function CourseAttendanceCard({ onUpdate }: Props) {
             {loading === "check_out" ? "Checking out…" : "Check out"}
           </button>
         </div>
+
+        <button
+          type="button"
+          onClick={() => void requestManual()}
+          disabled={requestingManual}
+          className="w-full text-center text-xs text-[var(--ella-fg-subtle)] underline hover:text-[var(--ella-fg-muted)] transition-colors disabled:opacity-50"
+        >
+          {requestingManual ? "Sending request…" : "GPS not working? Request manual check-in"}
+        </button>
 
       </div>
 

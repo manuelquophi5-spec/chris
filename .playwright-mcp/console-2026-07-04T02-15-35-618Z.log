@@ -1,0 +1,911 @@
+[   12798ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   13853ms] [LOG] [Alia app extension] v1.0.5 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:44976
+[   17116ms] [INFO] Clear-Site-Data header on 'https://www.plug.tech/cart/update.js': Cleared data types: "prefetchCache", "prerenderCache". @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:0
+[   18902ms] [LOG] [PushOwl Web Push Notifications] starting up @ https://cdn.shopify.com/extensions/019ef94d-e41a-7e61-9259-faf6609a0254/pushowl-306/assets/pushowl-shopify-main.js:0
+[   18933ms] [WARNING] Manifest: property 'start_url' ignored, URL is invalid. @ blob:https://www.plug.tech/aece9ac6-f37a-4ba3-9844-040ca0320e4f:0
+[   18933ms] [WARNING] Manifest: property 'scope' ignored, URL is invalid. @ blob:https://www.plug.tech/aece9ac6-f37a-4ba3-9844-040ca0320e4f:0
+[   20218ms] [LOG] %c %c %c Edgemesh Server %c %c %c  background: #805AD5; padding:5px 0; border-top-left-radius:3px; border-bottom-left-radius:3px; background: #322659; padding:5px 0; color: #E2E8F0; background: #171923; padding:5px 0; background: #322659; padding:5px 0; background: #805AD5; padding:5px 0; border-top-right-radius:3px; border-bottom-right-radius:3px; background: transparent; padding:5px 0; Edgemesh Server migration complete. @ https://www.plug.tech/em-cgi/migrate.js:0
+[   21966ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   21980ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22203ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22226ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22240ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22256ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22272ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22290ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22306ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22324ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22340ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22357ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22372ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22426ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22441ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22459ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22474ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22490ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22507ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22525ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22541ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22559ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22573ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22595ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22609ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22628ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22640ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22656ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22673ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22694ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22707ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22724ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22758ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22775ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22790ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22807ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22825ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22841ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22875ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   22923ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23008ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23023ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23041ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23057ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23074ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23090ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23126ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23172ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23190ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23213ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23223ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23239ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23257ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23275ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23293ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23308ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23407ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23424ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23441ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23457ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23473ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23490ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23507ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23525ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23540ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23559ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23573ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23593ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23607ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23625ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23641ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23657ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23675ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23691ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23764ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23814ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   23826ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   25925ms] [INFO] this is the heights 37 61 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   27752ms] [LOG] Alia web pixel @ https://www.plug.tech/web-pixels/strict/app/web-pixel-1910636697@475329f46530466ec7717b489ce50da3.js:0
+[   27761ms] [INFO] k-web-pixel-version 1 @ https://www.plug.tech/web-pixels/strict/app/web-pixel-789741721@524f6c1ee37bacdca7657a665bdca589.js:0
+[   27944ms] [LOG] Videowise no campaign cookie detected @ https://www.plug.tech/web-pixels@4074779awe500cddcp1e53a49dm5f7c656e/custom/web-pixel-29655193@2/sandbox/modern/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:73
+[   31192ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:8909
+[   32896ms] [ERROR] Failed to load resource: net::ERR_FAILED @ chrome-extension://invalid/:0
+[   33011ms] [ERROR] Failed to load resource: net::ERR_FAILED @ chrome-extension://invalid/:0
+[   45855ms] [WARNING] In a sandboxed environment, addEventListener may not behave as expected. @ https://www.plug.tech/cdn/wpm/s4074779awe500cddcp1e53a49dm5f7c656em.js:0
+[   46665ms] [ERROR] Shopify's Google Analytics stub called with: [create, UA-208841002-1, Object] 
+See https://help.shopify.com/manual/promoting-marketing/pixels/pixel-migration#google for more information. @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:3137
+[   46667ms] [ERROR] Shopify's Google Analytics stub called with: [] 
+See https://help.shopify.com/manual/promoting-marketing/pixels/pixel-migration#google for more information. @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:3137
+[   46668ms] [ERROR] Shopify's Google Analytics stub called with: [gtag_UA_208841002_1.set, Object] 
+See https://help.shopify.com/manual/promoting-marketing/pixels/pixel-migration#google for more information. @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:3137
+[   46670ms] [ERROR] Shopify's Google Analytics stub called with: [gtag_UA_208841002_1.send, pageview, Object] 
+See https://help.shopify.com/manual/promoting-marketing/pixels/pixel-migration#google for more information. @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:3137
+[   47559ms] [WARNING] In a sandboxed environment, addEventListener may not behave as expected. @ https://www.plug.tech/cdn/wpm/s4074779awe500cddcp1e53a49dm5f7c656em.js:0
+[   47853ms] [INFO] Clear-Site-Data header on 'https://www.plug.tech/cart/update.js?vsly=t&ignore=veeper&p=3': Cleared data types: "prefetchCache", "prerenderCache". @ https://www.plug.tech/?srsltid=AfmBOorLTN2eTiMCQHogIFb6WuLNgThm6txZK53Y8cZXzqOjX97YgBCB:0
+[   48009ms] [LOG] %c
+🚀 Increase shopper engagement on-site
+🚀 Increase conversions
+⚡️ Zero page-speed impact
+
+Learn more at: https://videowise.com
+
+%cBuild: 2024 font-style: normal; background: rgba(135,131,120,0.15); color: #EB5757; border-radius: 3px; font-size: 80%; padding: 0.1em 0.2em; @ https://assets.videowise.com/client.js.gz:0
+[   48237ms] [WARNING] In a sandboxed environment, addEventListener may not behave as expected. @ https://www.plug.tech/cdn/wpm/s4074779awe500cddcp1e53a49dm5f7c656em.js:0
+[   53884ms] [LOG] Alia web pixel @ https://www.plug.tech/web-pixels/strict/app/web-pixel-1910636697@475329f46530466ec7717b489ce50da3.js:0
+[   53895ms] [INFO] k-web-pixel-version 1 @ https://www.plug.tech/web-pixels/strict/app/web-pixel-789741721@524f6c1ee37bacdca7657a665bdca589.js:0
+[   53914ms] [LOG] [shopify-pixel][APP][STRICT] page_viewed {id: sh-2aea09ab-8847-4255-98BD-49670C977A60, name: page_viewed, data: Object, type: standard, timestamp: 2026-07-04T02:16:28.777Z} @ https://www.plug.tech/web-pixels/strict/app/web-pixel-shopify-app-pixel@0490.js:2
+[   53916ms] [LOG] [shopify-pixel][APP][STRICT] collection_viewed {id: sh-2aea09af-04C5-464D-3FD4-66A41A814C7A, name: collection_viewed, data: Object, type: standard, timestamp: 2026-07-04T02:16:28.779Z} @ https://www.plug.tech/web-pixels/strict/app/web-pixel-shopify-app-pixel@0490.js:2
+[   53935ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   54614ms] [LOG] Videowise no campaign cookie detected @ https://www.plug.tech/web-pixels@4074779awe500cddcp1e53a49dm5f7c656e/custom/web-pixel-29655193@2/sandbox/modern/collections/google-pixel:73
+[   55012ms] [WARNING] In a sandboxed environment, addEventListener may not behave as expected. @ https://www.plug.tech/cdn/wpm/s4074779awe500cddcp1e53a49dm5f7c656em.js:0
+[   55434ms] [ERROR] Shopify's Google Analytics stub called with: [create, UA-208841002-1, Object] 
+See https://help.shopify.com/manual/promoting-marketing/pixels/pixel-migration#google for more information. @ https://www.plug.tech/collections/google-pixel:3145
+[   55435ms] [ERROR] Shopify's Google Analytics stub called with: [] 
+See https://help.shopify.com/manual/promoting-marketing/pixels/pixel-migration#google for more information. @ https://www.plug.tech/collections/google-pixel:3145
+[   55436ms] [ERROR] Shopify's Google Analytics stub called with: [gtag_UA_208841002_1.set, Object] 
+See https://help.shopify.com/manual/promoting-marketing/pixels/pixel-migration#google for more information. @ https://www.plug.tech/collections/google-pixel:3145
+[   55437ms] [ERROR] Shopify's Google Analytics stub called with: [gtag_UA_208841002_1.send, pageview, Object] 
+See https://help.shopify.com/manual/promoting-marketing/pixels/pixel-migration#google for more information. @ https://www.plug.tech/collections/google-pixel:3145
+[   55671ms] [WARNING] [Meta Pixel] - Invalid parameter format for currency. Please refer https://developers.facebook.com/docs/meta-pixel/reference/ for valid parameter specifications. @ https://connect.facebook.net/en_US/fbevents.js:187
+[   55847ms] [LOG] [shopify-pixel][CUSTOM][LAX] page_viewed {id: sh-2aea09ab-8847-4255-98BD-49670C977A60, name: page_viewed, data: Object, type: standard, timestamp: 2026-07-04T02:16:28.777Z} @ https://www.plug.tech/web-pixels@4074779awe500cddcp1e53a49dm5f7c656e/custom/web-pixel-shopify-custom-pixel@0490/sandbox/modern/collections/google-pixel:10
+[   55848ms] [LOG] [shopify-pixel][CUSTOM][LAX] collection_viewed {id: sh-2aea09af-04C5-464D-3FD4-66A41A814C7A, name: collection_viewed, data: Object, type: standard, timestamp: 2026-07-04T02:16:28.779Z} @ https://www.plug.tech/web-pixels@4074779awe500cddcp1e53a49dm5f7c656e/custom/web-pixel-shopify-custom-pixel@0490/sandbox/modern/collections/google-pixel:10
+[   56419ms] [LOG] [Alia app extension] v1.0.5 @ https://www.plug.tech/collections/google-pixel:26656
+[   57113ms] [ERROR] Failed to load resource: net::ERR_FAILED @ chrome-extension://invalid/:0
+[   57145ms] [WARNING] In a sandboxed environment, addEventListener may not behave as expected. @ https://www.plug.tech/cdn/wpm/s4074779awe500cddcp1e53a49dm5f7c656em.js:0
+[   57285ms] [ERROR] Failed to load resource: net::ERR_FAILED @ chrome-extension://invalid/:0
+[   57537ms] [WARNING] In a sandboxed environment, addEventListener may not behave as expected. @ https://www.plug.tech/cdn/wpm/s4074779awe500cddcp1e53a49dm5f7c656em.js:0
+[   57640ms] [LOG] %c
+🚀 Increase shopper engagement on-site
+🚀 Increase conversions
+⚡️ Zero page-speed impact
+
+Learn more at: https://videowise.com
+
+%cBuild: 2024 font-style: normal; background: rgba(135,131,120,0.15); color: #EB5757; border-radius: 3px; font-size: 80%; padding: 0.1em 0.2em; @ https://assets.videowise.com/client.js.gz:0
+[   58494ms] [LOG] [PushOwl Web Push Notifications] starting up @ https://cdn.shopify.com/extensions/019ef94d-e41a-7e61-9259-faf6609a0254/pushowl-306/assets/pushowl-shopify-main.js:0
+[   58569ms] [WARNING] In a sandboxed environment, addEventListener may not behave as expected. @ https://www.plug.tech/cdn/wpm/s4074779awe500cddcp1e53a49dm5f7c656em.js:0
+[   58573ms] [WARNING] Manifest: property 'start_url' ignored, URL is invalid. @ blob:https://www.plug.tech/78ceabb2-760d-46c2-a341-88732775efac:0
+[   58574ms] [WARNING] Manifest: property 'scope' ignored, URL is invalid. @ blob:https://www.plug.tech/78ceabb2-760d-46c2-a341-88732775efac:0
+[   58707ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   58978ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   59033ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   59819ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   59832ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   59911ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   59936ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   59964ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60034ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60093ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60121ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60149ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60159ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60198ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60219ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60253ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60261ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60296ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60311ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60380ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60634ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60673ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60692ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60708ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60751ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60759ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60799ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60810ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60842ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60879ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   60946ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   61733ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://idx.liadm.com/idex/did-0014/any?duid=83f6308a0627--01kwneknw0sb0v358f69p4v1rs&cd=.plug.tech&pu=https%3A%2F%2Fwww.plug.tech%2F&_shopify_y=a6701729-b647-4d70-8d92-6c3cf51ac96b&_fbp=fb.1.1783131391231.899712804808363639&resolve=md5&resolve=sha2&resolve=nonId&qf=0.7&did=did-0014:0
+[   61754ms] Uncaught (in promise) RequestError: Failed sending request to url https://idx.liadm.com/idex/did-0014/any?duid=83f6308a0627--01kwneknw0sb0v358f69p4v1rs&cd=.plug.tech&pu=https%3A%2F%2Fwww.plug.tech%2F&_shopify_y=a6701729-b647-4d70-8d92-6c3cf51ac96b&_fbp=fb.1.1783131391231.899712804808363639&resolve=md5&resolve=sha2&resolve=nonId&qf=0.7&did=did-0014
+    at <anonymous> (https://d-code.liadm.com/did-0014.min.js:0:88169)
+[   61762ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   61784ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   61797ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   61816ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   61829ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   61850ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62178ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62197ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62215ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62263ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62281ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62299ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62317ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62330ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62350ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62447ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62497ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62752ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62760ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62784ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62798ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62809ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62826ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62883ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62894ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62915ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62936ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62965ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   62981ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   63006ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   63039ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   63067ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   63080ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   63098ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   63121ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   63130ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   63185ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   65801ms] [WARNING] In a sandboxed environment, addEventListener may not behave as expected. @ https://www.plug.tech/cdn/wpm/s4074779awe500cddcp1e53a49dm5f7c656em.js:0
+[   65905ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   65911ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   65928ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   65973ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66002ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66010ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66029ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66043ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66077ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66093ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66116ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66128ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66146ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66203ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66238ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66349ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66385ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66394ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66461ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66476ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66494ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66515ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66526ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66548ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66562ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66663ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66967ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66976ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   66999ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67011ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67033ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67044ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67063ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67086ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67117ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67134ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67349ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67782ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67817ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67826ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67849ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67866ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67879ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67899ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67909ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67932ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67945ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   67961ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   68037ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   68066ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   68084ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   68101ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   68113ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   68167ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   68180ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   68201ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   68216ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   68232ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   68252ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   68274ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   69042ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   69060ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   69078ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   72598ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   72612ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   72635ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   72781ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   72820ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   72853ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   72908ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   72934ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   73001ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   73367ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   73379ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   73988ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   73994ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74012ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74028ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74047ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74060ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74081ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74095ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74128ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74144ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74161ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74196ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74226ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74299ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74400ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74413ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74429ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74444ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74462ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74516ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74525ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74547ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74560ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74580ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74592ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74614ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74625ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74645ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74661ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74684ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74692ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74714ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74726ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74746ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74759ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74783ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74792ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74847ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   74859ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75503ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75510ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75531ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75544ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75562ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75577ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75597ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75611ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75668ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75899ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75911ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75927ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75946ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75961ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75979ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   75994ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   76012ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   76027ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   76044ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   76060ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   76080ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   76093ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   76111ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   76134ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   76263ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79230ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79254ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79276ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79293ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79310ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79327ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79360ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79377ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79393ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79430ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79473ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79494ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79526ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79543ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79577ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79611ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79663ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79712ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79814ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79826ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79847ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79876ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79895ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79910ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79926ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79943ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79960ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79976ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   79993ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   80027ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   80060ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   80265ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81327ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81343ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81359ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81376ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81393ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81410ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81426ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81443ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81460ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81477ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81528ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81862ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81877ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81893ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81910ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81928ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81943ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81960ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81977ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   81993ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82045ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82059ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82075ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82092ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82109ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82126ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82142ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82159ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82176ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82192ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82210ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82226ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82243ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82259ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82276ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82292ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82309ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82326ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82342ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82379ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82411ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82435ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82460ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82477ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82528ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82543ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82560ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82577ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82593ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82610ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82626ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82643ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82660ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82677ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82694ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82711ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82727ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82743ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82760ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82776ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82798ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82827ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82846ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82860ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82877ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82894ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82911ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82927ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82943ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82960ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82977ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   82994ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83010ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83027ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83043ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83060ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83077ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83093ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83110ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83127ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83143ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83196ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83213ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83261ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83329ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83363ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83396ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83432ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83612ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83627ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83646ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83694ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83710ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83776ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   83811ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84145ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84160ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84177ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84194ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84210ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84227ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84243ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84260ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84277ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84293ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84310ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84377ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84712ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84846ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84860ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84877ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84893ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84910ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84927ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84944ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84960ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84977ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   84993ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85010ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85027ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85043ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85060ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85077ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85094ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85110ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85127ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85195ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85412ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85427ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85444ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85461ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85478ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85493ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85515ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85543ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85564ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85577ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85644ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85730ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85864ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85878ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85913ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85946ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85965ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   85994ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   86016ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   86027ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   86097ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87382ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87394ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87411ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87427ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87444ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87461ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87477ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87494ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87510ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87527ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87544ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87561ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87577ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87594ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87610ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87627ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87644ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87661ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87677ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87695ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87710ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87727ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87750ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87798ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87811ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87863ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87877ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87907ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   87944ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88663ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88678ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88694ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88713ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88728ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88745ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88760ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88779ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88794ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88811ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88896ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88911ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88927ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88944ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88961ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88977ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   88994ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89011ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89062ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89077ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89094ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89111ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89145ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89178ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89195ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89210ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89228ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89244ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89261ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89277ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89294ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89321ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89344ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89361ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89378ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89395ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89448ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89465ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89494ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89511ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89528ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89545ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89561ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89579ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89594ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89623ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89644ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89661ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89679ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89713ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89745ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89765ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89796ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89829ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89862ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89886ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89912ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89946ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89980ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   89997ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90011ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90035ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90117ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90128ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90149ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90184ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90212ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90246ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90350ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90748ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90760ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90777ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90794ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90812ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90828ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90882ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90894ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   90962ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   91013ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   91201ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92395ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92411ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92428ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92444ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92461ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92478ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92494ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92511ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92527ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92544ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92561ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92613ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92627ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92644ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92696ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92746ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92848ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92861ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92878ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92894ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92949ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92962ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92981ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   92994ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93015ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93032ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93048ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93065ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93131ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93163ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93212ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93598ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93615ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93634ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93663ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93678ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93697ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93712ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93729ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93780ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   93815ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/collections/google-pixel:8923
+[   96105ms] [LOG] Alia web pixel @ https://www.plug.tech/web-pixels/strict/app/web-pixel-1910636697@475329f46530466ec7717b489ce50da3.js:0
+[   96123ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[   96296ms] [LOG] [shopify-pixel][APP][STRICT] page_viewed {id: sh-2aea6463-4E42-4410-BB85-E31C7A6EAE02, name: page_viewed, data: Object, type: standard, timestamp: 2026-07-04T02:17:11.350Z} @ https://www.plug.tech/web-pixels/strict/app/web-pixel-shopify-app-pixel@0490.js:2
+[   96298ms] [LOG] [shopify-pixel][APP][STRICT] product_viewed {id: sh-2aea6467-06C3-4F0E-CE28-E6A9EF5C6E3C, name: product_viewed, data: Object, type: standard, timestamp: 2026-07-04T02:17:11.352Z} @ https://www.plug.tech/web-pixels/strict/app/web-pixel-shopify-app-pixel@0490.js:2
+[   96374ms] [INFO] k-web-pixel-version 1 @ https://www.plug.tech/web-pixels/strict/app/web-pixel-789741721@524f6c1ee37bacdca7657a665bdca589.js:0
+[   97651ms] [ERROR] Shopify's Google Analytics stub called with: [create, UA-208841002-1, Object] 
+See https://help.shopify.com/manual/promoting-marketing/pixels/pixel-migration#google for more information. @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:3383
+[   97653ms] [ERROR] Shopify's Google Analytics stub called with: [] 
+See https://help.shopify.com/manual/promoting-marketing/pixels/pixel-migration#google for more information. @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:3383
+[   97654ms] [ERROR] Shopify's Google Analytics stub called with: [gtag_UA_208841002_1.set, Object] 
+See https://help.shopify.com/manual/promoting-marketing/pixels/pixel-migration#google for more information. @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:3383
+[   97655ms] [ERROR] Shopify's Google Analytics stub called with: [gtag_UA_208841002_1.send, pageview, Object] 
+See https://help.shopify.com/manual/promoting-marketing/pixels/pixel-migration#google for more information. @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:3383
+[   98128ms] [WARNING] [Meta Pixel] - Invalid parameter format for currency. Please refer https://developers.facebook.com/docs/meta-pixel/reference/ for valid parameter specifications. @ https://connect.facebook.net/en_US/fbevents.js:187
+[   98741ms] [LOG] Videowise no campaign cookie detected @ https://www.plug.tech/web-pixels@4074779awe500cddcp1e53a49dm5f7c656e/custom/web-pixel-29655193@2/sandbox/modern/products/google-pixel-8-hazel-128gb-unlocked:73
+[   99007ms] [LOG] [shopify-pixel][CUSTOM][LAX] page_viewed {id: sh-2aea6463-4E42-4410-BB85-E31C7A6EAE02, name: page_viewed, data: Object, type: standard, timestamp: 2026-07-04T02:17:11.350Z} @ https://www.plug.tech/web-pixels@4074779awe500cddcp1e53a49dm5f7c656e/custom/web-pixel-shopify-custom-pixel@0490/sandbox/modern/products/google-pixel-8-hazel-128gb-unlocked:10
+[   99008ms] [LOG] [shopify-pixel][CUSTOM][LAX] product_viewed {id: sh-2aea6467-06C3-4F0E-CE28-E6A9EF5C6E3C, name: product_viewed, data: Object, type: standard, timestamp: 2026-07-04T02:17:11.352Z} @ https://www.plug.tech/web-pixels@4074779awe500cddcp1e53a49dm5f7c656e/custom/web-pixel-shopify-custom-pixel@0490/sandbox/modern/products/google-pixel-8-hazel-128gb-unlocked:10
+[  100103ms] [WARNING] In a sandboxed environment, addEventListener may not behave as expected. @ https://www.plug.tech/cdn/wpm/s4074779awe500cddcp1e53a49dm5f7c656em.js:0
+[  100336ms] [WARNING] In a sandboxed environment, addEventListener may not behave as expected. @ https://www.plug.tech/cdn/wpm/s4074779awe500cddcp1e53a49dm5f7c656em.js:0
+[  100951ms] [WARNING] In a sandboxed environment, addEventListener may not behave as expected. @ https://www.plug.tech/cdn/wpm/s4074779awe500cddcp1e53a49dm5f7c656em.js:0
+[  101185ms] [WARNING] In a sandboxed environment, addEventListener may not behave as expected. @ https://www.plug.tech/cdn/wpm/s4074779awe500cddcp1e53a49dm5f7c656em.js:0
+[  102061ms] [WARNING] In a sandboxed environment, addEventListener may not behave as expected. @ https://www.plug.tech/cdn/wpm/s4074779awe500cddcp1e53a49dm5f7c656em.js:0
+[  102833ms] [LOG] [Alia app extension] v1.0.5 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:22707
+[  103274ms] [ERROR] Failed to load resource: net::ERR_FAILED @ chrome-extension://invalid/:0
+[  103280ms] [ERROR] Failed to load resource: net::ERR_FAILED @ chrome-extension://invalid/:0
+[  103699ms] [LOG] %c
+🚀 Increase shopper engagement on-site
+🚀 Increase conversions
+⚡️ Zero page-speed impact
+
+Learn more at: https://videowise.com
+
+%cBuild: 2024 font-style: normal; background: rgba(135,131,120,0.15); color: #EB5757; border-radius: 3px; font-size: 80%; padding: 0.1em 0.2em; @ https://assets.videowise.com/client.js.gz:0
+[  104522ms] [LOG] [PushOwl Web Push Notifications] starting up @ https://cdn.shopify.com/extensions/019ef94d-e41a-7e61-9259-faf6609a0254/pushowl-306/assets/pushowl-shopify-main.js:0
+[  104533ms] [WARNING] Manifest: property 'start_url' ignored, URL is invalid. @ blob:https://www.plug.tech/9a8e6f75-034d-4d5d-adef-85b77ac46187:0
+[  104533ms] [WARNING] Manifest: property 'scope' ignored, URL is invalid. @ blob:https://www.plug.tech/9a8e6f75-034d-4d5d-adef-85b77ac46187:0
+[  107750ms] Uncaught (in promise) RequestError: Failed sending request to url https://idx.liadm.com/idex/did-0014/any?duid=83f6308a0627--01kwneknw0sb0v358f69p4v1rs&cd=.plug.tech&pu=https%3A%2F%2Fwww.plug.tech%2F&_shopify_y=a6701729-b647-4d70-8d92-6c3cf51ac96b&_fbp=fb.1.1783131391231.899712804808363639&resolve=md5&resolve=sha2&resolve=nonId&qf=0.7&did=did-0014
+    at <anonymous> (https://d-code.liadm.com/did-0014.min.js:0:88169)
+[  107826ms] [INFO] Clear-Site-Data header on 'https://www.plug.tech/cart/update.js': Cleared data types: "prefetchCache", "prerenderCache". @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:0
+[  113981ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  113996ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114096ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114113ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114130ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114152ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114163ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114226ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114246ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114262ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114279ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114295ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114396ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114412ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114429ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114446ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114480ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114495ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114512ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114647ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114662ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114679ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  114780ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  116990ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117001ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117016ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117032ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117050ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117069ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117084ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117097ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117116ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117134ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117146ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117167ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117183ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117199ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117214ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117232ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117249ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117266ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117279ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117297ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117316ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117330ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117346ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117366ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117382ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  117400ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119379ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119396ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119412ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119430ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119446ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119463ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119480ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119495ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119530ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119546ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119562ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119580ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119595ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119612ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119629ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119646ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119663ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119679ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119698ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119713ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119729ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119746ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119763ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119779ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119796ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119813ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119829ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119846ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119864ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119879ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119896ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119912ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119929ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119946ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119963ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  119981ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  120064ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  120081ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  120096ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  120113ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  120130ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  120148ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  120163ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  120181ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  120197ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  120214ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  120230ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  120247ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121647ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121662ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121679ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121696ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121715ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121729ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121746ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121767ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121780ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121796ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121813ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121830ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121846ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121870ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121902ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121913ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121930ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  121963ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  122097ms] [INFO] this is the heights 37 60 0 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:9624
+[  124959ms] [LOG] EVENT_STATE_LISTENER INITIAL -- time :  1783131460 @ https://cdn.shopify.com/extensions/019f22ef-bb46-7064-98b9-858a8fb26daa/surebright-test-v1-1195/assets/sbsimsdk.js:0
+[  124960ms] [LOG] EVENT_STATE_LISTENER Got Ready State event listener - interactive -- time :  0 @ https://cdn.shopify.com/extensions/019f22ef-bb46-7064-98b9-858a8fb26daa/surebright-test-v1-1195/assets/sbsimsdk.js:0
+[  125048ms] [LOG] %c Plex: Delivery Estimation Date %c By Pleximus %c background:#212b36;padding:1px;margin-bottom:2px;border-radius:3px 0 0 3px;color:#fff background:#5cc9a7;padding:1px;margin-bottom:2px;border-radius:0 3px 3px 0;color:#fff background:transparent http://apps.shopify.com/order-delivery-estimation @ https://cdn.shopify.com/extensions/e15b614e-de72-473e-8f0b-64b9cc81ffc2/plex-delivery-estimation-date-32/assets/estimation.js:0
+[  125166ms] [LOG] Product variant info: Liquid shows 3, Total exists 3 @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:22396
+[  125167ms] [LOG] 250 variant product, using existing Liquid data @ https://www.plug.tech/products/google-pixel-8-hazel-128gb-unlocked:22404
+[  135088ms] [LOG] %c 
+- Increased repurchase rates
+- Increased LTV
+- Fully customizable
+
+
+Hit us up at: https://www.rivo.io/developers
+
+ font-size: 13px; @ https://browser.sentry-cdn.com/8.47.0/bundle.tracing.replay.min.js:1
+[  135787ms] [LOG] [Alia launcher] plugtechh.myshopify.com @ https://browser.sentry-cdn.com/8.47.0/bundle.tracing.replay.min.js:1
+[  136331ms] [INFO] Clear-Site-Data header on 'https://www.plug.tech/cart/update.js': Cleared data types: "prefetchCache", "prerenderCache". @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  137879ms] [INFO] Autofocus processing was blocked because a document already has a focused element. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  142189ms] [LOG] EVENT_STATE_LISTENER Got Ready State event listener - complete -- time :  17 @ https://browser.sentry-cdn.com/8.47.0/bundle.tracing.replay.min.js:1
+[  145308ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/1000x1000-Early_BTS_cf2de855-5207-4045-8f99-44385ef78ed0.webp?v=1782486848&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  145309ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_HERO_TECH.webp?v=1766780092&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  145309ms] [WARNING] The resource https://www.plug.tech/cdn/fonts/assistant/assistant_n4.9120912a469cad1cc292572851508ca49d12e768.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  145309ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_SALE_BANNER_3.webp?v=1756843111&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  146682ms] [INFO] Clear-Site-Data header on 'https://www.plug.tech/cart/update.js?from_update_cart_attributes': Cleared data types: "prefetchCache", "prerenderCache". @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  147242ms] [LOG] ShowFreeShippingBanner : Container Id : @FREESHIPPINGBANNERCONTAINERID not found in DOM @ https://browser.sentry-cdn.com/8.47.0/bundle.tracing.replay.min.js:1
+[  149167ms] [INFO] Clear-Site-Data header on 'https://www.plug.tech/cart/update.js?from_update_cart_attributes': Cleared data types: "prefetchCache", "prerenderCache". @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  154236ms] [INFO] Clear-Site-Data header on 'https://www.plug.tech/cart/update.js': Cleared data types: "prefetchCache", "prerenderCache". @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  186573ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/1000x1000-Early_BTS_cf2de855-5207-4045-8f99-44385ef78ed0.webp?v=1782486848&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  186573ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_HERO_TECH.webp?v=1766780092&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  186573ms] [WARNING] The resource https://www.plug.tech/cdn/fonts/assistant/assistant_n4.9120912a469cad1cc292572851508ca49d12e768.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  186573ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_SALE_BANNER_3.webp?v=1756843111&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  189975ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/1000x1000-Early_BTS_cf2de855-5207-4045-8f99-44385ef78ed0.webp?v=1782486848&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  189975ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_HERO_TECH.webp?v=1766780092&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  189975ms] [WARNING] The resource https://www.plug.tech/cdn/fonts/assistant/assistant_n4.9120912a469cad1cc292572851508ca49d12e768.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  189975ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_SALE_BANNER_3.webp?v=1756843111&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  230065ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/1000x1000-Early_BTS_cf2de855-5207-4045-8f99-44385ef78ed0.webp?v=1782486848&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  230065ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_HERO_TECH.webp?v=1766780092&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  230065ms] [WARNING] The resource https://www.plug.tech/cdn/fonts/assistant/assistant_n4.9120912a469cad1cc292572851508ca49d12e768.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  230066ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_SALE_BANNER_3.webp?v=1756843111&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  253055ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/1000x1000-Early_BTS_cf2de855-5207-4045-8f99-44385ef78ed0.webp?v=1782486848&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  253056ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_HERO_TECH.webp?v=1766780092&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  253056ms] [WARNING] The resource https://www.plug.tech/cdn/fonts/assistant/assistant_n4.9120912a469cad1cc292572851508ca49d12e768.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  253056ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_SALE_BANNER_3.webp?v=1756843111&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  288212ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/1000x1000-Early_BTS_cf2de855-5207-4045-8f99-44385ef78ed0.webp?v=1782486848&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  288212ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_HERO_TECH.webp?v=1766780092&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  288212ms] [WARNING] The resource https://www.plug.tech/cdn/fonts/assistant/assistant_n4.9120912a469cad1cc292572851508ca49d12e768.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  288212ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_SALE_BANNER_3.webp?v=1756843111&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  308480ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/1000x1000-Early_BTS_cf2de855-5207-4045-8f99-44385ef78ed0.webp?v=1782486848&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  308480ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_HERO_TECH.webp?v=1766780092&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  308480ms] [WARNING] The resource https://www.plug.tech/cdn/fonts/assistant/assistant_n4.9120912a469cad1cc292572851508ca49d12e768.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  308480ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_SALE_BANNER_3.webp?v=1756843111&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  350533ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/1000x1000-Early_BTS_cf2de855-5207-4045-8f99-44385ef78ed0.webp?v=1782486848&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  350533ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_HERO_TECH.webp?v=1766780092&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  350533ms] [WARNING] The resource https://www.plug.tech/cdn/fonts/assistant/assistant_n4.9120912a469cad1cc292572851508ca49d12e768.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  350533ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_SALE_BANNER_3.webp?v=1756843111&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  369991ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/1000x1000-Early_BTS_cf2de855-5207-4045-8f99-44385ef78ed0.webp?v=1782486848&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  369991ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_HERO_TECH.webp?v=1766780092&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  369991ms] [WARNING] The resource https://www.plug.tech/cdn/fonts/assistant/assistant_n4.9120912a469cad1cc292572851508ca49d12e768.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  369991ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_SALE_BANNER_3.webp?v=1756843111&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  405779ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/1000x1000-Early_BTS_cf2de855-5207-4045-8f99-44385ef78ed0.webp?v=1782486848&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  405779ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_HERO_TECH.webp?v=1766780092&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  405779ms] [WARNING] The resource https://www.plug.tech/cdn/fonts/assistant/assistant_n4.9120912a469cad1cc292572851508ca49d12e768.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  405779ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_SALE_BANNER_3.webp?v=1756843111&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  430591ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/1000x1000-Early_BTS_cf2de855-5207-4045-8f99-44385ef78ed0.webp?v=1782486848&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  430591ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_HERO_TECH.webp?v=1766780092&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  430591ms] [WARNING] The resource https://www.plug.tech/cdn/fonts/assistant/assistant_n4.9120912a469cad1cc292572851508ca49d12e768.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  430591ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_SALE_BANNER_3.webp?v=1756843111&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  479976ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/1000x1000-Early_BTS_cf2de855-5207-4045-8f99-44385ef78ed0.webp?v=1782486848&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  479976ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_HERO_TECH.webp?v=1766780092&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  479976ms] [WARNING] The resource https://www.plug.tech/cdn/fonts/assistant/assistant_n4.9120912a469cad1cc292572851508ca49d12e768.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0
+[  479976ms] [WARNING] The resource https://www.plug.tech/cdn/shop/files/PLUG_SALE_BANNER_3.webp?v=1756843111&width=800 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://www.plug.tech/products/google-pixel-8-obsidian-128gb-unlocked?variant=45583401287833:0

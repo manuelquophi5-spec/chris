@@ -8,6 +8,7 @@ export interface IAttendance {
   sessionId?: mongoose.Types.ObjectId | null;
   courseId?: mongoose.Types.ObjectId | null;
   isLate?: boolean;
+  isManual?: boolean;
   type: AttendanceType;
   dayKey: string;
   latitude: number;
@@ -45,6 +46,7 @@ const attendanceSchema = new Schema<IAttendance>(
     distanceMeters: { type: Number, required: true },
     gpsAccuracy: { type: Number },
     withinGeofence: { type: Boolean, required: true },
+    isManual: { type: Boolean, default: false },
     photoData: { type: String, select: false },
     markedAt: { type: Date, default: Date.now },
   },
