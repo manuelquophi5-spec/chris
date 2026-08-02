@@ -8,6 +8,11 @@ import {
   normalizeEmployeeId,
 } from "@/lib/user-account";
 import { parseLevel, parseProgram } from "@/lib/academic";
+import {
+  generateSetupCode,
+  hashSetupCode,
+  setupCodeExpiry,
+} from "@/lib/setup-code";
 import { User } from "@/models/User";
 import type { AdminUserRow, UserRole } from "@/types";
 
@@ -17,15 +22,45 @@ function parseRole(value: unknown): UserRole {
   return "user";
 }
 
-export async function GET() {
+const PAGE_SIZE_DEFAULT = 100;
+const PAGE_SIZE_MAX = 200;
+
+export async function GET(request: Request) {
   const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 
+  const { searchParams } = new URL(request.url);
+  const q = searchParams.get("q")?.trim() ?? "";
+  const role = searchParams.get("role")?.trim() ?? "";
+  const passwordMustChange = searchParams.get("passwordMustChange");
+  const page = Math.max(1, Number(searchParams.get("page") ?? 1) || 1);
+  const pageSize = Math.min(
+    PAGE_SIZE_MAX,
+    Math.max(1, Number(searchParams.get("limit") ?? PAGE_SIZE_DEFAULT) || PAGE_SIZE_DEFAULT),
+  );
+
   await connectDB();
-  const docs = await User.find({ role: { $ne: "admin" } })
-    .sort({ createdAt: -1 })
-    .limit(200)
-    .lean();
+
+  const filter: Record<string, unknown> =
+    role === "user" || role === "instructor"
+      ? { role }
+      : { role: { $ne: "admin" } };
+  if (passwordMustChange === "1") filter.passwordMustChange = true;
+  if (passwordMustChange === "0") filter.passwordMustChange = false;
+  if (q) {
+    const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const pattern = new RegExp(escaped, "i");
+    filter.$or = [{ name: pattern }, { employeeId: pattern }];
+  }
+
+  const [docs, total] = await Promise.all([
+    User.find(filter)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize)
+      .lean(),
+    User.countDocuments(filter),
+  ]);
 
   const users: AdminUserRow[] = docs.map((d) => ({
     id: d._id.toString(),
@@ -40,7 +75,7 @@ export async function GET() {
     createdAt: d.createdAt.toISOString(),
   }));
 
-  return jsonOk({ users });
+  return jsonOk({ users, total, page, pageSize } as Record<string, unknown>);
 }
 
 export async function POST(request: Request) {
@@ -89,6 +124,7 @@ export async function POST(request: Request) {
     }
 
     const email = internalEmailFromEmployeeId(employeeId);
+    const setupCode = generateSetupCode();
     const doc = await User.create({
       employeeId,
       email,
@@ -97,6 +133,8 @@ export async function POST(request: Request) {
       program: program ?? "",
       ...(level !== undefined ? { level } : {}),
       passwordMustChange: true,
+      setupCodeHash: await hashSetupCode(setupCode),
+      setupCodeExpiresAt: setupCodeExpiry(),
     });
 
     await writeAudit(
@@ -113,7 +151,8 @@ export async function POST(request: Request) {
           ...toSessionUser(doc),
           passwordMustChange: true,
         },
-        message: `Account created. ${firstName} can set a password with ID ${employeeId}.`,
+        setupCode,
+        message: `Account created. Give ${firstName} their Student ID (${employeeId}) and this one-time setup code to create a password.`,
       },
       201,
     );

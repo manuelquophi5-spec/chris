@@ -1,11 +1,14 @@
 import type { MetadataRoute } from "next";
-import { APP_NAME, APP_TITLE, BRAND_CREAM, BRAND_WINE } from "@/lib/brand";
+import { BRAND_CREAM, BRAND_WINE } from "@/lib/brand";
+import { getSettings } from "@/lib/settings";
 
-export default function manifest(): MetadataRoute.Manifest {
+export default async function manifest(): Promise<MetadataRoute.Manifest> {
+  const { appName, logoUrl } = await getSettings();
+
   return {
     id: "/",
-    name: APP_TITLE,
-    short_name: APP_NAME,
+    name: appName,
+    short_name: appName,
     description:
       "Check in at campus with your phone — GPS confirms you are on site.",
     start_url: "/login",
@@ -17,9 +20,8 @@ export default function manifest(): MetadataRoute.Manifest {
     categories: ["business", "productivity"],
     icons: [
       {
-        src: "/logo.png",
+        src: logoUrl,
         sizes: "512x512",
-        type: "image/png",
         purpose: "any",
       },
       {

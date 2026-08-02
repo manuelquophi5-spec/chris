@@ -1,13 +1,14 @@
 import { connectDB } from "@/lib/db";
 import { writeAudit } from "@/lib/audit";
 import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
+import { parseTimezoneOffset } from "@/lib/attendance";
 import { listCoursesForAdmin } from "@/lib/courses";
 import { Course } from "@/models/Course";
 import mongoose from "mongoose";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
-export async function POST(_request: Request, context: RouteContext) {
+export async function POST(request: Request, context: RouteContext) {
   const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 
@@ -15,6 +16,9 @@ export async function POST(_request: Request, context: RouteContext) {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return jsonError("Invalid course id", 400);
   }
+
+  const { searchParams } = new URL(request.url);
+  const timezoneOffset = parseTimezoneOffset(searchParams.get("timezoneOffset"));
 
   await connectDB();
   const source = await Course.findById(id);
@@ -45,7 +49,7 @@ export async function POST(_request: Request, context: RouteContext) {
     copy.title,
   );
 
-  const courses = await listCoursesForAdmin();
+  const courses = await listCoursesForAdmin(undefined, timezoneOffset);
   const row = courses.find((c) => c.id === copy._id.toString());
 
   return jsonOk(

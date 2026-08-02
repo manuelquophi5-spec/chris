@@ -3,11 +3,16 @@ import { connectDB } from "@/lib/db";
 import { writeAudit } from "@/lib/audit";
 import { clearLoginFailures } from "@/lib/account-lock";
 import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
+import {
+  generateSetupCode,
+  hashSetupCode,
+  setupCodeExpiry,
+} from "@/lib/setup-code";
 import { User } from "@/models/User";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
-/** Clears password so the employee can use Set password again. */
+/** Clears password so the employee can use Set password again, with a fresh setup code. */
 export async function POST(_request: Request, context: RouteContext) {
   const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
@@ -24,11 +29,16 @@ export async function POST(_request: Request, context: RouteContext) {
     return jsonError("Cannot reset an admin password here.", 400);
   }
 
+  const setupCode = generateSetupCode();
   await User.updateOne(
     { _id: doc._id },
     {
       $unset: { passwordHash: "" },
-      $set: { passwordMustChange: true },
+      $set: {
+        passwordMustChange: true,
+        setupCodeHash: await hashSetupCode(setupCode),
+        setupCodeExpiresAt: setupCodeExpiry(),
+      },
     },
   );
   await clearLoginFailures(doc);
@@ -43,6 +53,7 @@ export async function POST(_request: Request, context: RouteContext) {
 
   return jsonOk({
     ok: true,
-    message: `${doc.name} must open Set password and choose a new password (ID: ${doc.employeeId ?? "see students list"}).`,
+    setupCode,
+    message: `Give ${doc.name} their Student ID (${doc.employeeId ?? "see students list"}) and this new setup code to create a password.`,
   });
 }

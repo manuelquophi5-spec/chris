@@ -1,16 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { useBrand } from "@/components/BrandProvider";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
-import { APP_SHORT_TITLE } from "@/lib/brand";
 import { toastError, toastSuccess } from "@/lib/toast";
 
 export default function ProfilePage() {
+  const { appName } = useBrand();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [changing, setChanging] = useState(false);
   const [requesting, setRequesting] = useState(false);
+  const [resetSetupCode, setResetSetupCode] = useState<string | null>(null);
 
   async function handleChangePassword(e: React.FormEvent) {
     e.preventDefault();
@@ -54,12 +56,17 @@ export default function ProfilePage() {
       const res = await authFetch("/api/auth/request-reset", {
         method: "POST",
       });
-      const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
+      const data = await parseJsonResponse<{
+        error?: string;
+        message?: string;
+        setupCode?: string;
+      }>(res);
       if (!res.ok) {
         toastError(data.error ?? "Could not request reset");
         return;
       }
-      toastSuccess("Reset requested. An administrator will review it.");
+      toastSuccess(data.message ?? "Password cleared.");
+      setResetSetupCode(data.setupCode ?? null);
     } finally {
       setRequesting(false);
     }
@@ -75,7 +82,7 @@ export default function ProfilePage() {
         <dl className="mt-4 grid grid-cols-2 gap-4">
           <div>
             <dt className="text-xs text-[var(--ella-fg-subtle)]">App</dt>
-            <dd className="font-medium text-[var(--ella-fg)]">{APP_SHORT_TITLE}</dd>
+            <dd className="font-medium text-[var(--ella-fg)]">{appName}</dd>
           </div>
           <div>
             <dt className="text-xs text-[var(--ella-fg-subtle)]">Role</dt>
@@ -138,7 +145,8 @@ export default function ProfilePage() {
       <div className="ella-card-padded">
         <h2 className="ella-heading-section text-lg">Trouble signing in?</h2>
         <p className="ella-text-muted mt-2 text-sm">
-          If you forgot your password, request a reset. An administrator will clear your password so you can set a new one.
+          Clear your current password and get a one-time setup code to create
+          a new one on the Set password page.
         </p>
         <button
           type="button"
@@ -148,6 +156,16 @@ export default function ProfilePage() {
         >
           {requesting ? "Requesting…" : "Request password reset"}
         </button>
+        {resetSetupCode && (
+          <div className="mt-4 rounded-lg border-2 border-[var(--ella-accent)] bg-[var(--ella-surface-muted)] px-4 py-3">
+            <p className="text-sm font-semibold text-[var(--ella-fg)]">
+              Your setup code (use it now — shown once):
+            </p>
+            <p className="mt-1 font-mono text-lg font-bold tracking-widest text-[var(--ella-fg)]">
+              {resetSetupCode}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

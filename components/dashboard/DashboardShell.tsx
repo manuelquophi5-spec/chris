@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { useBrand } from "@/components/BrandProvider";
 import { authFetch, redirectAfterAuth } from "@/lib/auth-client";
-import { LOGO_SRC } from "@/lib/brand";
 import type { SessionUser } from "@/types";
 import { MobileTabBar } from "./MobileTabBar";
 
@@ -19,6 +19,8 @@ function getGreeting() {
 }
 
 export function DashboardShell({ user, children }: Props) {
+  const { logoUrl } = useBrand();
+
   async function handleLogout() {
     await authFetch("/api/auth/logout", { method: "POST" });
     redirectAfterAuth("/login");
@@ -33,10 +35,11 @@ export function DashboardShell({ user, children }: Props) {
           <div className="flex items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2.5 animate-fade-in">
               <Image
-                src={LOGO_SRC}
+                src={logoUrl}
                 alt=""
                 width={36}
                 height={36}
+                unoptimized={logoUrl.startsWith("http")}
                 className="shrink-0 object-contain h-auto w-auto"
                 style={{ width: "auto", height: "auto" }}
               />

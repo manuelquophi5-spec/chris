@@ -116,7 +116,6 @@ export function DailyAttendanceCard({
   const [distanceHint, setDistanceHint] = useState<string | null>(null);
   const [gpsHint, setGpsHint] = useState<string | null>(null);
   const [loading, setLoading] = useState<AttendanceType | null>(null);
-  const [photoData, setPhotoData] = useState<string | null>(null);
   const [reminderDismissed, setReminderDismissed] = useState(false);
 
   const tzOffset = new Date().getTimezoneOffset();
@@ -200,10 +199,11 @@ export function DailyAttendanceCard({
   }, [locations, today?.checkIn, locationId]);
 
   useEffect(() => {
+    if (today?.isComplete) return;
     void refreshNearby();
     const id = setInterval(() => void refreshNearby(), 30_000);
     return () => clearInterval(id);
-  }, [refreshNearby]);
+  }, [refreshNearby, today?.isComplete]);
 
   const showCheckoutReminder =
     !reminderDismissed &&
@@ -232,24 +232,6 @@ export function DailyAttendanceCard({
       (s) => s.hasCheckIn && !s.hasCheckOut,
     );
     return open.length === 1 ? open[0].id : undefined;
-  }
-
-  async function onPhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) {
-      setPhotoData(null);
-      return;
-    }
-    if (!file.type.startsWith("image/")) {
-      toastWarning("Choose a photo (JPEG or PNG)");
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result;
-      setPhotoData(typeof result === "string" ? result : null);
-    };
-    reader.readAsDataURL(file);
   }
 
   async function mark(type: AttendanceType) {
@@ -282,7 +264,6 @@ export function DailyAttendanceCard({
           type,
           timezoneOffset: tzOffset,
           accuracy: position.accuracy,
-          photoData: photoData ?? undefined,
         }),
       });
       const data = await parseJsonResponse<{
@@ -304,7 +285,6 @@ export function DailyAttendanceCard({
       toastSuccess(
         data.message ?? (type === "check_in" ? "Checked in" : "Checked out"),
       );
-      setPhotoData(null);
       await loadToday();
       onUpdate?.();
     } catch (err) {
@@ -476,18 +456,6 @@ export function DailyAttendanceCard({
             No campuses configured. Contact your administrator.
           </p>
         ) : null}
-
-        <label className="mt-4 block">
-          <span className="ella-label font-semibold">Photo (optional)</span>
-          <input
-            type="file"
-            accept="image/*"
-            capture="user"
-            className="mt-2 w-full text-sm text-[var(--ella-fg-muted)]"
-            onChange={onPhotoChange}
-            disabled={busy}
-          />
-        </label>
 
         <div className="mt-5 space-y-3">
           <button

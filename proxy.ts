@@ -4,7 +4,7 @@ import { COOKIE_NAME, verifyAccessToken } from "@/lib/auth";
 
 const protectedPaths = ["/dashboard", "/dashboard/admin"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isProtected = protectedPaths.some(
     (p) => pathname === p || pathname.startsWith(`${p}/`),

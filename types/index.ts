@@ -45,7 +45,6 @@ export type AttendanceMarkPayload = {
   sessionId?: string;
   courseId?: string;
   accuracy?: number | null;
-  photoData?: string | null;
 };
 
 export type AttendanceRecordSummary = {

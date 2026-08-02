@@ -7,7 +7,6 @@ import {
 import { getActiveSessionsForUser } from "@/lib/sessions";
 import { Attendance } from "@/models/Attendance";
 import type {
-  ActiveSessionSummary,
   AttendanceRecordSummary,
   AttendanceType,
   TodayAttendanceStatus,

@@ -3,7 +3,8 @@ import { getDayKey } from "@/lib/day";
 import {
   geofenceOutOfRangeMessage,
 } from "@/lib/geofence-messages";
-import { validateGpsAccuracy, validatePhotoData } from "@/lib/gps-validation";
+import { validateGpsAccuracy } from "@/lib/gps-validation";
+import { checkImplausibleMovement } from "@/lib/gps-spoofing";
 import { isWithinGeofence } from "@/lib/haversine";
 import {
   getTodayRecordsForUser,
@@ -24,7 +25,7 @@ import { Attendance } from "@/models/Attendance";
 import { Location } from "@/models/Location";
 /**
  * Mark check-in or check-out (daily or per active session).
- * POST { latitude, longitude, locationId?, type, timezoneOffset?, sessionId?, accuracy?, photoData? }
+ * POST { latitude, longitude, locationId?, type, timezoneOffset?, sessionId?, accuracy? }
  */
 export async function POST(request: Request) {
   const user = await getAuthUser();
@@ -49,9 +50,6 @@ export async function POST(request: Request) {
     const gps = validateGpsAccuracy(body.accuracy);
     if (!gps.ok) return jsonError(gps.message, 400);
 
-    const photo = validatePhotoData(body.photoData);
-    if (!photo.ok) return jsonError(photo.message, 400);
-
     await connectDB();
 
     if (courseIdRaw) {
@@ -62,7 +60,6 @@ export async function POST(request: Request) {
         coords,
         timezoneOffset,
         gpsAccuracy: gps.accuracy,
-        photoData: photo.photo,
         locationIdOverride: locationId || undefined,
       });
       if ("error" in result) {
@@ -142,6 +139,17 @@ export async function POST(request: Request) {
         );
       }
 
+      const sessionMarkedAt = new Date();
+      const sessionMovement = await checkImplausibleMovement(
+        user.id,
+        coords.latitude,
+        coords.longitude,
+        sessionMarkedAt,
+      );
+      if (!sessionMovement.ok) {
+        return jsonError(sessionMovement.message, 403);
+      }
+
       const record = await Attendance.create({
         userId: user.id,
         locationId: location._id,
@@ -153,8 +161,7 @@ export async function POST(request: Request) {
         distanceMeters,
         gpsAccuracy: gps.accuracy,
         withinGeofence: true,
-        photoData: photo.photo,
-        markedAt: new Date(),
+        markedAt: sessionMarkedAt,
       });
 
       const summary = toAttendanceSummary(
@@ -252,6 +259,17 @@ export async function POST(request: Request) {
       );
     }
 
+    const dailyMarkedAt = new Date();
+    const dailyMovement = await checkImplausibleMovement(
+      user.id,
+      coords.latitude,
+      coords.longitude,
+      dailyMarkedAt,
+    );
+    if (!dailyMovement.ok) {
+      return jsonError(dailyMovement.message, 403);
+    }
+
     const record = await Attendance.create({
       userId: user.id,
       locationId: location._id,
@@ -262,8 +280,7 @@ export async function POST(request: Request) {
       distanceMeters,
       gpsAccuracy: gps.accuracy,
       withinGeofence: true,
-      photoData: photo.photo,
-      markedAt: new Date(),
+      markedAt: dailyMarkedAt,
     });
 
     const summary = toAttendanceSummary(record, location.name);

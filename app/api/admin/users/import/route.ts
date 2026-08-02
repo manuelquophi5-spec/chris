@@ -1,12 +1,13 @@
 import { connectDB } from "@/lib/db";
 import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
+import { internalEmailFromEmployeeId } from "@/lib/user-account";
+import {
+  generateSetupCode,
+  hashSetupCode,
+  setupCodeExpiry,
+} from "@/lib/setup-code";
 import { User } from "@/models/User";
 import { ACADEMIC_PROGRAMS, ACADEMIC_LEVELS } from "@/lib/academic";
-
-function employeeIdFromNameAndId(name: string, id: string): string {
-  const local = id.toUpperCase().replace(/[^A-Z0-9_-]/g, "").slice(0, 32);
-  return local.length >= 3 ? local : name.toUpperCase().replace(/\s+/g, "").slice(0, 12);
-}
 
 export async function POST(request: Request) {
   try {
@@ -28,10 +29,15 @@ export async function POST(request: Request) {
 
     await connectDB();
 
-    const programIds = new Set(ACADEMIC_PROGRAMS.map((p) => p.id));
+    const programIds = new Set<string>(ACADEMIC_PROGRAMS.map((p) => p.id));
     const levelValues = new Set(ACADEMIC_LEVELS);
 
-    const results: Array<{ studentId: string; name: string; status: string }> = [];
+    const results: Array<{
+      studentId: string;
+      name: string;
+      status: string;
+      setupCode?: string;
+    }> = [];
     let created = 0;
     let skipped = 0;
 
@@ -66,8 +72,10 @@ export async function POST(request: Request) {
         continue;
       }
 
+      const setupCode = generateSetupCode();
       await User.create({
         employeeId: studentId,
+        email: internalEmailFromEmployeeId(studentId),
         name,
         role,
         program: validProgram ?? "",
@@ -75,14 +83,16 @@ export async function POST(request: Request) {
         passwordMustChange: true,
         failedLoginAttempts: 0,
         lockedUntil: null,
+        setupCodeHash: await hashSetupCode(setupCode),
+        setupCodeExpiresAt: setupCodeExpiry(),
       });
 
-      results.push({ studentId, name, status: "Created" });
+      results.push({ studentId, name, status: "Created", setupCode });
       created++;
     }
 
     return jsonOk({
-      message: `Imported ${created} users, skipped ${skipped}.`,
+      message: `Imported ${created} users, skipped ${skipped}. Give each new person their setup code below to create a password.`,
       created,
       skipped,
       results,

@@ -37,12 +37,25 @@ export function InstructorDashboard() {
   );
 
   const loadOverview = useCallback(async () => {
-    const res = await authFetch("/api/instructor/overview");
+    const tzOffset = new Date().getTimezoneOffset();
+    const res = await authFetch(
+      `/api/instructor/overview?timezoneOffset=${tzOffset}`,
+    );
     const data = await parseJsonResponse<Overview & { error?: string }>(res);
     if (res.ok) setOverview(data);
     else toastError(data.error ?? "Could not load classes");
     return data;
   }, []);
+
+  function defaultFrom() {
+    const d = new Date();
+    d.setDate(d.getDate() - 27);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function defaultTo() {
+    return new Date().toISOString().slice(0, 10);
+  }
 
   const loadCourseDetail = useCallback(async (courseId: string) => {
     const tz = new Date().getTimezoneOffset();
@@ -80,16 +93,6 @@ export function InstructorDashboard() {
   async function selectCourse(courseId: string) {
     setSelectedId(courseId);
     await loadCourseDetail(courseId);
-  }
-
-  function defaultFrom() {
-    const d = new Date();
-    d.setDate(d.getDate() - 27);
-    return d.toISOString().slice(0, 10);
-  }
-
-  function defaultTo() {
-    return new Date().toISOString().slice(0, 10);
   }
 
   function downloadExport(format: "xlsx" | "csv") {

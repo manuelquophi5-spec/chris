@@ -17,5 +17,5 @@ export async function findUserByEmployeeIdForAuth(
       { email: employeeId.toLowerCase() },
       { email: internalEmailFromEmployeeId(employeeId) },
     ],
-  }).select("+passwordHash");
+  }).select("+passwordHash +setupCodeHash");
 }

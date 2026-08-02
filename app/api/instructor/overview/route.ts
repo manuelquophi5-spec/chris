@@ -1,15 +1,20 @@
 import { connectDB } from "@/lib/db";
 import { jsonError, jsonOk, requireStaff } from "@/lib/api";
+import { parseTimezoneOffset } from "@/lib/attendance";
 import { getCourseStats, listCoursesForAdmin } from "@/lib/courses";
 
-export async function GET() {
+export async function GET(request: Request) {
   const auth = await requireStaff();
   if (auth instanceof Response) return auth;
+
+  const { searchParams } = new URL(request.url);
+  const timezoneOffset = parseTimezoneOffset(searchParams.get("timezoneOffset"));
 
   await connectDB();
 
   const all = await listCoursesForAdmin(
     auth.role === "instructor" ? auth.id : undefined,
+    timezoneOffset,
   );
 
   const courses = auth.role === "admin" ? all : all.filter((c) => c.lecturerId === auth.id);

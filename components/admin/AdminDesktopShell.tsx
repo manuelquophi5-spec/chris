@@ -3,8 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useBrand } from "@/components/BrandProvider";
 import { authFetch, redirectAfterAuth } from "@/lib/auth-client";
-import { APP_SHORT_TITLE, INSTITUTE_NAME, LOGO_SRC } from "@/lib/brand";
+import { INSTITUTE_NAME } from "@/lib/brand";
 import type { SessionUser } from "@/types";
 
 type NavItem = {
@@ -63,6 +64,12 @@ const allNav: NavItem[] = [
     match: (p) => p.startsWith("/dashboard/admin/audit"),
     roles: ["admin"],
   },
+  {
+    href: "/dashboard/admin/settings",
+    label: "Branding",
+    match: (p) => p.startsWith("/dashboard/admin/settings"),
+    roles: ["admin"],
+  },
 ];
 
 type Props = {
@@ -72,6 +79,7 @@ type Props = {
 
 export function AdminDesktopShell({ user, children }: Props) {
   const pathname = usePathname();
+  const { appName, logoUrl } = useBrand();
   const nav = allNav.filter(
     (item) => !item.roles || item.roles.includes(user.role as "admin" | "instructor"),
   );
@@ -87,14 +95,15 @@ export function AdminDesktopShell({ user, children }: Props) {
         <div className="border-b border-[var(--ella-sidebar-raised)] px-5 py-5">
           <div className="flex items-center gap-3">
             <Image
-              src={LOGO_SRC}
+              src={logoUrl}
               alt=""
               width={40}
               height={40}
+              unoptimized={logoUrl.startsWith("http")}
               className="shrink-0 object-contain"
             />
             <div className="min-w-0">
-              <p className="truncate text-sm font-bold">{APP_SHORT_TITLE}</p>
+              <p className="truncate text-sm font-bold">{appName}</p>
               <p className="text-xs text-[var(--ella-sidebar-muted)]">
                 {user.role === "instructor" ? "Instructor" : "Admin"}
               </p>
@@ -138,7 +147,7 @@ export function AdminDesktopShell({ user, children }: Props) {
           <div className="flex items-center justify-between gap-4 px-4 py-3.5 sm:px-8">
             <div className="min-w-0 md:hidden">
               <p className="text-xs font-semibold text-[var(--ella-accent-muted)]">
-                {APP_SHORT_TITLE} · {user.role === "instructor" ? "Instructor" : "Admin"}
+                {appName} · {user.role === "instructor" ? "Instructor" : "Admin"}
               </p>
             </div>
             <div className="flex flex-1 flex-wrap items-center justify-end gap-2">

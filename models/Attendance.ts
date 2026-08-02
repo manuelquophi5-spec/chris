@@ -16,7 +16,6 @@ export interface IAttendance {
   distanceMeters: number;
   gpsAccuracy?: number | null;
   withinGeofence: boolean;
-  photoData?: string | null;
   markedAt: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -35,6 +34,12 @@ const attendanceSchema = new Schema<IAttendance>(
       ref: "AttendanceSession",
       default: null,
     },
+    courseId: {
+      type: Schema.Types.ObjectId,
+      ref: "Course",
+      default: null,
+    },
+    isLate: { type: Boolean, default: false },
     type: {
       type: String,
       enum: ["check_in", "check_out"],
@@ -47,7 +52,6 @@ const attendanceSchema = new Schema<IAttendance>(
     gpsAccuracy: { type: Number },
     withinGeofence: { type: Boolean, required: true },
     isManual: { type: Boolean, default: false },
-    photoData: { type: String, select: false },
     markedAt: { type: Date, default: Date.now },
   },
   { timestamps: true },

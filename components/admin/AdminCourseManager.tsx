@@ -49,9 +49,10 @@ export function AdminCourseManager() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [courseSearch, setCourseSearch] = useState("");
   const load = useCallback(async () => {
+    const tzOffset = new Date().getTimezoneOffset();
     const [cRes, uRes, lRes] = await Promise.all([
-      authFetch("/api/admin/courses"),
-      authFetch("/api/admin/users"),
+      authFetch(`/api/admin/courses?timezoneOffset=${tzOffset}`),
+      authFetch("/api/admin/users?role=instructor&limit=200"),
       authFetch("/api/locations?all=1"),
     ]);
     const cData = await parseJsonResponse<{ error?: string; courses?: CourseRow[] }>(
@@ -159,6 +160,7 @@ export function AdminCourseManager() {
         lateAfterMinutes,
         scheduleDays,
         isActive,
+        timezoneOffset: new Date().getTimezoneOffset(),
       };
 
       const res = editingId
@@ -191,9 +193,11 @@ export function AdminCourseManager() {
   }
 
   async function duplicateCourse(id: string) {
-    const res = await authFetch(`/api/admin/courses/${id}/duplicate`, {
-      method: "POST",
-    });
+    const tzOffset = new Date().getTimezoneOffset();
+    const res = await authFetch(
+      `/api/admin/courses/${id}/duplicate?timezoneOffset=${tzOffset}`,
+      { method: "POST" },
+    );
     const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
     if (!res.ok) {
       toastError(data.error ?? "Could not duplicate class");

@@ -1,5 +1,6 @@
 import { connectDB } from "@/lib/db";
 import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
+import { parseTimezoneOffset } from "@/lib/attendance";
 import { Course } from "@/models/Course";
 import { User } from "@/models/User";
 import { Attendance } from "@/models/Attendance";
@@ -11,10 +12,12 @@ export async function GET(request: Request) {
     const auth = await requireAdmin();
     if (auth instanceof Response) return auth;
 
+    const { searchParams } = new URL(request.url);
+    const tzOffset = parseTimezoneOffset(searchParams.get("timezoneOffset"));
+
     await connectDB();
 
     const now = new Date();
-    const tzOffset = new Date().getTimezoneOffset();
 
     const allCourses = await Course.find({ isActive: true }).lean();
 

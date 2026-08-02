@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useBrand } from "@/components/BrandProvider";
 import { authFetch } from "@/lib/auth-client";
-import { APP_SHORT_TITLE } from "@/lib/brand";
 import { AdminHelpCard } from "./AdminHelpCard";
 
 function StatSkeleton() {
@@ -24,6 +24,7 @@ type ActiveClass = {
 };
 
 export function AdminOverview() {
+  const { appName } = useBrand();
   const [userCount, setUserCount] = useState<number | null>(null);
   const [pendingSetup, setPendingSetup] = useState<number | null>(null);
   const [siteCount, setSiteCount] = useState<number | null>(null);
@@ -34,23 +35,22 @@ export function AdminOverview() {
   useEffect(() => {
     void (async () => {
       setLoadingStats(true);
-      const [usersRes, locRes, attRes, activeRes] = await Promise.all([
-        authFetch("/api/admin/users"),
+      const tzOffset = new Date().getTimezoneOffset();
+      const [usersRes, pendingRes, locRes, attRes, activeRes] = await Promise.all([
+        authFetch("/api/admin/users?limit=1"),
+        authFetch("/api/admin/users?passwordMustChange=1&limit=1"),
         authFetch("/api/locations?all=1"),
         authFetch("/api/attendance?limit=100"),
-        authFetch("/api/admin/courses/active-now"),
+        authFetch(`/api/admin/courses/active-now?timezoneOffset=${tzOffset}`),
       ]);
       const usersData = await usersRes.json();
+      const pendingData = await pendingRes.json();
       const locData = await locRes.json();
       const attData = await attRes.json();
       const activeData = await activeRes.json();
 
-      const users = usersData.users ?? [];
-      setUserCount(users.length);
-      setPendingSetup(
-        users.filter((u: { passwordMustChange: boolean }) => u.passwordMustChange)
-          .length,
-      );
+      setUserCount(usersData.total ?? 0);
+      setPendingSetup(pendingData.total ?? 0);
       setSiteCount(
         (locData.locations ?? []).filter(
           (l: { isActive?: boolean }) => l.isActive !== false,
@@ -138,7 +138,7 @@ export function AdminOverview() {
       </div>
 
       <AdminHelpCard title="What students do on their phones">
-        <p>1. Open {APP_SHORT_TITLE} in Chrome or Safari (add to home screen if you like).</p>
+        <p>1. Open {appName} in Chrome or Safari (add to home screen if you like).</p>
         <p>2. Sign in with student ID and password.</p>
         <p>3. Select their class and check in during the scheduled window.</p>
         <p className="text-[var(--ella-fg-subtle)]">
@@ -147,9 +147,9 @@ export function AdminOverview() {
       </AdminHelpCard>
 
       {activeClasses.length > 0 && (
-        <div className="ella-card-padded border-l-4 border-[var(--ella-accent)]">
+        <div className="ella-card-padded border-[var(--ella-accent)]/30 bg-[var(--ella-accent-subtle)]">
           <div className="flex items-center gap-2">
-            <span className="inline-flex h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse" />
+            <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[var(--ella-accent)] animate-pulse motion-reduce:animate-none" />
             <h2 className="text-sm font-bold text-[var(--ella-fg)]">
               {activeClasses.length} class{activeClasses.length !== 1 ? "es" : ""} in session now
             </h2>

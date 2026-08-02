@@ -20,6 +20,9 @@ function SetPasswordForm() {
   const [studentId, setStudentId] = useState(
     () => searchParams.get("id")?.toUpperCase() ?? "",
   );
+  const [setupCode, setSetupCode] = useState(
+    () => searchParams.get("code")?.toUpperCase() ?? "",
+  );
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,6 +46,7 @@ function SetPasswordForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           studentId: studentId.trim().toUpperCase(),
+          setupCode: setupCode.trim().toUpperCase(),
           password,
         }),
       });
@@ -65,8 +69,8 @@ function SetPasswordForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <p className="ella-text-muted text-sm">
-        Use the Student ID your administrator gave you, then choose a password
-        you will use to sign in.
+        Use the Student ID and one-time setup code your administrator gave
+        you, then choose a password you will use to sign in.
       </p>
       <div>
         <label className="ella-label" htmlFor="studentId">
@@ -80,6 +84,21 @@ function SetPasswordForm() {
           className={`${mobileInputClass} font-mono uppercase`}
           value={studentId}
           onChange={(e) => setStudentId(e.target.value.toUpperCase())}
+        />
+      </div>
+      <div>
+        <label className="ella-label" htmlFor="setupCode">
+          Setup code
+        </label>
+        <input
+          id="setupCode"
+          type="text"
+          required
+          autoCapitalize="characters"
+          className={`${mobileInputClass} font-mono uppercase`}
+          placeholder="e.g. AB12XY"
+          value={setupCode}
+          onChange={(e) => setSetupCode(e.target.value.toUpperCase())}
         />
       </div>
       <div>

@@ -16,11 +16,19 @@ type SessionRow = {
   id: string;
   title: string;
   courseCode?: string;
+  locationId: string;
   locationName: string;
   startAt: string;
   endAt: string;
   isActive: boolean;
 };
+
+/** "2026-08-01T09:00" — value a datetime-local input accepts, in local time. */
+function toDatetimeLocal(iso: string): string {
+  const d = new Date(iso);
+  const offset = d.getTimezoneOffset();
+  return new Date(d.getTime() - offset * 60 * 1000).toISOString().slice(0, 16);
+}
 
 export function SessionManager() {
   const [sessions, setSessions] = useState<SessionRow[]>([]);
@@ -31,6 +39,8 @@ export function SessionManager() {
   const [startAt, setStartAt] = useState("");
   const [endAt, setEndAt] = useState("");
   const [saving, setSaving] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [cancelingId, setCancelingId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     const [sessRes, locRes] = await Promise.all([
@@ -55,34 +65,82 @@ export function SessionManager() {
     void load();
   }, [load]);
 
-  async function handleCreate(e: React.FormEvent) {
+  function resetForm() {
+    setTitle("");
+    setCourseCode("");
+    setLocationId("");
+    setStartAt("");
+    setEndAt("");
+    setEditingId(null);
+  }
+
+  function startEdit(s: SessionRow) {
+    setEditingId(s.id);
+    setTitle(s.title);
+    setCourseCode(s.courseCode ?? "");
+    setLocationId(s.locationId);
+    setStartAt(toDatetimeLocal(s.startAt));
+    setEndAt(toDatetimeLocal(s.endAt));
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await authFetch("/api/admin/sessions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: title.trim(),
-          courseCode: courseCode.trim() || undefined,
-          locationId,
-          startAt: new Date(startAt).toISOString(),
-          endAt: new Date(endAt).toISOString(),
-        }),
+      const payload = {
+        title: title.trim(),
+        courseCode: courseCode.trim() || undefined,
+        locationId,
+        startAt: new Date(startAt).toISOString(),
+        endAt: new Date(endAt).toISOString(),
+      };
+      const res = editingId
+        ? await authFetch(`/api/admin/sessions/${editingId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          })
+        : await authFetch("/api/admin/sessions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+      const data = await parseJsonResponse<{ error?: string; message?: string }>(
+        res,
+      );
+      if (!res.ok) {
+        toastError(
+          data.error ?? (editingId ? "Could not update session" : "Could not create session"),
+        );
+        return;
+      }
+      toastSuccess(data.message ?? (editingId ? "Session updated" : "Session created"));
+      resetForm();
+      await load();
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function cancelSession(id: string, title: string) {
+    if (!window.confirm(`Cancel "${title}"? This cannot be undone.`)) return;
+    setCancelingId(id);
+    try {
+      const res = await authFetch(`/api/admin/sessions/${id}`, {
+        method: "DELETE",
       });
       const data = await parseJsonResponse<{ error?: string; message?: string }>(
         res,
       );
       if (!res.ok) {
-        toastError(data.error ?? "Could not create session");
+        toastError(data.error ?? "Could not cancel session");
         return;
       }
-      toastSuccess("Session created");
-      setTitle("");
-      setCourseCode("");
+      toastSuccess(data.message ?? "Session cancelled");
+      if (editingId === id) resetForm();
       await load();
     } finally {
-      setSaving(false);
+      setCancelingId(null);
     }
   }
 
@@ -97,8 +155,10 @@ export function SessionManager() {
         </p>
       </div>
 
-      <form onSubmit={handleCreate} className="ella-card-padded">
-        <h2 className="ella-heading-section text-lg">New session</h2>
+      <form onSubmit={handleSubmit} className="ella-card-padded">
+        <h2 className="ella-heading-section text-lg">
+          {editingId ? "Edit session" : "New session"}
+        </h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="block sm:col-span-2">
             <span className="ella-label">Title</span>
@@ -156,13 +216,28 @@ export function SessionManager() {
             />
           </label>
         </div>
-        <button
-          type="submit"
-          disabled={saving}
-          className={`${adminBtnPrimary} mt-4 px-5`}
-        >
-          {saving ? "Saving…" : "Create session"}
-        </button>
+        <div className="mt-4 flex gap-3">
+          <button
+            type="submit"
+            disabled={saving}
+            className={`${adminBtnPrimary} px-5`}
+          >
+            {saving
+              ? "Saving…"
+              : editingId
+                ? "Save changes"
+                : "Create session"}
+          </button>
+          {editingId && (
+            <button
+              type="button"
+              onClick={resetForm}
+              className="text-sm font-semibold text-[var(--ella-fg-muted)] hover:text-[var(--ella-fg)]"
+            >
+              Cancel edit
+            </button>
+          )}
+        </div>
       </form>
 
       <div className="ella-table-wrap">
@@ -173,12 +248,13 @@ export function SessionManager() {
               <th>Site</th>
               <th>Window</th>
               <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {sessions.length === 0 ? (
               <tr>
-                <td colSpan={4} className="py-8 text-[var(--ella-fg-subtle)]">
+                <td colSpan={5} className="py-8 text-[var(--ella-fg-subtle)]">
                   No sessions yet.
                 </td>
               </tr>
@@ -204,6 +280,25 @@ export function SessionManager() {
                     ) : (
                       <span className="ella-chip-neutral">Scheduled / ended</span>
                     )}
+                  </td>
+                  <td>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={() => startEdit(s)}
+                        className="rounded-lg border border-[var(--ella-border)] px-2.5 py-1.5 text-xs font-semibold text-[var(--ella-fg-muted)] hover:text-[var(--ella-fg)]"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => void cancelSession(s.id, s.title)}
+                        disabled={cancelingId === s.id}
+                        className="rounded-lg border border-[var(--ella-danger)]/35 bg-[var(--ella-danger-subtle)] px-2.5 py-1.5 text-xs font-semibold text-[var(--ella-danger)] hover:opacity-90 disabled:opacity-50"
+                      >
+                        {cancelingId === s.id ? "Cancelling…" : "Cancel"}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

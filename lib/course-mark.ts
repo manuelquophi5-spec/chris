@@ -1,5 +1,6 @@
 import { getDayKey } from "@/lib/day";
 import { geofenceOutOfRangeMessage } from "@/lib/geofence-messages";
+import { checkImplausibleMovement } from "@/lib/gps-spoofing";
 import { isWithinGeofence } from "@/lib/haversine";
 import { evaluateCourseSchedule } from "@/lib/schedule";
 import { toAttendanceSummary } from "@/lib/attendance";
@@ -18,7 +19,6 @@ export async function markCourseAttendance(params: {
   coords: { latitude: number; longitude: number };
   timezoneOffset: number;
   gpsAccuracy: number | null;
-  photoData: string | null;
   locationIdOverride?: string;
 }) {
   const {
@@ -28,7 +28,6 @@ export async function markCourseAttendance(params: {
     coords,
     timezoneOffset,
     gpsAccuracy,
-    photoData,
     locationIdOverride,
   } = params;
 
@@ -95,7 +94,7 @@ export async function markCourseAttendance(params: {
     }
   }
 
-  let locationId = locationIdOverride ?? course.locationId?.toString() ?? "";
+  const locationId = locationIdOverride ?? course.locationId?.toString() ?? "";
   if (!locationId) {
     return {
       error: "This class has no campus location — ask your administrator.",
@@ -127,6 +126,17 @@ export async function markCourseAttendance(params: {
     };
   }
 
+  const markedAt = new Date();
+  const movement = await checkImplausibleMovement(
+    userId,
+    coords.latitude,
+    coords.longitude,
+    markedAt,
+  );
+  if (!movement.ok) {
+    return { error: movement.message, status: 403 as const };
+  }
+
   const isLate = type === "check_in" && window.isLate;
 
   const record = await Attendance.create({
@@ -140,9 +150,8 @@ export async function markCourseAttendance(params: {
     distanceMeters,
     gpsAccuracy,
     withinGeofence: true,
-    photoData,
     isLate,
-    markedAt: new Date(),
+    markedAt,
   });
 
   const summary = toAttendanceSummary(record, location.name, undefined, course.title);

@@ -39,9 +39,15 @@ function parseCsv(text: string): Array<Record<string, string>> {
   }).filter((r) => r.name && r.studentId);
 }
 
+const PAGE_SIZE = 50;
+
 export function AdminUsersManager() {
   const [users, setUsers] = useState<AdminUserRow[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [saving, setSaving] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [studentId, setStudentId] = useState("");
@@ -50,23 +56,69 @@ export function AdminUsersManager() {
   const [level, setLevel] = useState<number | "">("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [csvImporting, setCsvImporting] = useState(false);
-  const [csvResult, setCsvResult] = useState<{ created: number; skipped: number; message: string } | null>(null);
+  const [csvResult, setCsvResult] = useState<{
+    created: number;
+    skipped: number;
+    message: string;
+    results: Array<{ studentId: string; name: string; status: string; setupCode?: string }>;
+  } | null>(null);
+  const [lastSetupCode, setLastSetupCode] = useState<{
+    name: string;
+    studentId: string;
+    code: string;
+  } | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    const res = await authFetch("/api/admin/users");
-    const data = await parseJsonResponse<{ users?: AdminUserRow[]; error?: string }>(
-      res,
-    );
-    if (res.ok) setUsers(data.users ?? []);
-    else toastError(data.error ?? "Could not load student list");
-    setLoading(false);
+  const fetchPage = useCallback(async (q: string, pageNum: number) => {
+    const params = new URLSearchParams({
+      page: String(pageNum),
+      limit: String(PAGE_SIZE),
+    });
+    if (q) params.set("q", q);
+    const res = await authFetch(`/api/admin/users?${params.toString()}`);
+    const data = await parseJsonResponse<{
+      users?: AdminUserRow[];
+      total?: number;
+      error?: string;
+    }>(res);
+    if (!res.ok) {
+      toastError(data.error ?? "Could not load student list");
+      return null;
+    }
+    return { users: data.users ?? [], total: data.total ?? 0 };
   }, []);
 
+  const load = useCallback(
+    async (q: string) => {
+      setLoading(true);
+      const result = await fetchPage(q, 1);
+      if (result) {
+        setUsers(result.users);
+        setTotal(result.total);
+        setPage(1);
+      }
+      setLoading(false);
+    },
+    [fetchPage],
+  );
+
+  async function loadMore() {
+    setLoadingMore(true);
+    const nextPage = page + 1;
+    const result = await fetchPage(search, nextPage);
+    if (result) {
+      setUsers((prev) => [...prev, ...result.users]);
+      setTotal(result.total);
+      setPage(nextPage);
+    }
+    setLoadingMore(false);
+  }
+
   useEffect(() => {
-    void load();
-  }, [load]);
+    const id = setTimeout(() => void load(search), search ? 300 : 0);
+    return () => clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -83,20 +135,26 @@ export function AdminUsersManager() {
           level: role === "user" && level !== "" ? level : undefined,
         }),
       });
-      const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
+      const data = await parseJsonResponse<{
+        error?: string;
+        message?: string;
+        setupCode?: string;
+      }>(res);
       if (!res.ok) {
         toastError(data.error ?? "Could not add this person");
         return;
       }
-      toastSuccess(
-        data.message ??
-          `Added ${firstName}. Tell them to open datalink_attend and tap “Set password” with ID ${studentId.toUpperCase()}.`,
-      );
+      toastSuccess(data.message ?? `Added ${firstName}.`);
+      setLastSetupCode({
+        name: firstName,
+        studentId: studentId.trim().toUpperCase(),
+        code: data.setupCode ?? "",
+      });
       setFirstName("");
       setStudentId("");
       setProgram("");
       setLevel("");
-      await load();
+      await load(search);
     } finally {
       setSaving(false);
     }
@@ -112,27 +170,34 @@ export function AdminUsersManager() {
       return;
     }
     toastSuccess(data.message ?? "Account unlocked. They can try signing in again.");
-    await load();
+    await load(search);
   }
 
-  async function resetPassword(id: string) {
+  async function resetPassword(id: string, name: string, studentIdValue: string) {
     const res = await authFetch(`/api/admin/users/${id}/reset-password`, {
       method: "POST",
     });
-    const data = await parseJsonResponse<{ error?: string; message?: string }>(res);
+    const data = await parseJsonResponse<{
+      error?: string;
+      message?: string;
+      setupCode?: string;
+    }>(res);
     if (!res.ok) {
       toastError(data.error ?? "Could not reset password");
       return;
     }
-    toastSuccess(
-      data.message ??
-        "Password cleared. Tell them to open Set password and choose a new one.",
-    );
-    await load();
+    toastSuccess(data.message ?? `Password cleared for ${name}.`);
+    setLastSetupCode({
+      name,
+      studentId: studentIdValue,
+      code: data.setupCode ?? "",
+    });
+    await load(search);
   }
 
-  function copyInstructions(id: string, name: string) {
-    const text = `Hi ${name}, set up Data Link attendance:\n1. Open datalink_attend\n2. Tap "Set password"\n3. Student ID: ${id}\n4. Choose a password, then sign in for class check-in.`;
+  function copyInstructions(id: string, name: string, code?: string) {
+    const codeLine = code ? `\n3. Setup code: ${code}` : "";
+    const text = `Hi ${name}, set up Data Link attendance:\n1. Open datalink_attend\n2. Tap "Set password"${codeLine}\n${code ? "4" : "3"}. Student ID: ${id}\n${code ? "5" : "4"}. Choose a password, then sign in for class check-in.`;
     void navigator.clipboard.writeText(text).then(() => {
       setCopiedId(id);
       toastSuccess("Instructions copied to clipboard.");
@@ -165,6 +230,7 @@ export function AdminUsersManager() {
         created?: number;
         skipped?: number;
         message?: string;
+        results?: Array<{ studentId: string; name: string; status: string; setupCode?: string }>;
       }>(res);
       if (!res.ok) {
         toastError(data.error ?? "Import failed");
@@ -174,9 +240,10 @@ export function AdminUsersManager() {
         created: data.created ?? 0,
         skipped: data.skipped ?? 0,
         message: data.message ?? "",
+        results: data.results ?? [],
       });
       toastSuccess(data.message ?? "Import complete");
-      await load();
+      await load(search);
       if (fileRef.current) fileRef.current.value = "";
     } catch {
       toastError("Could not read the CSV file. Make sure it's a valid CSV.");
@@ -196,12 +263,58 @@ export function AdminUsersManager() {
       </div>
 
       <AdminHelpCard title="Tell new students (copy & send)">
-        <p>After you add someone, send them:</p>
+        <p>
+          After you add someone, give them their Student ID and one-time
+          setup code (shown below), then send:
+        </p>
         <p className="ella-quote">
-          “Open datalink_attend → Set password → enter your Student ID → pick a password →
-          check in during class.”
+          “Open datalink_attend → Set password → enter your Student ID and
+          setup code → pick a password → check in during class.”
         </p>
       </AdminHelpCard>
+
+      {lastSetupCode && (
+        <div className="ella-card-padded border-2 border-[var(--ella-accent)]">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h2 className="ella-heading-section text-lg">
+                Setup code for {lastSetupCode.name}
+              </h2>
+              <p className="ella-text-muted mt-1 text-sm">
+                Give this to them now — it only shows once. Valid for 14 days.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setLastSetupCode(null)}
+              className="text-xs font-semibold text-[var(--ella-fg-subtle)] hover:text-[var(--ella-fg)]"
+            >
+              Dismiss
+            </button>
+          </div>
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <span className="rounded-lg bg-[var(--ella-surface-muted)] px-4 py-2 font-mono text-lg font-bold tracking-widest text-[var(--ella-fg)]">
+              {lastSetupCode.code}
+            </span>
+            <span className="font-mono text-sm text-[var(--ella-fg-muted)]">
+              ID: {lastSetupCode.studentId}
+            </span>
+            <button
+              type="button"
+              onClick={() =>
+                copyInstructions(
+                  lastSetupCode.studentId,
+                  lastSetupCode.name,
+                  lastSetupCode.code,
+                )
+              }
+              className={adminBtnGhost}
+            >
+              Copy instructions
+            </button>
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handleCreate} className="ella-card-padded">
         <h2 className="ella-heading-section text-lg">Add a new person</h2>
@@ -299,7 +412,7 @@ export function AdminUsersManager() {
       <div className="ella-card-padded">
         <h2 className="ella-heading-section text-lg">Import from CSV</h2>
         <p className="ella-text-muted mt-1 text-sm">
-          Upload a spreadsheet exported from your student records system. CSV must have columns: <strong>Name</strong>, <strong>Student ID</strong>, <strong>Program</strong>, <strong>Level</strong>, <strong>Role</strong> (optional — defaults to "user"). Use "instructor" or "lecturer" for lecturers.
+          Upload a spreadsheet exported from your student records system. CSV must have columns: <strong>Name</strong>, <strong>Student ID</strong>, <strong>Program</strong>, <strong>Level</strong>, <strong>Role</strong> (optional — defaults to &quot;user&quot;). Use &quot;instructor&quot; or &quot;lecturer&quot; for lecturers.
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <input
@@ -323,13 +436,54 @@ export function AdminUsersManager() {
             <p className="mt-1 text-[var(--ella-fg-muted)]">
               Created: {csvResult.created} · Skipped: {csvResult.skipped}
             </p>
+            {csvResult.results.length > 0 && (
+              <div className="mt-3 max-h-64 overflow-y-auto rounded-lg border border-[var(--ella-border)]">
+                <table className="w-full text-left text-xs">
+                  <thead className="sticky top-0 bg-[var(--ella-surface)]">
+                    <tr>
+                      <th className="px-3 py-2">Student ID</th>
+                      <th className="px-3 py-2">Name</th>
+                      <th className="px-3 py-2">Status</th>
+                      <th className="px-3 py-2">Setup code</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {csvResult.results.map((r, i) => (
+                      <tr key={`${r.studentId}-${i}`} className="border-t border-[var(--ella-border)]">
+                        <td className="px-3 py-2 font-mono">{r.studentId}</td>
+                        <td className="px-3 py-2">{r.name}</td>
+                        <td className="px-3 py-2">
+                          {r.status === "Created" ? (
+                            <span className="ella-chip-success">Created</span>
+                          ) : (
+                            <span className="text-[var(--ella-fg-subtle)]">{r.status}</span>
+                          )}
+                        </td>
+                        <td className="px-3 py-2 font-mono font-bold">
+                          {r.setupCode ?? "—"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
       </div>
 
       <div className="ella-table-wrap">
-        <div className="ella-table-wrap-header">
-          <h2 className="ella-heading-section text-lg">All students & staff</h2>
+        <div className="ella-table-wrap-header flex flex-wrap items-center justify-between gap-3">
+          <h2 className="ella-heading-section text-lg">
+            All students & staff{total > 0 ? ` (${total})` : ""}
+          </h2>
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by name or student ID…"
+            className={`${adminInput} max-w-xs`}
+          />
         </div>
         <table className="ella-table">
           <thead>
@@ -351,7 +505,9 @@ export function AdminUsersManager() {
             ) : users.length === 0 ? (
               <tr>
                 <td colSpan={5} className="py-8 text-[var(--ella-fg-subtle)]">
-                  No one added yet. Use the form above.
+                  {search
+                    ? `No matches for "${search}".`
+                    : "No one added yet. Use the form above."}
                 </td>
               </tr>
             ) : (
@@ -390,7 +546,15 @@ export function AdminUsersManager() {
                     <div className="flex flex-wrap gap-2">
                       <button
                         type="button"
-                        onClick={() => copyInstructions(u.studentId, u.name)}
+                        onClick={() =>
+                          copyInstructions(
+                            u.studentId,
+                            u.name,
+                            lastSetupCode?.studentId === u.studentId
+                              ? lastSetupCode.code
+                              : undefined,
+                          )
+                        }
                         className={adminBtnGhost}
                       >
                         {copiedId === u.studentId ? "Copied!" : "Copy instructions"}
@@ -407,7 +571,9 @@ export function AdminUsersManager() {
                       {!u.passwordMustChange ? (
                         <button
                           type="button"
-                          onClick={() => void resetPassword(u.id)}
+                          onClick={() =>
+                            void resetPassword(u.id, u.name, u.studentId)
+                          }
                           className="rounded-lg border border-[var(--ella-warning)]/35 bg-[var(--ella-warning-subtle)] px-2.5 py-1.5 text-xs font-semibold text-[var(--ella-warning)] hover:opacity-90"
                         >
                           Reset password
@@ -420,6 +586,18 @@ export function AdminUsersManager() {
             )}
           </tbody>
         </table>
+        {!loading && users.length < total && (
+          <div className="flex justify-center border-t border-[var(--ella-border)] p-3">
+            <button
+              type="button"
+              onClick={() => void loadMore()}
+              disabled={loadingMore}
+              className={adminBtnGhost}
+            >
+              {loadingMore ? "Loading…" : `Load more (${users.length} of ${total})`}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

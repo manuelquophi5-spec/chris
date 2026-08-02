@@ -1,8 +1,15 @@
 import mongoose from "mongoose";
 import dns from "node:dns";
 
-// Use Google DNS to work around networks that block MongoDB Atlas SRV lookups
-try { dns.setServers(["8.8.8.8", "8.8.4.4"]); } catch { /* ignore if already set */ }
+// Some local/ISP networks block MongoDB Atlas SRV lookups; Google DNS works around
+// that. Vercel's own resolver doesn't have this problem, so leave it untouched there.
+if (process.env.VERCEL !== "1") {
+  try {
+    dns.setServers(["8.8.8.8", "8.8.4.4"]);
+  } catch {
+    /* ignore if already set */
+  }
+}
 
 function getMongoUri(): string {
   const uri = process.env.MONGODB_URI;

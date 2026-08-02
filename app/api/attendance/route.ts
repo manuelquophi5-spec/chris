@@ -1,9 +1,10 @@
 import { connectDB } from "@/lib/db";
 import { getAuthUser, jsonError, jsonOk } from "@/lib/api";
 import { Attendance } from "@/models/Attendance";
+import { Course } from "@/models/Course";
 import mongoose from "mongoose";
 
-/** List attendance records (own history for users, all for staff). */
+/** List attendance records (own history for users; admins see all, instructors see only their own courses). */
 export async function GET(request: Request) {
   try {
     const auth = await getAuthUser();
@@ -15,13 +16,39 @@ export async function GET(request: Request) {
 
     await connectDB();
 
-    const isStaff = auth.role === "admin" || auth.role === "instructor";
-    const filter: Record<string, unknown> = isStaff ? {} : { userId: auth.id };
+    const isAdmin = auth.role === "admin";
+    const isInstructor = auth.role === "instructor";
+    const isStaff = isAdmin || isInstructor;
+
+    const filter: Record<string, unknown> = {};
+    if (!isStaff) {
+      filter.userId = auth.id;
+    }
+
+    let allowedCourseIds: mongoose.Types.ObjectId[] | null = null;
+    if (isInstructor) {
+      const ownCourses = await Course.find({ lecturerId: auth.id })
+        .select("_id")
+        .lean();
+      allowedCourseIds = ownCourses.map((c) => c._id);
+      filter.courseId = { $in: allowedCourseIds };
+    }
 
     if (courseIdFilter === "campus") {
-      filter.$or = [{ courseId: null }, { courseId: { $exists: false } }];
+      if (isInstructor) {
+        // Non-course (daily/session) attendance has no courseId — out of an instructor's course-scoped view.
+        filter.courseId = { $in: [] };
+      } else {
+        filter.$or = [{ courseId: null }, { courseId: { $exists: false } }];
+      }
     } else if (courseIdFilter && mongoose.Types.ObjectId.isValid(courseIdFilter)) {
-      filter.courseId = new mongoose.Types.ObjectId(courseIdFilter);
+      const requested = new mongoose.Types.ObjectId(courseIdFilter);
+      if (isInstructor) {
+        const allowed = allowedCourseIds!.some((id) => id.equals(requested));
+        filter.courseId = allowed ? requested : { $in: [] };
+      } else {
+        filter.courseId = requested;
+      }
     }
 
     const records = await Attendance.find(filter)

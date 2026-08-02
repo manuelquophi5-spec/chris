@@ -201,19 +201,20 @@ Here you create accounts. **Students** and **lecturers** both get a **Student ID
    | **Job type** | **Student** or **Lecturer** | Student = checks in on phone; Lecturer = views class attendance |
 
 3. Click **Add student or lecturer**.
-4. On success, the system creates the account **without a password yet**. Status shows **Needs to set password**.
+4. On success, the system creates the account **without a password yet** and shows a **one-time setup code** (e.g. `AB12XY`) — it only appears once, so give it to the person right away. Status shows **Needs to set password**.
 
 ### 7.2 What to tell the person after you add them
 
-Use **Copy instructions** on their row, or send this message:
+Use **Copy instructions** on their row (only pre-fills the code if it's still shown on screen), or send this message:
 
 > 1. Open **datalink_attend** (your school link).  
 > 2. Tap **Set password**.  
 > 3. Enter your **Student ID**: `E10234`  
-> 4. Choose a password, then **Sign in**.  
-> 5. During class, open the app and **Check in to class** (with GPS on).
+> 4. Enter the **setup code** you were given: `AB12XY`  
+> 5. Choose a password, then **Sign in**.  
+> 6. During class, open the app and **Check in to class** (with GPS on).
 
-First-time sign-in can also work from **Sign in** with Student ID and **empty password** — the app may redirect them to set a password.
+The setup code is required — without it, Set password will reject the request. This stops someone from guessing a Student ID and claiming another person's account. If the code is lost or expires (14 days), use **Reset password** to issue a new one.
 
 ### 7.3 Status meanings in the user table
 
@@ -229,9 +230,9 @@ If someone forgot their password:
 
 1. Find them in the table (status **Ready to check in**).
 2. Click **Reset password**.
-3. Tell them to use **Set password** again with their Student ID and pick a new password.
+3. A new **one-time setup code** appears — give it to them, then tell them to use **Set password** again with their Student ID, the new code, and a new password.
 
-You do **not** see their new password — they choose it themselves.
+You do **not** see their new password — they choose it themselves. Their old setup code (if any) stops working once you reset.
 
 ### 7.5 Lecturer accounts
 
@@ -367,7 +368,13 @@ If used, you create a session with title, optional course code, site, start date
 
 A log of important admin actions (creating users, classes, etc.) for accountability. You do not need this for day-to-day setup.
 
-### 11.3 Daily attendance (no classes)
+### 11.3 Branding
+
+**Menu:** **Branding** (`/dashboard/admin/settings`)
+
+Set the **app name** and **logo** shown across the whole app — sign-in pages, the student dashboard, the admin sidebar, and the installable PWA icon. Paste a link to a logo image already hosted somewhere (your school website, etc.); there is no file upload. Leave the logo field blank to use the default logo. Changes take effect for everyone within about 30 seconds.
+
+### 11.4 Daily attendance (no classes)
 
 If students are **not enrolled in any class**, their phone shows **daily** check-in: one check-in and one check-out per day at a selected campus. That mode suits **offices or workplaces**, not typical timed school periods. For schools, prefer **classes + enrollment** so attendance follows the timetable.
 
@@ -427,7 +434,6 @@ The app **automatically** picks the right screen:
 
 - **Attendance** summary for today: check-in time, check-out time, badges like **Complete**, **On campus**, **Not in yet**.
 - **Campus** dropdown (unless already checked in — then site is locked).
-- Optional **photo** on check-in.
 - **Check in** and **Check out** buttons.
 - Distance hint text explaining if they are near the campus or outside.
 - Evening reminder after 5 PM if they checked in but forgot check-out.
@@ -442,9 +448,9 @@ Lists past attendance by day so students can prove they marked in. Read-only.
 
 ### 12.5 Student first-time password
 
-1. Admin adds student → status **Needs to set password**.
+1. Admin adds student → status **Needs to set password**, and gets a one-time setup code to hand to the student.
 2. Student opens **Set password** (`/set-password`).
-3. Enters **Student ID** and new password (meets strength rules).
+3. Enters **Student ID**, the **setup code** from their admin, and a new password (meets strength rules).
 4. Signs in from **Sign in**.
 
 ### 12.6 Common student error messages (plain meaning)
@@ -474,7 +480,7 @@ Lists past attendance by day so students can prove they marked in. Read-only.
 |------|------------------------|---------|
 | **My classes** | Yes | Main teaching dashboard |
 | **Attendance log** | Yes | Browse raw attendance records |
-| **Start here**, **Classes** (admin), **Students & staff**, **Campuses**, **One-off sessions**, **Activity history** | No (admin only) | — |
+| **Start here**, **Classes** (admin), **Students & staff**, **Campuses**, **One-off sessions**, **Activity history**, **Branding** | No (admin only) | — |
 
 Lecturers **cannot** create campuses, add users, or create classes unless they are also given an admin account (separate email login).
 

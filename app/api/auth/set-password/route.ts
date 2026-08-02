@@ -13,6 +13,10 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { toSessionUser } from "@/lib/session-user";
 import { findUserByEmployeeIdForAuth } from "@/lib/find-user-by-employee-id";
 import { userNeedsPasswordSetup } from "@/lib/password-hash";
+import {
+  isSetupCodeExpired,
+  verifySetupCode,
+} from "@/lib/setup-code";
 import { isValidEmployeeId, normalizeEmployeeId } from "@/lib/user-account";
 
 export async function POST(request: Request) {
@@ -23,12 +27,16 @@ export async function POST(request: Request) {
       String(body.studentId ?? body.employeeId ?? ""),
     );
     const password = String(body.password ?? "");
+    const setupCode = String(body.setupCode ?? "").trim();
 
     if (!isValidEmployeeId(employeeId)) {
       return jsonError("Enter a valid student ID");
     }
+    if (!setupCode) {
+      return jsonError("Enter the setup code your administrator gave you");
+    }
 
-    const limited = checkRateLimit(`set-password:${ip}:${employeeId}`);
+    const limited = await checkRateLimit(`set-password:${ip}:${employeeId}`);
     if (!limited.allowed) {
       return jsonError(
         `Too many attempts. Try again in ${limited.retryAfterSec ?? 60} seconds.`,
@@ -52,10 +60,23 @@ export async function POST(request: Request) {
       );
     }
 
+    if (isSetupCodeExpired(doc.setupCodeExpiresAt)) {
+      return jsonError(
+        "Setup code expired or not issued yet. Ask your administrator to reset your account.",
+        403,
+      );
+    }
+    const validCode = await verifySetupCode(setupCode, doc.setupCodeHash);
+    if (!validCode) {
+      return jsonError("Incorrect setup code. Check with your administrator.", 403);
+    }
+
     doc.passwordHash = await hashPassword(password);
     doc.passwordMustChange = false;
     doc.failedLoginAttempts = 0;
     doc.lockedUntil = null;
+    doc.setupCodeHash = null;
+    doc.setupCodeExpiresAt = null;
     await doc.save();
 
     const sessionUser = toSessionUser(doc);

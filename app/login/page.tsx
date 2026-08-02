@@ -7,18 +7,19 @@ import {
   AuthPageShell,
   mobileInputClass,
 } from "@/components/auth/AuthPageShell";
+import { useBrand } from "@/components/BrandProvider";
 import { usePwaInstall } from "@/hooks/usePwaInstall";
 import {
   authFetch,
   parseJsonResponse,
   redirectAfterAuth,
 } from "@/lib/auth-client";
-import { APP_SHORT_TITLE } from "@/lib/brand";
 import { toastError, toastInfo, toastSuccess } from "@/lib/toast";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { appName } = useBrand();
   const { standalone, ios, installing, canPromptInstall, promptInstall } =
     usePwaInstall();
   const [studentId, setStudentId] = useState("");
@@ -69,13 +70,13 @@ function LoginForm() {
 
   async function handleInstall() {
     if (standalone) {
-      toastInfo(`${APP_SHORT_TITLE} is already installed.`);
+      toastInfo(`${appName} is already installed.`);
       return;
     }
 
     const outcome = await promptInstall();
     if (outcome === "accepted") {
-      toastSuccess(`${APP_SHORT_TITLE} installed. Open it from your home screen.`);
+      toastSuccess(`${appName} installed. Open it from your home screen.`);
       return;
     }
     if (outcome === "dismissed") return;

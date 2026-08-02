@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     }
 
     const rateKey = `login:${ip}:${employeeId}`;
-    const limited = checkRateLimit(rateKey);
+    const limited = await checkRateLimit(rateKey);
     if (!limited.allowed) {
       return jsonError(
         `Too many attempts. Try again in ${limited.retryAfterSec ?? 60} seconds.`,

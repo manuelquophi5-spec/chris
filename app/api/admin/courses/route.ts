@@ -3,6 +3,7 @@ import { writeAudit } from "@/lib/audit";
 import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
 import { parseLevel, parseProgram } from "@/lib/academic";
 import { listCoursesForAdmin } from "@/lib/courses";
+import { parseTimezoneOffset } from "@/lib/attendance";
 import { parseTimeToMinutes } from "@/lib/schedule";
 import { Course } from "@/models/Course";
 import { User } from "@/models/User";
@@ -16,12 +17,15 @@ function parseScheduleDays(value: unknown): number[] | null {
   return [...new Set(days)];
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 
+  const { searchParams } = new URL(request.url);
+  const timezoneOffset = parseTimezoneOffset(searchParams.get("timezoneOffset"));
+
   await connectDB();
-  const courses = await listCoursesForAdmin();
+  const courses = await listCoursesForAdmin(undefined, timezoneOffset);
   return jsonOk({ courses });
 }
 
@@ -43,6 +47,7 @@ export async function POST(request: Request) {
       120,
       Math.max(0, Number(body.lateAfterMinutes ?? 15)),
     );
+    const timezoneOffset = parseTimezoneOffset(body.timezoneOffset);
 
     const program = parseProgram(body.program);
     const level = parseLevel(body.level);
@@ -94,7 +99,7 @@ export async function POST(request: Request) {
 
     await writeAudit(auth.id, "course.create", "course", course._id.toString(), title);
 
-    const courses = await listCoursesForAdmin();
+    const courses = await listCoursesForAdmin(undefined, timezoneOffset);
     const row = courses.find((c) => c.id === course._id.toString());
 
     return jsonOk({ course: row, message: `Created ${title}` }, 201);

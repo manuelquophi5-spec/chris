@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useBrand } from "@/components/BrandProvider";
 import { usePwaInstall } from "@/hooks/usePwaInstall";
-import { APP_SHORT_TITLE } from "@/lib/brand";
 import { toastInfo, toastSuccess } from "@/lib/toast";
 
 export function PwaProvider() {
+  const { appName } = useBrand();
   const { standalone, ios, installing, canPromptInstall, promptInstall } =
     usePwaInstall();
   const [showHelp, setShowHelp] = useState(false);
@@ -15,7 +16,7 @@ export function PwaProvider() {
   async function handleInstall() {
     const outcome = await promptInstall();
     if (outcome === "accepted") {
-      toastSuccess(`${APP_SHORT_TITLE} installed. Open it from your home screen.`);
+      toastSuccess(`${appName} installed. Open it from your home screen.`);
       setShowHelp(false);
       return;
     }
@@ -36,7 +37,7 @@ export function PwaProvider() {
       <div className="mx-auto flex max-w-lg items-center gap-3 sm:max-w-none">
         <div className="min-w-0 flex-1">
           <p className="text-sm font-bold text-[var(--ella-fg)]">
-            Install {APP_SHORT_TITLE}
+            Install {appName}
           </p>
           <p className="ella-text-muted text-xs">
             {ios

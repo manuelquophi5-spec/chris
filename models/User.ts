@@ -7,6 +7,9 @@ export interface IUser {
   email: string;
   passwordHash?: string;
   passwordMustChange: boolean;
+  /** One-time code an admin (or the account owner via self-reset) hands out to prove account ownership before Set password. */
+  setupCodeHash?: string | null;
+  setupCodeExpiresAt?: Date | null;
   failedLoginAttempts: number;
   lockedUntil?: Date | null;
   name: string;
@@ -38,6 +41,8 @@ const userSchema = new Schema<IUser>(
     // Optional until the user completes "Set password" on first login.
     passwordHash: { type: String, select: false, required: false },
     passwordMustChange: { type: Boolean, default: true },
+    setupCodeHash: { type: String, select: false, default: null },
+    setupCodeExpiresAt: { type: Date, default: null },
     failedLoginAttempts: { type: Number, default: 0 },
     lockedUntil: { type: Date, default: null },
     name: { type: String, required: true, trim: true },
