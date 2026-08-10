@@ -1,8 +1,8 @@
 import { connectDB } from "@/lib/db";
 import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
-import { parseTimezoneOffset } from "@/lib/attendance";
-import { getActiveClassesNow } from "@/lib/courses";
+import { getTodayMarksCount, parseTimezoneOffset } from "@/lib/attendance";
 
+/** Day-scoped mark count for the signed-in admin's browser timezone. */
 export async function GET(request: Request) {
   try {
     const auth = await requireAdmin();
@@ -12,11 +12,11 @@ export async function GET(request: Request) {
     const tzOffset = parseTimezoneOffset(searchParams.get("timezoneOffset"));
 
     await connectDB();
-    const classes = await getActiveClassesNow(tzOffset);
+    const todayMarks = await getTodayMarksCount(tzOffset);
 
-    return jsonOk({ classes } as Record<string, unknown>);
+    return jsonOk({ todayMarks } as Record<string, unknown>);
   } catch (error) {
-    console.error("[api/admin/courses/active-now]", error);
+    console.error("[api/admin/attendance/today-count]", error);
     return jsonError(
       error instanceof Error ? error.message : "Internal Server Error",
       500,

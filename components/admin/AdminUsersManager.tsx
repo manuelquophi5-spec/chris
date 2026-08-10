@@ -14,6 +14,25 @@ import {
   adminStack,
 } from "./admin-ui";
 import { AdminHelpCard } from "./AdminHelpCard";
+import { ConfirmButton } from "./ConfirmButton";
+
+type IssuedCode = { name: string; studentId: string; code: string };
+
+const SESSION_CODES_KEY = "dla_setup_codes";
+const MAX_SESSION_CODES = 20;
+
+/** Recently-issued one-time setup codes survive a refresh within the tab
+ * session — a page reload or adding a second person must not silently
+ * discard an earlier code the admin hasn't handed off yet. */
+function loadSessionCodes(): IssuedCode[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.sessionStorage.getItem(SESSION_CODES_KEY);
+    return raw ? (JSON.parse(raw) as IssuedCode[]) : [];
+  } catch {
+    return [];
+  }
+}
 
 function parseCsv(text: string): Array<Record<string, string>> {
   const lines = text.trim().split(/\r?\n/);
@@ -62,12 +81,39 @@ export function AdminUsersManager() {
     message: string;
     results: Array<{ studentId: string; name: string; status: string; setupCode?: string }>;
   } | null>(null);
-  const [lastSetupCode, setLastSetupCode] = useState<{
-    name: string;
-    studentId: string;
-    code: string;
-  } | null>(null);
+  const [sessionCodes, setSessionCodes] = useState<IssuedCode[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setSessionCodes(loadSessionCodes());
+  }, []);
+
+  function addSessionCode(entry: IssuedCode) {
+    setSessionCodes((prev) => {
+      const next = [entry, ...prev.filter((c) => c.studentId !== entry.studentId)].slice(
+        0,
+        MAX_SESSION_CODES,
+      );
+      try {
+        window.sessionStorage.setItem(SESSION_CODES_KEY, JSON.stringify(next));
+      } catch {
+        /* sessionStorage unavailable (private mode, quota) — codes still show for this render */
+      }
+      return next;
+    });
+  }
+
+  function dismissSessionCode(studentId: string) {
+    setSessionCodes((prev) => {
+      const next = prev.filter((c) => c.studentId !== studentId);
+      try {
+        window.sessionStorage.setItem(SESSION_CODES_KEY, JSON.stringify(next));
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  }
 
   const fetchPage = useCallback(async (q: string, pageNum: number) => {
     const params = new URLSearchParams({
@@ -145,7 +191,7 @@ export function AdminUsersManager() {
         return;
       }
       toastSuccess(data.message ?? `Added ${firstName}.`);
-      setLastSetupCode({
+      addSessionCode({
         name: firstName,
         studentId: studentId.trim().toUpperCase(),
         code: data.setupCode ?? "",
@@ -187,7 +233,7 @@ export function AdminUsersManager() {
       return;
     }
     toastSuccess(data.message ?? `Password cleared for ${name}.`);
-    setLastSetupCode({
+    addSessionCode({
       name,
       studentId: studentIdValue,
       code: data.setupCode ?? "",
@@ -273,46 +319,70 @@ export function AdminUsersManager() {
         </p>
       </AdminHelpCard>
 
-      {lastSetupCode && (
-        <div className="ella-card-padded border-2 border-[var(--ella-accent)]">
+      {sessionCodes.length > 0 && (
+        <div className="ella-card-padded border-2 border-[var(--ella-accent)] space-y-4" aria-live="polite">
           <div className="flex items-start justify-between gap-3">
             <div>
               <h2 className="ella-heading-section text-lg">
-                Setup code for {lastSetupCode.name}
+                {sessionCodes.length > 1
+                  ? `${sessionCodes.length} setup codes issued this session`
+                  : `Setup code for ${sessionCodes[0].name}`}
               </h2>
               <p className="ella-text-muted mt-1 text-sm">
-                Give this to them now — it only shows once. Valid for 14 days.
+                Give these to each person now — they only show once. Valid for 14 days.
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() => setLastSetupCode(null)}
-              className="text-xs font-semibold text-[var(--ella-fg-subtle)] hover:text-[var(--ella-fg)]"
-            >
-              Dismiss
-            </button>
+            {sessionCodes.length > 1 && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSessionCodes([]);
+                  try {
+                    window.sessionStorage.removeItem(SESSION_CODES_KEY);
+                  } catch {
+                    /* ignore */
+                  }
+                }}
+                className="text-xs font-semibold text-[var(--ella-fg-subtle)] hover:text-[var(--ella-fg)]"
+              >
+                Clear all
+              </button>
+            )}
           </div>
-          <div className="mt-3 flex flex-wrap items-center gap-3">
-            <span className="rounded-lg bg-[var(--ella-surface-muted)] px-4 py-2 font-mono text-lg font-bold tracking-widest text-[var(--ella-fg)]">
-              {lastSetupCode.code}
-            </span>
-            <span className="font-mono text-sm text-[var(--ella-fg-muted)]">
-              ID: {lastSetupCode.studentId}
-            </span>
-            <button
-              type="button"
-              onClick={() =>
-                copyInstructions(
-                  lastSetupCode.studentId,
-                  lastSetupCode.name,
-                  lastSetupCode.code,
-                )
-              }
-              className={adminBtnGhost}
-            >
-              Copy instructions
-            </button>
-          </div>
+          <ul className="space-y-2">
+            {sessionCodes.map((entry) => (
+              <li
+                key={entry.studentId}
+                className="ella-panel-muted flex flex-wrap items-center gap-3 px-3 py-2.5"
+              >
+                <span className="min-w-0 flex-1 truncate text-sm font-medium text-[var(--ella-fg)]">
+                  {entry.name}
+                </span>
+                <span className="rounded-lg bg-[var(--ella-surface-muted)] px-3 py-1.5 font-mono text-base font-bold tracking-widest text-[var(--ella-fg)]">
+                  {entry.code}
+                </span>
+                <span className="font-mono text-sm text-[var(--ella-fg-muted)]">
+                  ID: {entry.studentId}
+                </span>
+                <button
+                  type="button"
+                  onClick={() =>
+                    copyInstructions(entry.studentId, entry.name, entry.code)
+                  }
+                  className={adminBtnGhost}
+                >
+                  Copy instructions
+                </button>
+                <button
+                  type="button"
+                  onClick={() => dismissSessionCode(entry.studentId)}
+                  className="text-xs font-semibold text-[var(--ella-fg-subtle)] hover:text-[var(--ella-fg)]"
+                >
+                  Dismiss
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
@@ -441,10 +511,10 @@ export function AdminUsersManager() {
                 <table className="w-full text-left text-xs">
                   <thead className="sticky top-0 bg-[var(--ella-surface)]">
                     <tr>
-                      <th className="px-3 py-2">Student ID</th>
-                      <th className="px-3 py-2">Name</th>
-                      <th className="px-3 py-2">Status</th>
-                      <th className="px-3 py-2">Setup code</th>
+                      <th scope="col" className="px-3 py-2">Student ID</th>
+                      <th scope="col" className="px-3 py-2">Name</th>
+                      <th scope="col" className="px-3 py-2">Status</th>
+                      <th scope="col" className="px-3 py-2">Setup code</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -488,11 +558,11 @@ export function AdminUsersManager() {
         <table className="ella-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Student ID</th>
-              <th>Program / level</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th scope="col">Name</th>
+              <th scope="col">Student ID</th>
+              <th scope="col">Program / level</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -550,9 +620,8 @@ export function AdminUsersManager() {
                           copyInstructions(
                             u.studentId,
                             u.name,
-                            lastSetupCode?.studentId === u.studentId
-                              ? lastSetupCode.code
-                              : undefined,
+                            sessionCodes.find((c) => c.studentId === u.studentId)
+                              ?.code,
                           )
                         }
                         className={adminBtnGhost}
@@ -569,15 +638,13 @@ export function AdminUsersManager() {
                         </button>
                       ) : null}
                       {!u.passwordMustChange ? (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            void resetPassword(u.id, u.name, u.studentId)
-                          }
+                        <ConfirmButton
+                          label="Reset password"
+                          confirmLabel="Yes, reset"
+                          message={`Reset ${u.name}'s password?`}
+                          onConfirm={() => resetPassword(u.id, u.name, u.studentId)}
                           className="rounded-lg border border-[var(--ella-warning)]/35 bg-[var(--ella-warning-subtle)] px-2.5 py-1.5 text-xs font-semibold text-[var(--ella-warning)] hover:opacity-90"
-                        >
-                          Reset password
-                        </button>
+                        />
                       ) : null}
                     </div>
                   </td>

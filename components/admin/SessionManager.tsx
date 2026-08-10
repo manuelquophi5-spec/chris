@@ -9,6 +9,7 @@ import {
   adminSelect,
   adminStack,
 } from "./admin-ui";
+import { ConfirmButton } from "./ConfirmButton";
 
 type LocationOption = { id: string; name: string };
 
@@ -122,8 +123,7 @@ export function SessionManager() {
     }
   }
 
-  async function cancelSession(id: string, title: string) {
-    if (!window.confirm(`Cancel "${title}"? This cannot be undone.`)) return;
+  async function cancelSession(id: string) {
     setCancelingId(id);
     try {
       const res = await authFetch(`/api/admin/sessions/${id}`, {
@@ -244,11 +244,11 @@ export function SessionManager() {
         <table className="ella-table">
           <thead>
             <tr>
-              <th>Session</th>
-              <th>Site</th>
-              <th>Window</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th scope="col">Session</th>
+              <th scope="col">Site</th>
+              <th scope="col">Window</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -290,14 +290,14 @@ export function SessionManager() {
                       >
                         Edit
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => void cancelSession(s.id, s.title)}
+                      <ConfirmButton
+                        label="Cancel"
+                        confirmLabel="Yes, cancel"
+                        message={`Cancel "${s.title}"?`}
                         disabled={cancelingId === s.id}
+                        onConfirm={() => cancelSession(s.id)}
                         className="rounded-lg border border-[var(--ella-danger)]/35 bg-[var(--ella-danger-subtle)] px-2.5 py-1.5 text-xs font-semibold text-[var(--ella-danger)] hover:opacity-90 disabled:opacity-50"
-                      >
-                        {cancelingId === s.id ? "Cancelling…" : "Cancel"}
-                      </button>
+                      />
                     </div>
                   </td>
                 </tr>

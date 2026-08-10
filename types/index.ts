@@ -197,3 +197,27 @@ export type AttendanceAlert = {
   dayKey: string;
   checkInAt?: string;
 };
+
+export type ActiveClassSummary = {
+  id: string;
+  title: string;
+  courseCode: string;
+  checkedIn: number;
+  enrolled: number;
+};
+
+export type UserAttendanceStats = {
+  totalCheckIns: number;
+  totalLate: number;
+  uniqueDays: number;
+  streak: number;
+  perCourse: Array<{
+    id: string;
+    title: string;
+    courseCode: string;
+    checkIns: number;
+    lates: number;
+    days: number;
+    attendanceRate: number;
+  }>;
+};

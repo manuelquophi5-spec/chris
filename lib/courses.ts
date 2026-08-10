@@ -15,6 +15,7 @@ import { Attendance } from "@/models/Attendance";
 import { Course, type ICourse } from "@/models/Course";
 import { User } from "@/models/User";
 import type {
+  ActiveClassSummary,
   ActiveCourseSummary,
   CourseRow,
   CourseStatsSummary,
@@ -397,6 +398,55 @@ function getDefaultRangeStart(): string {
   const d = new Date();
   d.setUTCDate(d.getUTCDate() - 27);
   return d.toISOString().slice(0, 10);
+}
+
+/** Courses currently in session, with today's check-in count vs. eligible enrollment. */
+export async function getActiveClassesNow(
+  timezoneOffsetMinutes: number,
+): Promise<ActiveClassSummary[]> {
+  const now = new Date();
+  const allCourses = await Course.find({ isActive: true }).lean();
+
+  const active: ActiveClassSummary[] = [];
+
+  for (const c of allCourses) {
+    const window = evaluateCourseSchedule(
+      c.scheduleDays,
+      c.startTime,
+      c.endTime,
+      c.lateAfterMinutes ?? 15,
+      now,
+      timezoneOffsetMinutes,
+    );
+
+    if (!window.active) continue;
+
+    const dayKey = getDayKey(now, timezoneOffsetMinutes);
+    const marks = await Attendance.countDocuments({
+      courseId: c._id,
+      dayKey,
+      type: "check_in",
+    });
+
+    let enrolled = 0;
+    if (c.program && c.level != null) {
+      enrolled = await User.countDocuments({
+        role: "user",
+        program: c.program,
+        level: c.level,
+      });
+    }
+
+    active.push({
+      id: c._id.toString(),
+      title: c.title,
+      courseCode: (c.courseCode ?? "").trim(),
+      checkedIn: marks,
+      enrolled,
+    });
+  }
+
+  return active;
 }
 
 export async function canLecturerAccessCourse(

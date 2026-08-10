@@ -5,72 +5,41 @@ import { useEffect, useState } from "react";
 import { useBrand } from "@/components/BrandProvider";
 import { authFetch } from "@/lib/auth-client";
 import { AdminHelpCard } from "./AdminHelpCard";
+import type { ActiveClassSummary } from "@/types";
 
-function StatSkeleton() {
-  return (
-    <div className="ella-stat-cell animate-pulse">
-      <div className="mb-2 h-3 w-20 rounded bg-[var(--ella-surface-muted)]" />
-      <div className="h-6 w-12 rounded bg-[var(--ella-surface-muted)]" />
-    </div>
-  );
-}
-
-type ActiveClass = {
-  id: string;
-  title: string;
-  courseCode: string;
-  checkedIn: number;
-  enrolled: number;
+type InitialStats = {
+  userCount: number;
+  pendingSetup: number;
+  siteCount: number;
+  todayMarks: number;
+  activeClasses: ActiveClassSummary[];
 };
 
-export function AdminOverview() {
+export function AdminOverview({ initial }: { initial: InitialStats }) {
   const { appName } = useBrand();
-  const [userCount, setUserCount] = useState<number | null>(null);
-  const [pendingSetup, setPendingSetup] = useState<number | null>(null);
-  const [siteCount, setSiteCount] = useState<number | null>(null);
-  const [todayMarks, setTodayMarks] = useState<number | null>(null);
-  const [activeClasses, setActiveClasses] = useState<ActiveClass[]>([]);
-  const [loadingStats, setLoadingStats] = useState(true);
+  const [todayMarks, setTodayMarks] = useState(initial.todayMarks);
+  const [activeClasses, setActiveClasses] = useState<ActiveClassSummary[]>(
+    initial.activeClasses,
+  );
 
+  // The server render has no browser timezone, so day-scoped stats above used UTC.
+  // Reconcile silently once we know the real offset (no-op outside the UTC gap).
   useEffect(() => {
+    const tzOffset = new Date().getTimezoneOffset();
+    if (tzOffset === 0) return;
     void (async () => {
-      setLoadingStats(true);
-      const tzOffset = new Date().getTimezoneOffset();
-      const [usersRes, pendingRes, locRes, attRes, activeRes] = await Promise.all([
-        authFetch("/api/admin/users?limit=1"),
-        authFetch("/api/admin/users?passwordMustChange=1&limit=1"),
-        authFetch("/api/locations?all=1"),
-        authFetch("/api/attendance?limit=100"),
+      const [countRes, activeRes] = await Promise.all([
+        authFetch(`/api/admin/attendance/today-count?timezoneOffset=${tzOffset}`),
         authFetch(`/api/admin/courses/active-now?timezoneOffset=${tzOffset}`),
       ]);
-      const usersData = await usersRes.json();
-      const pendingData = await pendingRes.json();
-      const locData = await locRes.json();
-      const attData = await attRes.json();
+      const countData = await countRes.json();
       const activeData = await activeRes.json();
-
-      setUserCount(usersData.total ?? 0);
-      setPendingSetup(pendingData.total ?? 0);
-      setSiteCount(
-        (locData.locations ?? []).filter(
-          (l: { isActive?: boolean }) => l.isActive !== false,
-        ).length,
-      );
-
-      const today = new Date();
-      const offset = today.getTimezoneOffset();
-      const dayKey = new Date(today.getTime() - offset * 60 * 1000)
-        .toISOString()
-        .slice(0, 10);
-      const marks = (attData.attendance ?? []).filter(
-        (r: { dayKey?: string; markedAt: string }) =>
-          (r.dayKey || r.markedAt.slice(0, 10)) === dayKey,
-      );
-      setTodayMarks(marks.length);
-      setActiveClasses(activeData.classes ?? []);
-      setLoadingStats(false);
+      if (typeof countData.todayMarks === "number") setTodayMarks(countData.todayMarks);
+      if (activeData.classes) setActiveClasses(activeData.classes);
     })();
   }, []);
+
+  const { userCount, pendingSetup, siteCount } = initial;
 
   const steps = [
     {
@@ -106,23 +75,23 @@ export function AdminOverview() {
   const stats = [
     {
       label: "Students & staff",
-      value: userCount ?? "—",
+      value: userCount,
       href: "/dashboard/admin/users",
     },
     {
       label: "Need password setup",
-      value: pendingSetup ?? "—",
+      value: pendingSetup,
       href: "/dashboard/admin/users",
-      warn: (pendingSetup ?? 0) > 0,
+      warn: pendingSetup > 0,
     },
     {
       label: "Campuses active",
-      value: siteCount ?? "—",
+      value: siteCount,
       href: "/dashboard/admin/sites",
     },
     {
       label: "Marks today",
-      value: todayMarks ?? "—",
+      value: todayMarks,
       href: "/dashboard/admin/attendance",
     },
   ];
@@ -173,20 +142,18 @@ export function AdminOverview() {
       )}
 
       <div className="ella-stat-row">
-        {loadingStats
-          ? [0, 1, 2, 3].map((i) => <StatSkeleton key={i} />)
-          : stats.map((stat) => (
-              <Link
-                key={stat.label}
-                href={stat.href}
-                className={`ella-stat-cell transition hover:bg-[var(--ella-surface-muted)] ${
-                  stat.warn ? "bg-[var(--ella-warning-subtle)]" : ""
-                }`}
-              >
-                <p className="ella-stat-label">{stat.label}</p>
-                <p className="ella-stat-value">{stat.value}</p>
-              </Link>
-            ))}
+        {stats.map((stat) => (
+          <Link
+            key={stat.label}
+            href={stat.href}
+            className={`ella-stat-cell transition hover:bg-[var(--ella-surface-muted)] ${
+              stat.warn ? "bg-[var(--ella-warning-subtle)]" : ""
+            }`}
+          >
+            <p className="ella-stat-label">{stat.label}</p>
+            <p className="ella-stat-value">{stat.value}</p>
+          </Link>
+        ))}
       </div>
 
       <div>

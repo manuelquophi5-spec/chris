@@ -41,10 +41,10 @@ export function AdminAuditLog() {
         <table className="ella-table">
           <thead>
             <tr>
-              <th>When</th>
-              <th>Actor</th>
-              <th>Action</th>
-              <th>Target</th>
+              <th scope="col">When</th>
+              <th scope="col">Actor</th>
+              <th scope="col">Action</th>
+              <th scope="col">Target</th>
             </tr>
           </thead>
           <tbody>

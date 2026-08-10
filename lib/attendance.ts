@@ -6,10 +6,12 @@ import {
 } from "@/lib/courses";
 import { getActiveSessionsForUser } from "@/lib/sessions";
 import { Attendance } from "@/models/Attendance";
+import { Course } from "@/models/Course";
 import type {
   AttendanceRecordSummary,
   AttendanceType,
   TodayAttendanceStatus,
+  UserAttendanceStats,
 } from "@/types";
 import mongoose from "mongoose";
 
@@ -194,4 +196,89 @@ export async function buildTodayStatus(
     studentProgramLabel: profile ? programLabel(profile.program) : null,
     studentLevel: profile?.level ?? null,
   };
+}
+
+/** Day-scoped count, not capped by a records fetch — accurate past 100 marks/day. */
+export async function getTodayMarksCount(
+  timezoneOffsetMinutes: number,
+): Promise<number> {
+  const dayKey = getDayKey(new Date(), timezoneOffsetMinutes);
+  return Attendance.countDocuments({ dayKey });
+}
+
+export async function getUserAttendanceStats(
+  userId: string,
+): Promise<UserAttendanceStats | null> {
+  const profile = await getStudentProgramLevel(userId);
+  if (!profile) return null;
+
+  const courses = await Course.find({
+    isActive: true,
+    program: profile.program,
+    level: profile.level,
+  }).lean();
+
+  const courseIds = courses.map((c) => c._id);
+
+  const allRecords = await Attendance.find({
+    userId,
+    courseId: { $in: courseIds },
+  }).lean();
+
+  const totalCheckIns = allRecords.filter((r) => r.type === "check_in").length;
+  const totalLate = allRecords.filter((r) => r.isLate).length;
+  const uniqueDays = new Set(allRecords.map((r) => r.dayKey)).size;
+
+  const perCourse = courses.map((c) => {
+    const cid = c._id.toString();
+    const courseRecords = allRecords.filter((r) => String(r.courseId) === cid);
+    const checkIns = courseRecords.filter((r) => r.type === "check_in").length;
+    const lates = courseRecords.filter((r) => r.isLate).length;
+    const days = new Set(courseRecords.map((r) => r.dayKey)).size;
+
+    return {
+      id: cid,
+      title: c.title,
+      courseCode: (c.courseCode ?? "").trim(),
+      checkIns,
+      lates,
+      days,
+      attendanceRate:
+        days > 0 ? Math.round(((days - lates) / Math.max(days, 1)) * 100) : 0,
+    };
+  });
+
+  const sortedDays = [
+    ...new Set(
+      allRecords.filter((r) => r.type === "check_in").map((r) => r.dayKey),
+    ),
+  ]
+    .sort()
+    .reverse();
+
+  let streak = 0;
+  const today = new Date();
+  const offset = today.getTimezoneOffset();
+  const localToday = new Date(today.getTime() - offset * 60 * 1000)
+    .toISOString()
+    .slice(0, 10);
+
+  for (let i = 0; i < 90; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const key = new Date(d.getTime() - offset * 60 * 1000)
+      .toISOString()
+      .slice(0, 10);
+
+    const dow = new Date(`${key}T12:00:00`).getDay();
+    if (dow === 0 || dow === 6) continue;
+
+    if (sortedDays.includes(key)) {
+      streak++;
+    } else if (key !== localToday) {
+      break;
+    }
+  }
+
+  return { totalCheckIns, totalLate, uniqueDays, streak, perCourse };
 }

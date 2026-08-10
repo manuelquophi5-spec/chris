@@ -554,10 +554,10 @@ export function AdminCourseManager() {
                     <table className="ella-table">
                       <thead>
                         <tr>
-                          <th>Student</th>
-                          <th>%</th>
-                          <th>Late</th>
-                          <th>Missed</th>
+                          <th scope="col">Student</th>
+                          <th scope="col">%</th>
+                          <th scope="col">Late</th>
+                          <th scope="col">Missed</th>
                         </tr>
                       </thead>
                       <tbody>

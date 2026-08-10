@@ -1,6 +1,8 @@
 import { RoleDashboard } from "@/components/dashboard/RoleDashboard";
 import { getServerSession } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { connectDB } from "@/lib/db";
+import { buildTodayStatus, getUserAttendanceStats } from "@/lib/attendance";
 
 type Props = {
   searchParams: Promise<{ mobile?: string }>;
@@ -18,9 +20,17 @@ export default async function DashboardPage({ searchParams }: Props) {
     if (user.role === "instructor") redirect("/dashboard/admin/classes");
   }
 
+  await connectDB();
+  // Server render has no browser timezone yet; UTC is close enough for an
+  // instant first paint, and the client corrects to the exact offset on mount.
+  const [initialToday, initialStats] = await Promise.all([
+    buildTodayStatus(user.id, 0),
+    getUserAttendanceStats(user.id),
+  ]);
+
   return (
     <div className="animate-page-enter">
-      <RoleDashboard />
+      <RoleDashboard initialToday={initialToday} initialStats={initialStats} />
     </div>
   );
 }

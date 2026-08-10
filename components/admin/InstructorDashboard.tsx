@@ -202,9 +202,9 @@ export function InstructorDashboard() {
                       <table className="ella-table">
                         <thead>
                           <tr>
-                            <th>Student</th>
-                            <th>ID</th>
-                            <th>Today</th>
+                            <th scope="col">Student</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Today</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -244,10 +244,10 @@ export function InstructorDashboard() {
                         <table className="ella-table">
                           <thead>
                             <tr>
-                              <th>Student</th>
-                              <th>%</th>
-                              <th>Late</th>
-                              <th>Missed</th>
+                              <th scope="col">Student</th>
+                              <th scope="col">%</th>
+                              <th scope="col">Late</th>
+                              <th scope="col">Missed</th>
                             </tr>
                           </thead>
                           <tbody>

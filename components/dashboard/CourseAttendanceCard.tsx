@@ -12,7 +12,10 @@ import type { ActiveCourseSummary, AttendanceType, TodayAttendanceStatus } from 
 
 const selectClass = "ella-select mt-2";
 
-type Props = { onUpdate?: () => void };
+type Props = {
+  onUpdate?: () => void;
+  initialToday?: TodayAttendanceStatus;
+};
 
 function courseLabel(c: ActiveCourseSummary): string {
   const code = c.courseCode ? `${c.courseCode} · ` : "";
@@ -38,9 +41,13 @@ function pickDefaultCourse(courses: ActiveCourseSummary[]): string | null {
   return pick?.id ?? null;
 }
 
-export function CourseAttendanceCard({ onUpdate }: Props) {
-  const [today, setToday] = useState<TodayAttendanceStatus | null>(null);
-  const [courseId, setCourseId] = useState("");
+export function CourseAttendanceCard({ onUpdate, initialToday }: Props) {
+  const [today, setToday] = useState<TodayAttendanceStatus | null>(
+    initialToday ?? null,
+  );
+  const [courseId, setCourseId] = useState(
+    () => pickDefaultCourse(initialToday?.activeCourses ?? []) ?? "",
+  );
   const [loading, setLoading] = useState<AttendanceType | null>(null);
   const [requestingManual, setRequestingManual] = useState(false);
 

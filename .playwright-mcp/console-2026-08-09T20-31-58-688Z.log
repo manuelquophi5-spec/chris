@@ -1,0 +1,8 @@
+[     669ms] [INFO] Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner. @ http://localhost:3917/login/admin:0
+[  148514ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3917/api/auth/admin/login:0
+[ 1082131ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3917/api/auth/admin/login:0
+[ 1093465ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3917/api/auth/admin/login:0
+[ 1106070ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3917/api/auth/admin/login:0
+[ 1117834ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3917/api/auth/admin/login:0
+[ 1122152ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3917/api/auth/admin/login:0
+[ 1169401ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3917/api/auth/admin/login:0
