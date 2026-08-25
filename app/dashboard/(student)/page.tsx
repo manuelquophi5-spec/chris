@@ -41,7 +41,6 @@ export default async function DashboardPage({ searchParams }: Props) {
 
   if (!mobileView) {
     if (user.role === "admin") redirect("/dashboard/admin");
-    if (user.role === "instructor") redirect("/dashboard/admin/classes");
   }
 
   await connectDB();

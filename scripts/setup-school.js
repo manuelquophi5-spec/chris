@@ -34,7 +34,7 @@ const UserSchema = new mongoose.Schema({
   failedLoginAttempts: { type: Number, default: 0 },
   lockedUntil: { type: Date, default: null },
   name: { type: String, required: true },
-  role: { type: String, enum: ["admin", "instructor", "user"], default: "user" },
+  role: { type: String, enum: ["admin", "user"], default: "user" },
   program: { type: String },
   level: { type: Number },
 }, { timestamps: true });
@@ -49,7 +49,7 @@ const CourseSchema = new mongoose.Schema({
   startTime: { type: String, required: true },
   endTime: { type: String, required: true },
   lateAfterMinutes: { type: Number, default: 15 },
-  lecturerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   locationId: { type: mongoose.Schema.Types.ObjectId, ref: "Location" },
   isActive: { type: Boolean, default: true },
 }, { timestamps: true });
@@ -62,7 +62,7 @@ async function main() {
   await mongoose.connect(process.env.MONGODB_URI);
   console.log("Connected to MongoDB");
 
-  // Find the admin user to use as lecturer
+  // Find the admin user to own these demo courses
   const admin = await User.findOne({ role: "admin" });
   if (!admin) { console.error("No admin user found"); process.exit(1); }
 
@@ -86,7 +86,7 @@ async function main() {
       startTime: "09:00",
       endTime: "11:00",
       lateAfterMinutes: 15,
-      lecturerId: admin._id,
+      createdBy: admin._id,
       locationId: location._id,
       isActive: true,
     },
@@ -100,7 +100,7 @@ async function main() {
       startTime: "14:00",
       endTime: "16:00",
       lateAfterMinutes: 15,
-      lecturerId: admin._id,
+      createdBy: admin._id,
       locationId: location._id,
       isActive: true,
     },

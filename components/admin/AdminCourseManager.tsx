@@ -5,7 +5,7 @@ import { authFetch, parseJsonResponse } from "@/lib/auth-client";
 import { ACADEMIC_LEVELS, ACADEMIC_PROGRAMS } from "@/lib/academic";
 import { WEEKDAY_OPTIONS } from "@/lib/schedule";
 import { toastError, toastSuccess } from "@/lib/toast";
-import type { AdminUserRow, CourseRow, CourseStatsSummary } from "@/types";
+import type { CourseRow, CourseStatsSummary } from "@/types";
 import {
   adminBtnGhost,
   adminBtnPrimary,
@@ -15,12 +15,12 @@ import {
   adminStack,
 } from "./admin-ui";
 import { AdminHelpCard } from "./AdminHelpCard";
+import { CourseQrDisplay } from "./CourseQrDisplay";
 
 type LocationOption = { id: string; name: string };
 
 export function AdminCourseManager() {
   const [courses, setCourses] = useState<CourseRow[]>([]);
-  const [lecturers, setLecturers] = useState<AdminUserRow[]>([]);
   const [locations, setLocations] = useState<LocationOption[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [eligibleStudents, setEligibleStudents] = useState<
@@ -39,7 +39,6 @@ export function AdminCourseManager() {
   const [program, setProgram] = useState("");
   const [level, setLevel] = useState<number | "">("");
   const [description, setDescription] = useState("");
-  const [lecturerId, setLecturerId] = useState("");
   const [locationId, setLocationId] = useState("");
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("11:00");
@@ -50,26 +49,18 @@ export function AdminCourseManager() {
   const [courseSearch, setCourseSearch] = useState("");
   const load = useCallback(async () => {
     const tzOffset = new Date().getTimezoneOffset();
-    const [cRes, uRes, lRes] = await Promise.all([
+    const [cRes, lRes] = await Promise.all([
       authFetch(`/api/admin/courses?timezoneOffset=${tzOffset}`),
-      authFetch("/api/admin/users?role=instructor&limit=200"),
       authFetch("/api/locations?all=1"),
     ]);
     const cData = await parseJsonResponse<{ error?: string; courses?: CourseRow[] }>(
       cRes,
-    );
-    const uData = await parseJsonResponse<{ error?: string; users?: AdminUserRow[] }>(
-      uRes,
     );
     const lData = await parseJsonResponse<{
       error?: string;
       locations?: LocationOption[];
     }>(lRes);
     if (cRes.ok) setCourses(cData.courses ?? []);
-    if (uRes.ok) {
-      const users = uData.users ?? [];
-      setLecturers(users.filter((u) => u.role === "instructor"));
-    }
     if (lRes.ok) setLocations(lData.locations ?? []);
   }, []);
 
@@ -83,7 +74,6 @@ export function AdminCourseManager() {
     setProgram(c.program ?? "");
     setLevel(c.level ?? "");
     setDescription(c.description ?? "");
-    setLecturerId(c.lecturerId);
     setLocationId(c.locationId ?? "");
     setStartTime(c.startTime);
     setEndTime(c.endTime);
@@ -99,7 +89,6 @@ export function AdminCourseManager() {
     setProgram("");
     setLevel("");
     setDescription("");
-    setLecturerId("");
     setLocationId("");
     setStartTime("09:00");
     setEndTime("11:00");
@@ -153,7 +142,6 @@ export function AdminCourseManager() {
         program,
         level: level === "" ? undefined : level,
         description,
-        lecturerId,
         locationId: locationId || null,
         startTime,
         endTime,
@@ -220,7 +208,7 @@ export function AdminCourseManager() {
     return (
       c.title.toLowerCase().includes(q) ||
       (c.courseCode ?? "").toLowerCase().includes(q) ||
-      c.lecturerName.toLowerCase().includes(q) ||
+      c.createdByName.toLowerCase().includes(q) ||
       c.programLabel.toLowerCase().includes(q)
     );
   });
@@ -230,15 +218,13 @@ export function AdminCourseManager() {
       <div>
         <h1 className="ella-heading-page">Classes & courses</h1>
         <p className="ella-text-muted mt-2">
-          Create classes, set schedules, assign lecturers, enroll students, and
-          review attendance.
+          Create classes, set schedules, and review attendance.
         </p>
       </div>
 
       <AdminHelpCard title="School setup">
         <ol className="list-inside list-decimal space-y-1">
           <li>Create a campus under Campuses with GPS radius.</li>
-          <li>Add lecturers under Students & staff (role: Lecturer).</li>
           <li>
             Create a class with program + level (e.g. Computer Science, Level 200).
           </li>
@@ -331,22 +317,6 @@ export function AdminCourseManager() {
             />
           </label>
           <label className="block">
-            <span className="ella-label font-semibold">Lecturer</span>
-            <select
-              required
-              value={lecturerId}
-              onChange={(e) => setLecturerId(e.target.value)}
-              className={`${adminInput} mt-1`}
-            >
-              <option value="">Select lecturer</option>
-              {lecturers.map((l) => (
-                <option key={l.id} value={l.id}>
-                  {l.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="block">
             <span className="ella-label font-semibold">Campus / room GPS</span>
             <select
               value={locationId}
@@ -432,13 +402,7 @@ export function AdminCourseManager() {
         )}
         <button
           type="submit"
-          disabled={
-            saving ||
-            scheduleDays.length === 0 ||
-            !lecturerId ||
-            !program ||
-            level === ""
-          }
+          disabled={saving || scheduleDays.length === 0 || !program || level === ""}
           className={`${adminBtnPrimary} mt-6 px-5 py-3`}
         >
           {saving ? "Saving…" : editingId ? "Save changes" : "Create class"}
@@ -455,7 +419,7 @@ export function AdminCourseManager() {
               type="text"
               value={courseSearch}
               onChange={(e) => setCourseSearch(e.target.value)}
-              placeholder="Search by title, code, or lecturer…"
+              placeholder="Search by title, code, or creator…"
               className={`${adminInput}`}
             />
           </div>
@@ -483,8 +447,8 @@ export function AdminCourseManager() {
                       {c.title}
                     </p>
                     <p className="ella-text-muted text-sm">
-                      {c.programLabel} · Level {c.level} · {c.lecturerName} ·{" "}
-                      {c.enrolledCount} students
+                      {c.programLabel} · Level {c.level} · Created by{" "}
+                      {c.createdByName} · {c.enrolledCount} students
                     </p>
                     {c.isActiveNow && (
                       <span className="text-xs font-semibold text-[var(--ella-accent-hover)]">
@@ -538,6 +502,18 @@ export function AdminCourseManager() {
                     ))
                   )}
                 </ul>
+              </div>
+
+              <div className="ella-card-padded">
+                <h3 className="ella-heading-section">Class check-in QR</h3>
+                <p className="ella-text-muted mt-1 text-sm">
+                  Students scan these with their phone camera — no app button to
+                  find. Still checks the geofence, so scanning a photo of the code
+                  from off-site does not check anyone in.
+                </p>
+                <div className="mt-4">
+                  <CourseQrDisplay courseId={selectedId} />
+                </div>
               </div>
 
               <div className="ella-card-padded">

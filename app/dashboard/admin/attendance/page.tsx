@@ -1,9 +1,9 @@
 import { AdminAttendanceTools } from "@/components/admin/AdminAttendanceTools";
 import { AttendanceHistory } from "@/components/dashboard/AttendanceHistory";
-import { requireStaffPage } from "@/lib/admin-guard";
+import { requireAdminPage } from "@/lib/admin-guard";
 
 export default async function AdminAttendancePage() {
-  await requireStaffPage();
+  await requireAdminPage();
   return (
     <div className="space-y-8">
       <AdminAttendanceTools />

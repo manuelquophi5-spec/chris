@@ -51,8 +51,8 @@ export function AdminOverview({ initial }: { initial: InitialStats }) {
     },
     {
       step: 2,
-      title: "Add students & lecturers",
-      body: "Students use their student ID; lecturers use email at Admin sign in.",
+      title: "Add students",
+      body: "Give each student a Student ID and a one-time setup code to sign in.",
       href: "/dashboard/admin/users",
       button: "Students & staff",
     },

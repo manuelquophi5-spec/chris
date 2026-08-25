@@ -6,7 +6,6 @@ import { listCoursesForAdmin } from "@/lib/courses";
 import { parseTimezoneOffset } from "@/lib/attendance";
 import { parseTimeToMinutes } from "@/lib/schedule";
 import { Course } from "@/models/Course";
-import { User } from "@/models/User";
 import { Location } from "@/models/Location";
 import mongoose from "mongoose";
 
@@ -25,7 +24,7 @@ export async function GET(request: Request) {
   const timezoneOffset = parseTimezoneOffset(searchParams.get("timezoneOffset"));
 
   await connectDB();
-  const courses = await listCoursesForAdmin(undefined, timezoneOffset);
+  const courses = await listCoursesForAdmin(timezoneOffset);
   return jsonOk({ courses });
 }
 
@@ -38,7 +37,6 @@ export async function POST(request: Request) {
     const title = String(body.title ?? "").trim();
     const courseCode = String(body.courseCode ?? "").trim().toUpperCase();
     const description = String(body.description ?? "").trim();
-    const lecturerId = String(body.lecturerId ?? "").trim();
     const locationId = String(body.locationId ?? "").trim() || null;
     const startTime = String(body.startTime ?? "").trim();
     const endTime = String(body.endTime ?? "").trim();
@@ -55,9 +53,6 @@ export async function POST(request: Request) {
     if (!title) return jsonError("Course title is required");
     if (!program) return jsonError("Select a program for this class");
     if (level === null) return jsonError("Select an academic level (100–400)");
-    if (!mongoose.Types.ObjectId.isValid(lecturerId)) {
-      return jsonError("Select a lecturer");
-    }
     if (!scheduleDays) return jsonError("Select at least one class day");
     if (parseTimeToMinutes(startTime) === null) {
       return jsonError("Start time must be HH:mm (e.g. 15:00)");
@@ -70,11 +65,6 @@ export async function POST(request: Request) {
     }
 
     await connectDB();
-    const lecturer = await User.findOne({
-      _id: lecturerId,
-      role: { $in: ["instructor", "admin"] },
-    });
-    if (!lecturer) return jsonError("Lecturer not found", 404);
 
     if (locationId) {
       const loc = await Location.findOne({ _id: locationId, isActive: true });
@@ -87,7 +77,6 @@ export async function POST(request: Request) {
       program,
       level,
       description,
-      lecturerId: lecturer._id,
       locationId: locationId ? new mongoose.Types.ObjectId(locationId) : null,
       scheduleDays,
       startTime,
@@ -99,7 +88,7 @@ export async function POST(request: Request) {
 
     await writeAudit(auth.id, "course.create", "course", course._id.toString(), title);
 
-    const courses = await listCoursesForAdmin(undefined, timezoneOffset);
+    const courses = await listCoursesForAdmin(timezoneOffset);
     const row = courses.find((c) => c.id === course._id.toString());
 
     return jsonOk({ course: row, message: `Created ${title}` }, 201);

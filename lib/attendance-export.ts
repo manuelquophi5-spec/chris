@@ -1,6 +1,5 @@
 import { getDayKey } from "@/lib/day";
 import { Attendance } from "@/models/Attendance";
-import { Course } from "@/models/Course";
 import mongoose from "mongoose";
 import ExcelJS from "exceljs";
 
@@ -18,6 +17,7 @@ export type ExportRow = {
   distanceM: number | string;
   gpsAccuracyM: number | string;
   inGeofence: string;
+  method: string;
 };
 
 const HEADERS = [
@@ -34,6 +34,7 @@ const HEADERS = [
   "distance_m",
   "gps_accuracy_m",
   "in_geofence",
+  "method",
 ] as const;
 
 export async function fetchAttendanceForExport(params: {
@@ -41,10 +42,8 @@ export async function fetchAttendanceForExport(params: {
   to?: string;
   timezoneOffset: number;
   courseId?: string;
-  lecturerId?: string;
-  isAdmin: boolean;
 }): Promise<ExportRow[]> {
-  const { from, to, timezoneOffset, courseId, lecturerId, isAdmin } = params;
+  const { from, to, timezoneOffset, courseId } = params;
 
   const filter: Record<string, unknown> = {};
 
@@ -56,16 +55,6 @@ export async function fetchAttendanceForExport(params: {
 
   if (courseId && mongoose.Types.ObjectId.isValid(courseId)) {
     filter.courseId = new mongoose.Types.ObjectId(courseId);
-  } else if (!isAdmin && lecturerId) {
-    const courses = await Course.find({
-      lecturerId: new mongoose.Types.ObjectId(lecturerId),
-      isActive: true,
-    })
-      .select("_id")
-      .lean();
-    const ids = courses.map((c) => c._id);
-    if (ids.length === 0) return [];
-    filter.courseId = { $in: ids };
   }
 
   const records = await Attendance.find(filter)
@@ -101,6 +90,7 @@ export async function fetchAttendanceForExport(params: {
       gpsAccuracyM:
         r.gpsAccuracy != null ? Math.round(r.gpsAccuracy) : "",
       inGeofence: r.withinGeofence ? "yes" : "no",
+      method: r.checkInMethod === "qr" ? "qr" : "gps",
     };
   });
 }
@@ -129,6 +119,7 @@ export function rowsToCsv(rows: ExportRow[]): string {
       r.distanceM,
       r.gpsAccuracyM,
       r.inGeofence,
+      r.method,
     ]
       .map(escape)
       .join(","),
@@ -156,6 +147,7 @@ export async function rowsToXlsxBuffer(rows: ExportRow[]): Promise<Buffer> {
       r.distanceM,
       r.gpsAccuracyM,
       r.inGeofence,
+      r.method,
     ]);
   }
   sheet.getRow(1).font = { bold: true };

@@ -70,7 +70,6 @@ export function AdminUsersManager() {
   const [saving, setSaving] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [studentId, setStudentId] = useState("");
-  const [role, setRole] = useState<"user" | "instructor">("user");
   const [program, setProgram] = useState("");
   const [level, setLevel] = useState<number | "">("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -176,9 +175,8 @@ export function AdminUsersManager() {
         body: JSON.stringify({
           firstName: firstName.trim(),
           studentId: studentId.trim(),
-          role,
-          program: role === "user" ? program : undefined,
-          level: role === "user" && level !== "" ? level : undefined,
+          program,
+          level: level !== "" ? level : undefined,
         }),
       });
       const data = await parseJsonResponse<{
@@ -304,7 +302,7 @@ export function AdminUsersManager() {
         <h1 className="ella-heading-page">Students & staff</h1>
         <p className="ella-text-muted mt-2">
           Add students with program and level — they automatically see matching
-          courses. Lecturers are assigned to classes by admin.
+          courses.
         </p>
       </div>
 
@@ -415,74 +413,54 @@ export function AdminUsersManager() {
               placeholder="e.g. E10234"
             />
           </label>
-          <label className="block sm:col-span-2">
-            <span className="ella-label font-semibold">Job type</span>
+          <label className="block">
+            <span className="ella-label font-semibold">Program</span>
             <select
-              value={role}
-              onChange={(e) => setRole(e.target.value as "user" | "instructor")}
+              required
+              value={program}
+              onChange={(e) => setProgram(e.target.value)}
               className={`${adminSelect} text-base py-3`}
             >
-              <option value="user">Student — checks in on phone during class</option>
-              <option value="instructor">
-                Lecturer — teaches classes & views attendance
-              </option>
+              <option value="">Select program</option>
+              {ACADEMIC_PROGRAMS.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.label}
+                </option>
+              ))}
             </select>
           </label>
-          {role === "user" && (
-            <>
-              <label className="block">
-                <span className="ella-label font-semibold">Program</span>
-                <select
-                  required
-                  value={program}
-                  onChange={(e) => setProgram(e.target.value)}
-                  className={`${adminSelect} text-base py-3`}
-                >
-                  <option value="">Select program</option>
-                  {ACADEMIC_PROGRAMS.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="block">
-                <span className="ella-label font-semibold">Level</span>
-                <select
-                  required
-                  value={level}
-                  onChange={(e) =>
-                    setLevel(e.target.value ? Number(e.target.value) : "")
-                  }
-                  className={`${adminSelect} text-base py-3`}
-                >
-                  <option value="">Select level</option>
-                  {ACADEMIC_LEVELS.map((l) => (
-                    <option key={l} value={l}>
-                      Level {l}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </>
-          )}
+          <label className="block">
+            <span className="ella-label font-semibold">Level</span>
+            <select
+              required
+              value={level}
+              onChange={(e) =>
+                setLevel(e.target.value ? Number(e.target.value) : "")
+              }
+              className={`${adminSelect} text-base py-3`}
+            >
+              <option value="">Select level</option>
+              {ACADEMIC_LEVELS.map((l) => (
+                <option key={l} value={l}>
+                  Level {l}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
         <button
           type="submit"
-          disabled={
-            saving ||
-            (role === "user" && (!program || level === ""))
-          }
+          disabled={saving || !program || level === ""}
           className={`${adminBtnPrimary} mt-5 w-full py-3.5 text-base font-bold sm:w-auto sm:px-8`}
         >
-          {saving ? "Adding…" : "Add student or lecturer"}
+          {saving ? "Adding…" : "Add student"}
         </button>
       </form>
 
       <div className="ella-card-padded">
         <h2 className="ella-heading-section text-lg">Import from CSV</h2>
         <p className="ella-text-muted mt-1 text-sm">
-          Upload a spreadsheet exported from your student records system. CSV must have columns: <strong>Name</strong>, <strong>Student ID</strong>, <strong>Program</strong>, <strong>Level</strong>, <strong>Role</strong> (optional — defaults to &quot;user&quot;). Use &quot;instructor&quot; or &quot;lecturer&quot; for lecturers.
+          Upload a spreadsheet exported from your student records system. CSV must have columns: <strong>Name</strong>, <strong>Student ID</strong>, <strong>Program</strong>, <strong>Level</strong>.
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-3">
           <input
@@ -583,22 +561,13 @@ export function AdminUsersManager() {
             ) : (
               users.map((u) => (
                 <tr key={u.id}>
-                  <td className="ella-table-primary">
-                    {u.name}
-                    {u.role === "instructor" && (
-                      <span className="ml-2 text-xs text-[var(--ella-fg-subtle)]">
-                        Lecturer
-                      </span>
-                    )}
-                  </td>
+                  <td className="ella-table-primary">{u.name}</td>
                   <td className="font-mono text-base text-[var(--ella-fg)]">
                     {u.studentId}
                   </td>
                   <td className="text-sm text-[var(--ella-fg-muted)]">
-                    {u.role === "user"
-                      ? u.program && u.level
-                        ? `${ACADEMIC_PROGRAMS.find((p) => p.id === u.program)?.label ?? u.program} · L${u.level}`
-                        : "—"
+                    {u.program && u.level
+                      ? `${ACADEMIC_PROGRAMS.find((p) => p.id === u.program)?.label ?? u.program} · L${u.level}`
                       : "—"}
                   </td>
                   <td>

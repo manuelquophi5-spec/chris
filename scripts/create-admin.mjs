@@ -7,8 +7,17 @@
  */
 import { readFileSync, existsSync } from "fs";
 import { resolve } from "path";
+import dns from "node:dns";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+
+// Some local/ISP networks block MongoDB Atlas SRV lookups; Google DNS works
+// around that (same fix as lib/db.ts and scripts/setup-school.js).
+try {
+  dns.setServers(["8.8.8.8", "8.8.4.4"]);
+} catch {
+  /* ignore if already set */
+}
 
 function loadEnvLocal() {
   const path = resolve(process.cwd(), ".env.local");
@@ -63,7 +72,7 @@ const userSchema = new mongoose.Schema(
     failedLoginAttempts: { type: Number, default: 0 },
     lockedUntil: { type: Date, default: null },
     name: { type: String, required: true },
-    role: { type: String, enum: ["admin", "instructor", "user"], default: "user" },
+    role: { type: String, enum: ["admin", "user"], default: "user" },
   },
   { timestamps: true },
 );

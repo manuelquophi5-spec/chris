@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { usePwaInstall } from "@/hooks/usePwaInstall";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
 import {
   geolocationErrorMessage,
@@ -42,6 +43,7 @@ function pickDefaultCourse(courses: ActiveCourseSummary[]): string | null {
 }
 
 export function CourseAttendanceCard({ onUpdate, initialToday }: Props) {
+  const { standalone } = usePwaInstall();
   const [today, setToday] = useState<TodayAttendanceStatus | null>(
     initialToday ?? null,
   );
@@ -139,7 +141,7 @@ export function CourseAttendanceCard({ onUpdate, initialToday }: Props) {
         err && typeof err === "object" && "code" in err
           ? (err.code as GeoErrorCode)
           : "unknown";
-      toastError(geolocationErrorMessage(code));
+      toastError(geolocationErrorMessage(code, standalone));
     } finally {
       setLoading(null);
     }

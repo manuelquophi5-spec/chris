@@ -18,7 +18,7 @@ import type { AdminUserRow, UserRole } from "@/types";
 
 function parseRole(value: unknown): UserRole {
   const r = String(value ?? "user");
-  if (r === "admin" || r === "instructor" || r === "user") return r;
+  if (r === "admin" || r === "user") return r;
   return "user";
 }
 
@@ -42,9 +42,7 @@ export async function GET(request: Request) {
   await connectDB();
 
   const filter: Record<string, unknown> =
-    role === "user" || role === "instructor"
-      ? { role }
-      : { role: { $ne: "admin" } };
+    role === "user" ? { role } : { role: { $ne: "admin" } };
   if (passwordMustChange === "1") filter.passwordMustChange = true;
   if (passwordMustChange === "0") filter.passwordMustChange = false;
   if (q) {

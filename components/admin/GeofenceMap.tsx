@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { Circle, MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 import type { GeofenceLocation } from "@/types/location";
 
 const DEFAULT_CENTER: [number, number] = [5.6037, -0.187];

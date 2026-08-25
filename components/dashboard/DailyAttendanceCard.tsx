@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { usePwaInstall } from "@/hooks/usePwaInstall";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
 import {
   distancePreviewMessage,
@@ -108,6 +109,7 @@ export function DailyAttendanceCard({
   onUpdate,
   attendanceMode = "auto",
 }: Props) {
+  const { standalone } = usePwaInstall();
   const [locations, setLocations] = useState<LocationOption[]>([]);
   const [locationId, setLocationId] = useState("");
   const [sessionId, setSessionId] = useState("");
@@ -292,7 +294,7 @@ export function DailyAttendanceCard({
         err && typeof err === "object" && "code" in err
           ? (err.code as GeoErrorCode)
           : "unknown";
-      toastError(geolocationErrorMessage(code));
+      toastError(geolocationErrorMessage(code, standalone));
     } finally {
       setLoading(null);
     }

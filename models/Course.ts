@@ -10,7 +10,6 @@ export interface ICourse {
   /** Academic level: 100, 200, 300, or 400 */
   level: number;
   description?: string;
-  lecturerId: mongoose.Types.ObjectId;
   locationId?: mongoose.Types.ObjectId | null;
   /** 0=Sun … 6=Sat (JavaScript getDay) */
   scheduleDays: number[];
@@ -34,7 +33,6 @@ const courseSchema = new Schema<ICourse>(
       enum: [100, 200, 300, 400],
     },
     description: { type: String, trim: true, default: "" },
-    lecturerId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     locationId: { type: Schema.Types.ObjectId, ref: "Location", default: null },
     scheduleDays: {
       type: [Number],
@@ -56,7 +54,6 @@ const courseSchema = new Schema<ICourse>(
   { timestamps: true },
 );
 
-courseSchema.index({ lecturerId: 1, isActive: 1 });
 courseSchema.index({ isActive: 1 });
 courseSchema.index({ program: 1, level: 1, isActive: 1 });
 

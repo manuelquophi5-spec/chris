@@ -12,7 +12,7 @@ type NavItem = {
   href: string;
   label: string;
   match: (path: string) => boolean;
-  roles?: Array<"admin" | "instructor">;
+  roles?: Array<"admin">;
 };
 
 const allNav: NavItem[] = [
@@ -21,12 +21,6 @@ const allNav: NavItem[] = [
     label: "Start here",
     match: (p) => p === "/dashboard/admin",
     roles: ["admin"],
-  },
-  {
-    href: "/dashboard/admin/classes",
-    label: "My classes",
-    match: (p) => p.startsWith("/dashboard/admin/classes"),
-    roles: ["instructor"],
   },
   {
     href: "/dashboard/admin/courses",
@@ -50,7 +44,7 @@ const allNav: NavItem[] = [
     href: "/dashboard/admin/attendance",
     label: "Attendance log",
     match: (p) => p.startsWith("/dashboard/admin/attendance"),
-    roles: ["admin", "instructor"],
+    roles: ["admin"],
   },
   {
     href: "/dashboard/admin/sessions",
@@ -81,7 +75,7 @@ export function AdminDesktopShell({ user, children }: Props) {
   const pathname = usePathname();
   const { appName, logoUrl } = useBrand();
   const nav = allNav.filter(
-    (item) => !item.roles || item.roles.includes(user.role as "admin" | "instructor"),
+    (item) => !item.roles || item.roles.includes(user.role as "admin"),
   );
 
   async function handleLogout() {
@@ -104,9 +98,7 @@ export function AdminDesktopShell({ user, children }: Props) {
             />
             <div className="min-w-0">
               <p className="truncate text-sm font-bold">{appName}</p>
-              <p className="text-xs text-[var(--ella-sidebar-muted)]">
-                {user.role === "instructor" ? "Instructor" : "Admin"}
-              </p>
+              <p className="text-xs text-[var(--ella-sidebar-muted)]">Admin</p>
             </div>
           </div>
           <p className="mt-3 text-xs text-[var(--ella-sidebar-muted)]">
@@ -147,7 +139,7 @@ export function AdminDesktopShell({ user, children }: Props) {
           <div className="flex items-center justify-between gap-4 px-4 py-3.5 sm:px-8">
             <div className="min-w-0 md:hidden">
               <p className="text-xs font-semibold text-[var(--ella-accent-muted)]">
-                {appName} · {user.role === "instructor" ? "Instructor" : "Admin"}
+                {appName} · Admin
               </p>
             </div>
             <div className="flex flex-1 flex-wrap items-center justify-end gap-2">

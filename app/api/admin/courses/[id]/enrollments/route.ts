@@ -1,5 +1,5 @@
 import { connectDB } from "@/lib/db";
-import { jsonError, jsonOk, requireStaff } from "@/lib/api";
+import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
 import { getEligibleStudentsForCourse } from "@/lib/courses";
 import { levelLabel, programLabel } from "@/lib/academic";
 import { Course } from "@/models/Course";
@@ -9,7 +9,7 @@ type RouteContext = { params: Promise<{ id: string }> };
 
 /** Students automatically assigned by program + level (no manual enrollment). */
 export async function GET(_request: Request, context: RouteContext) {
-  const auth = await requireStaff();
+  const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 
   const { id } = await context.params;
@@ -20,10 +20,6 @@ export async function GET(_request: Request, context: RouteContext) {
   await connectDB();
   const course = await Course.findById(id).lean();
   if (!course) return jsonError("Course not found", 404);
-
-  if (auth.role === "instructor" && course.lecturerId.toString() !== auth.id) {
-    return jsonError("Forbidden", 403);
-  }
 
   const students = await getEligibleStudentsForCourse(course);
 

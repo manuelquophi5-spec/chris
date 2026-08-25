@@ -11,7 +11,7 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN ?? USER_JWT_EXPIRES;
 
 export { COOKIE_NAME };
 
-function getSecretKey(): Uint8Array {
+export function getSecretKey(): Uint8Array {
   const secret = process.env.JWT_SECRET;
   if (!secret || secret.length < 32) {
     throw new Error(
@@ -33,12 +33,12 @@ export async function verifyPassword(
 }
 
 function jwtExpiresForRole(role: UserRole): string {
-  if (role === "admin" || role === "instructor") return ADMIN_JWT_EXPIRES;
+  if (role === "admin") return ADMIN_JWT_EXPIRES;
   return JWT_EXPIRES_IN;
 }
 
 export function cookieMaxAgeForRole(role: UserRole): number {
-  const hours = role === "admin" || role === "instructor" ? 24 : 24 * 7;
+  const hours = role === "admin" ? 24 : 24 * 7;
   return hours * 60 * 60;
 }
 
@@ -66,7 +66,6 @@ export async function verifyAccessToken(
       typeof payload.email !== "string" ||
       typeof payload.name !== "string" ||
       payload.role !== "admin" &&
-      payload.role !== "instructor" &&
       payload.role !== "user"
     ) {
       return null;
@@ -91,6 +90,7 @@ export async function verifyAccessToken(
 
 export function getCookieOptions(maxAgeSeconds = 60 * 60 * 24 * 7) {
   // Only require Secure cookies on HTTPS deployments (Vercel). LAN http://IP dev must stay non-secure.
+  // Hosting outside Vercel on HTTPS? Set COOKIE_SECURE=true explicitly — the VERCEL=1 check won't fire there.
   const secure =
     process.env.COOKIE_SECURE === "true" ||
     (process.env.NODE_ENV === "production" &&

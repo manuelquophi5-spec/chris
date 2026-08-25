@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { COOKIE_NAME, verifyAccessToken } from "@/lib/auth";
 
-const protectedPaths = ["/dashboard", "/dashboard/admin"];
+const protectedPaths = ["/dashboard", "/dashboard/admin", "/scan"];
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -19,7 +19,7 @@ export async function proxy(request: NextRequest) {
 
   if (!user) {
     const login = new URL("/login", request.url);
-    login.searchParams.set("from", pathname);
+    login.searchParams.set("from", pathname + request.nextUrl.search);
     return NextResponse.redirect(login);
   }
 
@@ -27,16 +27,11 @@ export async function proxy(request: NextRequest) {
     if (user.role === "admin") {
       return NextResponse.redirect(new URL("/dashboard/admin", request.url));
     }
-    if (user.role === "instructor") {
-      return NextResponse.redirect(
-        new URL("/dashboard/admin/classes", request.url),
-      );
-    }
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard", "/dashboard/:path*"],
+  matcher: ["/dashboard", "/dashboard/:path*", "/scan"],
 };

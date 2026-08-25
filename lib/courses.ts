@@ -149,7 +149,6 @@ export async function getActiveCoursesForStudent(
             now,
             timezoneOffsetMinutes,
           ),
-      lecturerId: c.lecturerId.toString(),
       locationId:
         loc && typeof loc === "object" && "_id" in loc
           ? String(loc._id)
@@ -227,17 +226,11 @@ async function countEligibleStudentsByProgramLevel(
 }
 
 export async function listCoursesForAdmin(
-  lecturerFilter?: string,
   timezoneOffsetMinutes = 0,
 ): Promise<CourseRow[]> {
-  const filter: Record<string, unknown> = {};
-  if (lecturerFilter) {
-    filter.lecturerId = new mongoose.Types.ObjectId(lecturerFilter);
-  }
-
-  const courses = await Course.find(filter)
+  const courses = await Course.find()
     .sort({ program: 1, level: 1, title: 1 })
-    .populate("lecturerId", "name email")
+    .populate("createdBy", "name email")
     .populate("locationId", "name")
     .lean();
 
@@ -246,17 +239,16 @@ export async function listCoursesForAdmin(
 
   const rows: CourseRow[] = [];
   for (const c of courses) {
-    const lecturerPop = c.lecturerId as
+    const createdByPop = c.createdBy as
       | { _id?: mongoose.Types.ObjectId; name?: string; email?: string }
       | mongoose.Types.ObjectId;
-    const locationPop = c.locationId as { name?: string } | null;
-    const lecturerId =
-      typeof lecturerPop === "object" && lecturerPop && "_id" in lecturerPop
-        ? String(lecturerPop._id)
-        : String(c.lecturerId);
-    const lecturerName =
-      typeof lecturerPop === "object" && lecturerPop && "name" in lecturerPop
-        ? String(lecturerPop.name)
+    const locationPop = c.locationId as
+      | { _id?: mongoose.Types.ObjectId; name?: string }
+      | mongoose.Types.ObjectId
+      | null;
+    const createdByName =
+      typeof createdByPop === "object" && createdByPop && "name" in createdByPop
+        ? String(createdByPop.name)
         : "—";
     const window = evaluateCourseSchedule(
       c.scheduleDays,
@@ -280,9 +272,13 @@ export async function listCoursesForAdmin(
       programLabel: programLabel(c.program),
       level: c.level ?? 0,
       description: c.description ?? "",
-      lecturerId,
-      lecturerName,
-      locationId: c.locationId ? String(c.locationId) : null,
+      createdByName,
+      locationId:
+        locationPop && typeof locationPop === "object" && "_id" in locationPop
+          ? String(locationPop._id)
+          : c.locationId
+            ? String(c.locationId)
+            : null,
       locationName:
         locationPop && typeof locationPop === "object" && "name" in locationPop
           ? String(locationPop.name)
@@ -307,7 +303,7 @@ export async function getCourseStats(
   toDayKey?: string,
 ): Promise<CourseStatsSummary> {
   const course = await Course.findById(courseId)
-    .populate("lecturerId", "name")
+    .populate("createdBy", "name")
     .lean();
   if (!course) throw new Error("Course not found");
 
@@ -357,15 +353,15 @@ export async function getCourseStats(
     };
   });
 
-  const lecturer = course.lecturerId as { name?: string };
+  const createdBy = course.createdBy as { name?: string };
   return {
     courseId: course._id.toString(),
     title: course.title,
     programLabel: programLabel(course.program),
     levelLabel: levelLabel(course.level),
-    lecturerName:
-      lecturer && typeof lecturer === "object" && "name" in lecturer
-        ? String(lecturer.name)
+    createdByName:
+      createdBy && typeof createdBy === "object" && "name" in createdBy
+        ? String(createdBy.name)
         : "—",
     enrolledCount: students.length,
     expectedSessions,
@@ -447,14 +443,4 @@ export async function getActiveClassesNow(
   }
 
   return active;
-}
-
-export async function canLecturerAccessCourse(
-  lecturerId: string,
-  courseId: string,
-  isAdmin: boolean,
-): Promise<boolean> {
-  if (isAdmin) return true;
-  const c = await Course.findById(courseId).select("lecturerId").lean();
-  return Boolean(c && c.lecturerId.toString() === lecturerId);
 }

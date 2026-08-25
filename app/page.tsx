@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 
 function dashboardHomeForRole(role: string) {
   if (role === "admin") return "/dashboard/admin";
-  if (role === "instructor") return "/dashboard/admin/classes";
   return "/dashboard";
 }
 

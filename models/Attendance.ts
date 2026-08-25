@@ -9,6 +9,7 @@ export interface IAttendance {
   courseId?: mongoose.Types.ObjectId | null;
   isLate?: boolean;
   isManual?: boolean;
+  checkInMethod?: "gps" | "qr";
   type: AttendanceType;
   dayKey: string;
   latitude: number;
@@ -40,6 +41,7 @@ const attendanceSchema = new Schema<IAttendance>(
       default: null,
     },
     isLate: { type: Boolean, default: false },
+    checkInMethod: { type: String, enum: ["gps", "qr"], default: "gps" },
     type: {
       type: String,
       enum: ["check_in", "check_out"],
@@ -70,6 +72,16 @@ attendanceSchema.index(
   {
     unique: true,
     partialFilterExpression: { courseId: { $type: "objectId" } },
+  },
+);
+// Daily mode (neither sessionId nor courseId set) had no DB-level backstop —
+// only the app-level pre-check in lib/attendance.ts — unlike session/course
+// mode above, leaving a race window for two near-simultaneous requests.
+attendanceSchema.index(
+  { userId: 1, dayKey: 1, type: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { sessionId: null, courseId: null },
   },
 );
 attendanceSchema.index({ locationId: 1, markedAt: -1 });

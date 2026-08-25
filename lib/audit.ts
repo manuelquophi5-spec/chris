@@ -17,7 +17,8 @@ export type AuditAction =
   | "course.deactivate"
   | "course.enroll"
   | "course.unenroll"
-  | "settings.update";
+  | "settings.update"
+  | "attendance.qr_scan_rejected";
 
 export async function writeAudit(
   actorId: string,

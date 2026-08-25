@@ -1,6 +1,14 @@
 /* datalink_attend PWA — minimal service worker for installability + light caching */
-const CACHE = "ella-static-v1";
-const PRECACHE = ["/", "/login", "/dashboard", "/icons/icon-192.png", "/icons/icon-512.png"];
+const CACHE = "ella-static-v2";
+const OFFLINE_URL = "/offline.html";
+const PRECACHE = [
+  "/",
+  "/login",
+  "/dashboard",
+  OFFLINE_URL,
+  "/icons/icon-192.png",
+  "/icons/icon-512.png",
+];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -25,6 +33,9 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
   if (url.pathname.startsWith("/api/")) return;
 
+  const isNavigation =
+    request.mode === "navigate" || request.destination === "document";
+
   event.respondWith(
     fetch(request)
       .then((response) => {
@@ -34,6 +45,18 @@ self.addEventListener("fetch", (event) => {
         }
         return response;
       })
-      .catch(() => caches.match(request).then((r) => r || caches.match("/login"))),
+      .catch(() => {
+        if (!isNavigation) {
+          // Non-document assets (JS/CSS/images): let the failure surface
+          // normally instead of masking it with an unrelated cached page.
+          return caches.match(request);
+        }
+        // Document navigation while offline: show the page they were on if
+        // it happens to be cached, otherwise a real "you're offline" state —
+        // never silently swap in the login page, which reads as a logout.
+        return caches
+          .match(request)
+          .then((cached) => cached || caches.match(OFFLINE_URL));
+      }),
   );
 });

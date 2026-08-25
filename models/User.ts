@@ -48,7 +48,7 @@ const userSchema = new Schema<IUser>(
     name: { type: String, required: true, trim: true },
     role: {
       type: String,
-      enum: ["admin", "instructor", "user"],
+      enum: ["admin", "user"],
       default: "user",
     },
     program: { type: String, trim: true, lowercase: true, default: "" },

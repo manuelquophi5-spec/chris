@@ -11,12 +11,22 @@ export type GeoErrorCode =
   | "timeout"
   | "unknown";
 
-export function geolocationErrorMessage(code: GeoErrorCode): string {
+/**
+ * `standalone` = running installed (no visible browser chrome/address bar),
+ * so "browser settings" would be confusing — point at the device's own
+ * Settings app instead, where the permission actually lives.
+ */
+export function geolocationErrorMessage(
+  code: GeoErrorCode,
+  standalone = false,
+): string {
   switch (code) {
     case "unsupported":
       return "This browser does not support location. Try Chrome or Safari on your phone.";
     case "denied":
-      return "Location permission is off. Allow location for this site in browser settings, then try again.";
+      return standalone
+        ? "Location permission is off. Open your phone's Settings app, find this app, and allow Location, then try again."
+        : "Location permission is off. Allow location for this site in browser settings, then try again.";
     case "unavailable":
       return "GPS could not get a fix. Go outdoors, turn on Location Services, disable VPN, and try again. (A Google network-location warning in the console is normal and can be ignored if GPS works.)";
     case "timeout":

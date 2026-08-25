@@ -5,12 +5,11 @@ import {
   rowsToCsv,
   rowsToXlsxBuffer,
 } from "@/lib/attendance-export";
-import { jsonError, requireStaff } from "@/lib/api";
-import { canLecturerAccessCourse } from "@/lib/courses";
+import { jsonError, requireAdmin } from "@/lib/api";
 
-/** Staff export: attendance as .xlsx or .csv */
+/** Admin export: attendance as .xlsx or .csv */
 export async function GET(request: Request) {
-  const auth = await requireStaff();
+  const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 
   const { searchParams } = new URL(request.url);
@@ -24,23 +23,12 @@ export async function GET(request: Request) {
 
   await connectDB();
 
-  if (courseId && auth.role === "instructor") {
-    const allowed = await canLecturerAccessCourse(
-      auth.id,
-      courseId,
-      false,
-    );
-    if (!allowed) return jsonError("Forbidden", 403);
-  }
-
   try {
     const rows = await fetchAttendanceForExport({
       from,
       to,
       timezoneOffset,
       courseId,
-      lecturerId: auth.role === "instructor" ? auth.id : undefined,
-      isAdmin: auth.role === "admin",
     });
 
     const rangeLabel = from && to ? `${from}_to_${to}` : from ?? "today";

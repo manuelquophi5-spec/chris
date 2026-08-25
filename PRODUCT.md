@@ -8,9 +8,7 @@ product
 
 **Students** use phones on campus to check in and out during scheduled classes for their program and level. They need a fast, obvious flow: open the PWA, see today's status, tap check-in when GPS confirms they are on site. Context is often outdoors, bright light, limited patience for errors.
 
-**Lecturers / instructors** review class attendance, see who is late or absent, and work from a desktop-friendly admin view during or after sessions.
-
-**School administrators** set up campuses (geofences), users, classes, schedules, and one-off sessions. They are not developers; setup should read as a guided checklist, not a control panel.
+**School administrators** set up campuses (geofences), users, classes, and schedules, and review class attendance — who is late or absent — from a desktop-friendly admin view during or after sessions. They are not developers; setup should read as a guided checklist, not a control panel.
 
 ## Product Purpose
 

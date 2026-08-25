@@ -11,7 +11,7 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     short_name: appName,
     description:
       "Check in at campus with your phone — GPS confirms you are on site.",
-    start_url: "/login",
+    start_url: "/",
     scope: "/",
     display: "standalone",
     background_color: BRAND_CREAM,

@@ -174,7 +174,7 @@ export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) 
         <button
           type="button"
           onClick={() => setFilter("all")}
-          className={`rounded-full px-3 py-1 text-xs font-semibold ${
+          className={`inline-flex min-h-[44px] items-center rounded-full px-3.5 text-xs font-semibold ${
             filter === "all"
               ? "bg-[var(--ella-accent-subtle)] text-[var(--ella-accent-hover)]"
               : "bg-[var(--ella-surface-muted)] text-[var(--ella-fg-muted)]"
@@ -185,7 +185,7 @@ export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) 
         <button
           type="button"
           onClick={() => setFilter("campus")}
-          className={`rounded-full px-3 py-1 text-xs font-semibold ${
+          className={`inline-flex min-h-[44px] items-center rounded-full px-3.5 text-xs font-semibold ${
             filter === "campus"
               ? "bg-[var(--ella-accent-subtle)] text-[var(--ella-accent-hover)]"
               : "bg-[var(--ella-surface-muted)] text-[var(--ella-fg-muted)]"
@@ -198,7 +198,7 @@ export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) 
             key={c.id}
             type="button"
             onClick={() => setFilter(c.id)}
-            className={`rounded-full px-3 py-1 text-xs font-semibold ${
+            className={`inline-flex min-h-[44px] items-center rounded-full px-3.5 text-xs font-semibold ${
               filter === c.id
                 ? "bg-[var(--ella-accent-subtle)] text-[var(--ella-accent-hover)]"
                 : "bg-[var(--ella-surface-muted)] text-[var(--ella-fg-muted)]"

@@ -1,4 +1,4 @@
-export type UserRole = "admin" | "instructor" | "user";
+export type UserRole = "admin" | "user";
 
 export type SessionUser = {
   id: string;
@@ -88,7 +88,6 @@ export type ActiveCourseSummary = {
   description: string;
   scheduleLabel: string;
   nextClassHint: string | null;
-  lecturerId: string;
   locationId: string | null;
   locationName: string | null;
   startTime: string;
@@ -127,8 +126,7 @@ export type CourseRow = {
   programLabel: string;
   level: number;
   description: string;
-  lecturerId: string;
-  lecturerName: string;
+  createdByName: string;
   locationId: string | null;
   locationName: string | null;
   scheduleDays: number[];
@@ -175,7 +173,7 @@ export type CourseStatsSummary = {
   title: string;
   programLabel?: string;
   levelLabel?: string;
-  lecturerName: string;
+  createdByName: string;
   enrolledCount: number;
   expectedSessions: number;
   students: StudentCourseAttendanceRow[];

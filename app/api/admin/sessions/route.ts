@@ -1,12 +1,12 @@
 import { connectDB } from "@/lib/db";
 import { writeAudit } from "@/lib/audit";
-import { jsonError, jsonOk, requireStaff } from "@/lib/api";
+import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
 import { AttendanceSession } from "@/models/AttendanceSession";
 import { Location } from "@/models/Location";
 import mongoose from "mongoose";
 
 export async function GET() {
-  const auth = await requireStaff();
+  const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 
   await connectDB();
@@ -42,7 +42,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const auth = await requireStaff();
+  const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 
   try {

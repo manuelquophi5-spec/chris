@@ -37,15 +37,6 @@ export async function requireAdmin(): Promise<SessionUser | NextResponse> {
   return result;
 }
 
-export async function requireStaff(): Promise<SessionUser | NextResponse> {
-  const result = await requireAuth();
-  if (result instanceof NextResponse) return result;
-  if (result.role !== "admin" && result.role !== "instructor") {
-    return jsonError("Forbidden: staff only", 403);
-  }
-  return result;
-}
-
 export function parseCoordinates(
   latitude: unknown,
   longitude: unknown,

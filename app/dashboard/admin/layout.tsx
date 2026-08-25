@@ -10,7 +10,7 @@ export default async function AdminDashboardLayout({
   const user = await getServerSession();
   if (!user) redirect("/login");
 
-  if (user.role !== "admin" && user.role !== "instructor") {
+  if (user.role !== "admin") {
     redirect("/dashboard");
   }
 

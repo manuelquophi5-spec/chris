@@ -20,6 +20,7 @@ export async function markCourseAttendance(params: {
   timezoneOffset: number;
   gpsAccuracy: number | null;
   locationIdOverride?: string;
+  checkInMethod?: "gps" | "qr";
 }) {
   const {
     userId,
@@ -29,6 +30,7 @@ export async function markCourseAttendance(params: {
     timezoneOffset,
     gpsAccuracy,
     locationIdOverride,
+    checkInMethod = "gps",
   } = params;
 
   if (!mongoose.Types.ObjectId.isValid(courseId)) {
@@ -151,6 +153,7 @@ export async function markCourseAttendance(params: {
     gpsAccuracy,
     withinGeofence: true,
     isLate,
+    checkInMethod,
     markedAt,
   });
 

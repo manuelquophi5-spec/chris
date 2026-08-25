@@ -1,10 +1,10 @@
 # Data Link Attend — School Setup & Dashboard Guide
 
-**Audience:** School administrators, registrars, and lecturers who are **not** technical.  
+**Audience:** School administrators and registrars who are **not** technical.  
 **App name:** datalink_attend (Data Link Attend)  
-**Last updated:** June 2026  
+**Last updated:** August 2026  
 
-This guide explains, step by step, how to set up your school in the system, create classes, manage students and lecturers, and how the **student** and **lecturer (tutor)** dashboards work on phones and computers.
+This guide explains, step by step, how to set up your school in the system, create classes, manage students, and how the **student** and **admin** dashboards work on phones and computers.
 
 ---
 
@@ -16,15 +16,14 @@ This guide explains, step by step, how to set up your school in the system, crea
 4. [Part A — First-time technical setup (usually done once by IT)](#4-part-a--first-time-technical-setup-usually-done-once-by-it)
 5. [Part B — Administrator: set up the school (your main checklist)](#5-part-b--administrator-set-up-the-school-your-main-checklist)
 6. [Part B1 — Step 1: Create campuses (GPS check-in areas)](#6-part-b1--step-1-create-campuses-gps-check-in-areas)
-7. [Part B2 — Step 2: Add students and lecturers](#7-part-b2--step-2-add-students-and-lecturers)
+7. [Part B2 — Step 2: Add students](#7-part-b2--step-2-add-students)
 8. [Part B3 — Step 3: Create classes and schedules](#8-part-b3--step-3-create-classes-and-schedules)
 9. [Part B4 — Step 4: Enroll students into classes](#9-part-b4--step-4-enroll-students-into-classes)
 10. [Part B5 — Step 5: Review attendance and reports](#10-part-b5--step-5-review-attendance-and-reports)
 11. [Optional admin features](#11-optional-admin-features)
 12. [Part C — Student dashboard (phone)](#12-part-c--student-dashboard-phone)
-13. [Part D — Lecturer / tutor dashboard (computer or tablet)](#13-part-d--lecturer--tutor-dashboard-computer-or-tablet)
-14. [Common problems and fixes](#14-common-problems-and-fixes)
-15. [Quick reference — URLs and menu names](#15-quick-reference--urls-and-menu-names)
+13. [Common problems and fixes](#13-common-problems-and-fixes)
+14. [Quick reference — URLs and menu names](#14-quick-reference--urls-and-menu-names)
 
 ---
 
@@ -40,9 +39,8 @@ When a student checks in:
 
 That way, attendance is tied to **being on campus** and **being in the right time window**, not just tapping a button from home.
 
-**Administrators** configure campuses, people, and classes.  
-**Students** check in on their phones.  
-**Lecturers** view who attended, who was late, and who missed sessions.
+**Administrators** configure campuses, people, and classes — and review who attended, who was late, and who missed sessions.  
+**Students** check in on their phones.
 
 ---
 
@@ -52,9 +50,6 @@ That way, attendance is tied to **being on campus** and **being in the right tim
 |------|-----|------------------|-------------|
 | **Administrator** | Registrar, IT, school admin | **Email + password** at **Admin sign in** | Desktop admin area — full setup |
 | **Student** | Learners | **Student ID + password** at **Sign in** | Phone — check in / check out |
-| **Lecturer** (tutor / instructor) | Teachers assigned to classes | **Same Student ID login** as students (not admin email) | Desktop — **My classes** and attendance reports |
-
-**Important:** Lecturers are **not** created through “Admin sign in.” An admin adds them under **Students & staff** with job type **Lecturer**. They then use their **Student ID** on the normal sign-in page, and the system sends them to the lecturer dashboard automatically.
 
 ---
 
@@ -63,7 +58,7 @@ That way, attendance is tied to **being on campus** and **being in the right tim
 ### From your school
 
 - A list of **student IDs** you will assign (for example `E10234`, `DL2026-001`).
-- **First names** for each student and lecturer.
+- **First names** for each student.
 - **Class timetable** information: course name, which days, start time, end time, which campus/room.
 - For each campus: you (or a staff member) must stand at the building once with a phone or laptop to **pin the location on the map** (explained below).
 
@@ -102,7 +97,7 @@ npm run create-admin
 
 **Password rules for admin:** at least 10 characters, with both letters and numbers.
 
-4. Open the app in a browser and go to **Admin sign in** (see [Quick reference](#15-quick-reference--urls-and-menu-names)).
+4. Open the app in a browser and go to **Admin sign in** (see [Quick reference](#14-quick-reference--urls-and-menu-names)).
 5. Sign in with that **email** and **password**.
 
 ### A.2 Deploy the app so students can open it on phones
@@ -120,12 +115,12 @@ After you sign in as **admin**, you land on **Start here** (`/dashboard/admin`).
 | Step | What you do | Menu name |
 |------|-------------|-----------|
 | 1 | Create campuses (GPS areas) | **Campuses** |
-| 2 | Add students and lecturers | **Students & staff** |
+| 2 | Add students | **Students & staff** |
 | 3 | Create classes with schedules | **Classes** |
 | 4 | Enroll students into each class | **Classes** (same page) |
 | 5 | Review attendance | **Classes** (reports) and **Attendance log** |
 
-Do these steps **in order**. If you create a class before you have a campus or a lecturer, the forms will not have anyone to select.
+Do these steps **in order**. If you create a class before you have a campus, the form will not have anywhere to check in.
 
 ### How to open the admin area
 
@@ -183,27 +178,28 @@ A **campus** (also called a site or workplace) is a point on the map with a **ra
 
 ---
 
-## 7. Part B2 — Step 2: Add students and lecturers
+## 7. Part B2 — Step 2: Add students
 
 **Menu:** **Students & staff** (`/dashboard/admin/users`)
 
-Here you create accounts. **Students** and **lecturers** both get a **Student ID** (stored as employee ID in the system). Only the **main administrator** uses email login.
+Here you create student accounts. Each student gets a **Student ID** (stored as employee ID in the system). Only the **main administrator** uses email login.
 
-### 7.1 Add one person — field by field
+### 7.1 Add one student — field by field
 
 1. Open **Students & staff**.
 2. In **Add a new person**:
 
    | Field | What to type | Example |
    |-------|--------------|---------|
-   | **First name** | Student’s or lecturer’s first name | `Ama` |
+   | **First name** | Student’s first name | `Ama` |
    | **Student ID** | Unique ID they will type every login | `E10234` (letters are stored uppercase) |
-   | **Job type** | **Student** or **Lecturer** | Student = checks in on phone; Lecturer = views class attendance |
+   | **Program** | Their course of study | Computer Science |
+   | **Level** | Their academic level | 100–400 |
 
-3. Click **Add student or lecturer**.
-4. On success, the system creates the account **without a password yet** and shows a **one-time setup code** (e.g. `AB12XY`) — it only appears once, so give it to the person right away. Status shows **Needs to set password**.
+3. Click **Add student**.
+4. On success, the system creates the account **without a password yet** and shows a **one-time setup code** (e.g. `AB12XY`) — it only appears once, so give it to the student right away. Status shows **Needs to set password**.
 
-### 7.2 What to tell the person after you add them
+### 7.2 What to tell the student after you add them
 
 Use **Copy instructions** on their row (only pre-fills the code if it's still shown on screen), or send this message:
 
@@ -234,25 +230,17 @@ If someone forgot their password:
 
 You do **not** see their new password — they choose it themselves. Their old setup code (if any) stops working once you reset.
 
-### 7.5 Lecturer accounts
-
-- Add lecturers with job type **Lecturer — teaches classes & views attendance**.
-- They sign in at the **normal Sign in** page with their **Student ID**, not Admin sign in.
-- After login, they are taken to **My classes** automatically.
-- When you **create a class**, you must **select that lecturer** in the class form (see next section).
-
 ---
 
 ## 8. Part B3 — Step 3: Create classes and schedules
 
 **Menu:** **Classes** (`/dashboard/admin/courses`)
 
-A **class** (course) is a recurring timetable: title, lecturer, campus, days of week, start/end time, and how many minutes late counts as “late.”
+A **class** (course) is a recurring timetable: title, campus, days of week, start/end time, and how many minutes late counts as “late.” Whichever admin creates a class is recorded as its creator, shown on the class list.
 
 ### 8.1 Before creating a class, confirm
 
 - [ ] At least one **campus** exists and is active.  
-- [ ] The **lecturer** exists under **Students & staff** (job type Lecturer).  
 - [ ] You know the **days** and **times** for the course.
 
 ### 8.2 Create a class — every field explained
@@ -264,7 +252,6 @@ A **class** (course) is a recurring timetable: title, lecturer, campus, days of 
    |-------|-----------|-------------|
    | **Course title** | Yes | Name shown to students, e.g. `Introduction to Computing` |
    | **Description** | No | Extra notes (optional) |
-   | **Lecturer** | Yes | Pick the teacher from the dropdown (only users with Lecturer role) |
    | **Campus / room GPS** | Recommended | Which geofence students must be inside to check in for this class |
    | **Start time** | Yes | When check-in window opens, e.g. `09:00` |
    | **End time** | Yes | When the class session ends for attendance, e.g. `11:00` — must be **after** start |
@@ -319,7 +306,7 @@ Click **Remove** next to their name in the enrolled list. This does not delete t
 
 ## 10. Part B5 — Step 5: Review attendance and reports
 
-### 10.1 Per-class report (best for lecturers and registrars)
+### 10.1 Per-class report (best for registrars)
 
 1. **Classes** → select the class.
 2. Scroll to **Attendance report**.
@@ -337,7 +324,7 @@ Click **Remove** next to their name in the enrolled list. This does not delete t
 
 **Menu:** **Attendance log** (`/dashboard/admin/attendance`)
 
-Shows individual check-in/check-out records across the school (admins and lecturers can open this, depending on role). Use this when you need a raw list of marks for a day, not only class percentages.
+Shows individual check-in/check-out records across the school. Use this when you need a raw list of marks for a day, not only class percentages.
 
 ### 10.3 Start here dashboard numbers
 
@@ -460,85 +447,20 @@ Lists past attendance by day so students can prove they marked in. Read-only.
 | Outside campus / geofence | GPS says they are outside the circle | Move closer; widen campus radius if GPS is weak |
 | Class not scheduled today | Wrong weekday for that course | Wait for correct day or fix schedule in admin |
 | Class starts at … | Too early | Wait until start time |
-| Class ended at … | Too late | Contact lecturer/admin if exception needed |
+| Class ended at … | Too late | Contact admin if exception needed |
 | No classes assigned | Not enrolled | Admin must enroll them under **Classes** |
 | Location permission denied | Phone blocked GPS | Enable location for the browser in phone settings |
 | Select a class that is active | No active class selected | Choose from dropdown during class hours |
 
 ---
 
-## 13. Part D — Lecturer / tutor dashboard (computer or tablet)
-
-**Who:** Users with **Lecturer** role  
-**Sign in:** **Sign in** (`/login`) with **Student ID + password** — same page as students  
-**After login:** Redirected to **My classes** (`/dashboard/admin/classes`)  
-**Layout:** Desktop sidebar (same shell as admin, but fewer menu items)
-
-### 13.1 Lecturer menu items
-
-| Menu | Available to lecturer? | Purpose |
-|------|------------------------|---------|
-| **My classes** | Yes | Main teaching dashboard |
-| **Attendance log** | Yes | Browse raw attendance records |
-| **Start here**, **Classes** (admin), **Students & staff**, **Campuses**, **One-off sessions**, **Activity history**, **Branding** | No (admin only) | — |
-
-Lecturers **cannot** create campuses, add users, or create classes unless they are also given an admin account (separate email login).
-
-### 13.2 My classes — how it works
-
-#### Left panel: Your courses
-
-Lists every class where you are assigned as **lecturer**:
-
-- Course title  
-- Time range (e.g. `09:00–11:00`)  
-- Number of students enrolled  
-- **Average attendance %** (summary)  
-- **Active now** badge when the current time is inside that class schedule  
-
-If the list is empty: *“No classes assigned yet. Ask an administrator to add you as lecturer.”* — an admin must create the class and pick this person as lecturer.
-
-#### Right panel: Attendance by student
-
-1. Click a course on the left.  
-2. The right side loads a table for roughly the **last 4 weeks**:
-
-   | Column | Meaning |
-   |--------|---------|
-   | **Student** | Enrolled learner name |
-   | **%** | Attendance rate |
-   | **Late** | Times marked late |
-   | **Missed** | Sessions without check-in |
-
-3. Use this during or after term to follow up with students who miss often or are always late.
-
-#### Help text on the page
-
-- Students may only mark attendance **during scheduled class time**.  
-- **Late** follows the grace period the admin set (**Late after minutes** on the class).
-
-### 13.3 Can lecturers check in on a phone?
-
-The sidebar link **Mobile check-in** (visible on larger layouts) opens `/dashboard` — the same student-style screen. Lecturers normally do **not** need this unless your school also tracks lecturer presence on site. Day-to-day teaching work is on **My classes**.
-
-### 13.4 Lecturer vs administrator sign-in (common mistake)
-
-| | Administrator | Lecturer |
-|---|---------------|----------|
-| Login page | **Admin sign in** | **Sign in** (student page) |
-| Uses | Email | Student ID |
-| Lands on | **Start here** | **My classes** |
-
----
-
-## 14. Common problems and fixes
+## 13. Common problems and fixes
 
 ### Setup phase
 
 | Problem | Fix |
 |---------|-----|
 | Cannot sign in as admin | Confirm IT ran `create-admin`; use real email format; password 10+ chars with letters and numbers |
-| No lecturers in dropdown when creating class | Add person under **Students & staff** with job type **Lecturer** first |
 | No campus in dropdown | Create and **activate** a site under **Campuses** |
 | Student ID already exists | Use a unique ID or find existing user in the table |
 
@@ -549,11 +471,10 @@ The sidebar link **Mobile check-in** (visible on larger layouts) opens `/dashboa
 | Whole class “outside campus” | Increase campus radius; re-pin map from courtyard; test one phone on site |
 | One student always late | They may be checking in after grace period; adjust **Late after** if policy allows |
 | Student sees no active class | Check enrollment, day of week, and clock on phone (wrong time zone rare but possible) |
-| Lecturer sees no classes | Admin must set them as **Lecturer** on the class, not only add them as staff |
 
 ---
 
-## 15. Quick reference — URLs and menu names
+## 14. Quick reference — URLs and menu names
 
 Replace `https://YOUR-SCHOOL-URL` with your real deployed address.
 
@@ -566,7 +487,6 @@ Replace `https://YOUR-SCHOOL-URL` with your real deployed address.
 | Campuses | `https://YOUR-SCHOOL-URL/dashboard/admin/sites` |
 | Students & staff | `https://YOUR-SCHOOL-URL/dashboard/admin/users` |
 | Classes | `https://YOUR-SCHOOL-URL/dashboard/admin/courses` |
-| Lecturer — My classes | `https://YOUR-SCHOOL-URL/dashboard/admin/classes` |
 | Student home (check-in) | `https://YOUR-SCHOOL-URL/dashboard` |
 | Student history | `https://YOUR-SCHOOL-URL/dashboard/history` |
 
@@ -576,11 +496,11 @@ Replace `https://YOUR-SCHOOL-URL` with your real deployed address.
 
 1. **IT** creates admin `registrar@school.edu` and deploys the app.  
 2. **Admin** creates campus `Main Building` with 120 m radius.  
-3. **Admin** adds lecturer `Kofi` with ID `LEC001` and students `E101`, `E102`, `E103`.  
-4. **Admin** creates class `Math 101`, lecturer Kofi, Mon/Wed/Fri 10:00–12:00, campus Main Building, late after 10 minutes.  
+3. **Admin** adds students `E101`, `E102`, `E103`.  
+4. **Admin** creates class `Math 101`, Mon/Wed/Fri 10:00–12:00, campus Main Building, late after 10 minutes.  
 5. **Admin** enrolls E101, E102, E103 into Math 101.  
 6. **Students** set passwords and, at 10:05 on Monday at the building, check in to **Math 101**.  
-7. **Kofi** opens **My classes**, selects Math 101, and reviews who is late or missed sessions.
+7. **Admin** opens the **Attendance report** for Math 101 and reviews who is late or missed sessions.
 
 ---
 

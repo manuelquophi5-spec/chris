@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     for (const row of rows) {
       const name = (row.name ?? "").trim();
       const rawId = (row.studentId ?? "").trim();
-      const role = row.role === "instructor" || row.role === "lecturer" ? "instructor" : "user";
+      const role = "user";
       const program = (row.program ?? "").trim().toLowerCase();
       const levelNum = Number(row.level);
 

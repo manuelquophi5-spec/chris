@@ -9,7 +9,7 @@ export default async function HistoryPage() {
   return (
     <div className="animate-page-enter">
       <AttendanceHistory
-        showUser={user.role === "admin" || user.role === "instructor"}
+        showUser={user.role === "admin"}
       />
     </div>
   );

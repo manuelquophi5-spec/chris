@@ -1,15 +1,15 @@
 import { connectDB } from "@/lib/db";
-import { jsonError, jsonOk, requireStaff } from "@/lib/api";
-import { canLecturerAccessCourse, getCourseStats } from "@/lib/courses";
+import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
+import { getCourseStats } from "@/lib/courses";
 import { Attendance } from "@/models/Attendance";
 import { Course } from "@/models/Course";
 import { User } from "@/models/User";
 import mongoose from "mongoose";
 
-/** Staff: search/filter attendance by course and student. */
+/** Admin: search/filter attendance by course and student. */
 export async function GET(request: Request) {
   try {
-    const auth = await requireStaff();
+    const auth = await requireAdmin();
     if (auth instanceof Response) return auth;
 
     const { searchParams } = new URL(request.url);
@@ -23,12 +23,6 @@ export async function GET(request: Request) {
     await connectDB();
 
     if (courseId && format === "stats") {
-      const allowed = await canLecturerAccessCourse(
-        auth.id,
-        courseId,
-        auth.role === "admin",
-      );
-      if (!allowed) return jsonError("Forbidden", 403);
       try {
         const stats = await getCourseStats(courseId, from, to);
         return jsonOk({ stats });
@@ -38,9 +32,6 @@ export async function GET(request: Request) {
     }
 
     const courseFilter: Record<string, unknown> = { isActive: true };
-    if (auth.role === "instructor") {
-      courseFilter.lecturerId = auth.id;
-    }
     const staffCourses = await Course.find(courseFilter).select("_id title").lean();
     const allowedCourseIds = staffCourses.map((c) => c._id);
 
@@ -51,12 +42,6 @@ export async function GET(request: Request) {
     if (!mongoose.Types.ObjectId.isValid(courseId)) {
       return jsonError("Invalid course id", 400);
     }
-    const allowed = await canLecturerAccessCourse(
-      auth.id,
-      courseId,
-      auth.role === "admin",
-    );
-    if (!allowed) return jsonError("Forbidden", 403);
     query.courseId = new mongoose.Types.ObjectId(courseId);
   }
   if (userId) query.userId = userId;

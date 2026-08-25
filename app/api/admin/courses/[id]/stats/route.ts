@@ -1,12 +1,12 @@
 import { connectDB } from "@/lib/db";
-import { jsonError, jsonOk, requireStaff } from "@/lib/api";
-import { canLecturerAccessCourse, getCourseStats } from "@/lib/courses";
+import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
+import { getCourseStats } from "@/lib/courses";
 import mongoose from "mongoose";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
 export async function GET(request: Request, context: RouteContext) {
-  const auth = await requireStaff();
+  const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
 
   const { id } = await context.params;
@@ -19,12 +19,6 @@ export async function GET(request: Request, context: RouteContext) {
   const to = searchParams.get("to")?.trim() || undefined;
 
   await connectDB();
-  const allowed = await canLecturerAccessCourse(
-    auth.id,
-    id,
-    auth.role === "admin",
-  );
-  if (!allowed) return jsonError("Forbidden", 403);
 
   try {
     const stats = await getCourseStats(id, from, to);

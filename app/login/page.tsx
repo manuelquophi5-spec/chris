@@ -162,7 +162,7 @@ function LoginForm() {
               ? "Installing…"
               : canPromptInstall
                 ? "Install app"
-                : "Install app"}
+                : "How to install"}
         </button>
       </div>
 

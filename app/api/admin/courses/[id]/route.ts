@@ -4,7 +4,6 @@ import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
 import { parseLevel, parseProgram } from "@/lib/academic";
 import { parseTimeToMinutes } from "@/lib/schedule";
 import { Course } from "@/models/Course";
-import { User } from "@/models/User";
 import { Location } from "@/models/Location";
 import mongoose from "mongoose";
 
@@ -52,15 +51,6 @@ export async function PATCH(request: Request, context: RouteContext) {
       const level = parseLevel(body.level);
       if (level === null) return jsonError("Select a valid level (100–400)");
       course.level = level;
-    }
-    if (body.lecturerId !== undefined) {
-      const lecturerId = String(body.lecturerId).trim();
-      const lecturer = await User.findOne({
-        _id: lecturerId,
-        role: { $in: ["instructor", "admin"] },
-      });
-      if (!lecturer) return jsonError("Lecturer not found", 404);
-      course.lecturerId = lecturer._id;
     }
     if (body.locationId !== undefined) {
       const locId = String(body.locationId).trim();

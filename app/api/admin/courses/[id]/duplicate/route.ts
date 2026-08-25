@@ -31,7 +31,6 @@ export async function POST(request: Request, context: RouteContext) {
     program: source.program,
     level: source.level,
     description: source.description,
-    lecturerId: source.lecturerId,
     locationId: source.locationId,
     scheduleDays: [...source.scheduleDays],
     startTime: source.startTime,
@@ -49,7 +48,7 @@ export async function POST(request: Request, context: RouteContext) {
     copy.title,
   );
 
-  const courses = await listCoursesForAdmin(undefined, timezoneOffset);
+  const courses = await listCoursesForAdmin(timezoneOffset);
   const row = courses.find((c) => c.id === copy._id.toString());
 
   return jsonOk(
