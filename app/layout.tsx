@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { BrandProvider } from "@/components/BrandProvider";
+import { OfflineQueueProvider } from "@/components/OfflineQueueProvider";
 import { PwaProvider } from "@/components/PwaProvider";
 import { ToastProvider } from "@/components/ToastProvider";
 import { getSettings } from "@/lib/settings";
@@ -53,6 +54,7 @@ export default async function RootLayout({
           {children}
           <ToastProvider />
           <PwaProvider />
+          <OfflineQueueProvider />
         </BrandProvider>
       </body>
     </html>

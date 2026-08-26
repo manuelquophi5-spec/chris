@@ -7,8 +7,9 @@ import { AuthPageShell } from "@/components/auth/AuthPageShell";
 import { usePwaInstall } from "@/hooks/usePwaInstall";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
 import { geolocationErrorMessage, getDevicePosition } from "@/lib/geolocation";
+import { enqueue } from "@/lib/offline-queue";
 
-type Status = "working" | "success" | "error";
+type Status = "working" | "success" | "error" | "queued";
 
 type ScanState = {
   status: Status;
@@ -52,17 +53,19 @@ function ScanContent() {
 
     setState({ status: "working", message: "Marking your attendance…" });
 
+    const payload = {
+      token,
+      latitude: position.latitude,
+      longitude: position.longitude,
+      accuracy: position.accuracy,
+      timezoneOffset: new Date().getTimezoneOffset(),
+    };
+
     try {
       const res = await authFetch("/api/attendance/scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          token,
-          latitude: position.latitude,
-          longitude: position.longitude,
-          accuracy: position.accuracy,
-          timezoneOffset: new Date().getTimezoneOffset(),
-        }),
+        body: JSON.stringify(payload),
       });
       const data = await parseJsonResponse<{ error?: string; message?: string }>(
         res,
@@ -79,9 +82,11 @@ function ScanContent() {
         message: data.message ?? "Checked in.",
       });
     } catch {
+      enqueue("/api/attendance/scan", payload, "Class check-in");
       setState({
-        status: "error",
-        message: "Network error. Check your connection and try again.",
+        status: "queued",
+        message:
+          "You're offline. Saved — we'll submit this once you're back online.",
       });
     }
   }, [token, standalone]);
@@ -113,6 +118,14 @@ function ScanContent() {
             aria-hidden
           >
             !
+          </div>
+        )}
+        {state.status === "queued" && (
+          <div
+            className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--ella-warning-subtle)] text-2xl text-[var(--ella-warning)]"
+            aria-hidden
+          >
+            ⏳
           </div>
         )}
 

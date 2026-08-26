@@ -8,7 +8,8 @@ import {
   getDevicePosition,
   type GeoErrorCode,
 } from "@/lib/geolocation";
-import { toastError, toastSuccess, toastWarning } from "@/lib/toast";
+import { enqueue } from "@/lib/offline-queue";
+import { toastError, toastInfo, toastSuccess, toastWarning } from "@/lib/toast";
 import type { ActiveCourseSummary, AttendanceType, TodayAttendanceStatus } from "@/types";
 
 const selectClass = "ella-select mt-2";
@@ -111,20 +112,34 @@ export function CourseAttendanceCard({ onUpdate, initialToday }: Props) {
 
     setLoading(type);
 
+    let pos;
     try {
-      const pos = await getDevicePosition();
+      pos = await getDevicePosition();
+    } catch (err: unknown) {
+      const code =
+        err && typeof err === "object" && "code" in err
+          ? (err.code as GeoErrorCode)
+          : "unknown";
+      toastError(geolocationErrorMessage(code, standalone));
+      setLoading(null);
+      return;
+    }
+
+    const payload = {
+      latitude: pos.latitude,
+      longitude: pos.longitude,
+      accuracy: pos.accuracy,
+      type,
+      courseId,
+      timezoneOffset: tzOffset,
+      locationId: selected.locationId ?? undefined,
+    };
+
+    try {
       const res = await authFetch("/api/attendance/mark", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          latitude: pos.latitude,
-          longitude: pos.longitude,
-          accuracy: pos.accuracy,
-          type,
-          courseId,
-          timezoneOffset: tzOffset,
-          locationId: selected.locationId ?? undefined,
-        }),
+        body: JSON.stringify(payload),
       });
       const data = await parseJsonResponse<{ error?: string; message?: string }>(
         res,
@@ -136,12 +151,15 @@ export function CourseAttendanceCard({ onUpdate, initialToday }: Props) {
       toastSuccess(data.message ?? "Attendance recorded");
       await loadToday(true);
       onUpdate?.();
-    } catch (err: unknown) {
-      const code =
-        err && typeof err === "object" && "code" in err
-          ? (err.code as GeoErrorCode)
-          : "unknown";
-      toastError(geolocationErrorMessage(code, standalone));
+    } catch {
+      enqueue(
+        "/api/attendance/mark",
+        payload,
+        `${type === "check_in" ? "Check in" : "Check out"} — ${selected.title}`,
+      );
+      toastInfo(
+        "You're offline — saved. We'll check you in once you're back online.",
+      );
     } finally {
       setLoading(null);
     }
