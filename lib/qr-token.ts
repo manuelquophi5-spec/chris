@@ -1,6 +1,5 @@
 import { SignJWT, jwtVerify } from "jose";
 import { getSecretKey } from "@/lib/auth";
-import type { AttendanceType } from "@/types";
 
 /**
  * Long-lived on purpose: the QR is meant to be generated once per course and
@@ -13,14 +12,17 @@ const QR_TOKEN_EXPIRES = "400d";
 
 export type QrTokenPayload = {
   courseId: string;
-  type: AttendanceType;
 };
 
+/**
+ * One QR per course covers both directions — the scan route lets
+ * markCourseAttendance auto-detect check-in vs. check-out from the
+ * student's existing records for the day.
+ */
 export async function signQrToken(payload: QrTokenPayload): Promise<string> {
   return new SignJWT({
     purpose: "qr_checkin",
     courseId: payload.courseId,
-    type: payload.type,
   })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -35,12 +37,11 @@ export async function verifyQrToken(
     const { payload } = await jwtVerify(token, getSecretKey());
     if (
       payload.purpose !== "qr_checkin" ||
-      typeof payload.courseId !== "string" ||
-      (payload.type !== "check_in" && payload.type !== "check_out")
+      typeof payload.courseId !== "string"
     ) {
       return null;
     }
-    return { courseId: payload.courseId, type: payload.type };
+    return { courseId: payload.courseId };
   } catch {
     return null;
   }

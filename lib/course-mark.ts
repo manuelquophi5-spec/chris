@@ -15,7 +15,8 @@ import mongoose from "mongoose";
 export async function markCourseAttendance(params: {
   userId: string;
   courseId: string;
-  type: AttendanceType;
+  /** Omit to auto-detect from the student's existing records for the day (single QR covering both directions). */
+  type?: AttendanceType;
   coords: { latitude: number; longitude: number };
   timezoneOffset: number;
   gpsAccuracy: number | null;
@@ -25,7 +26,7 @@ export async function markCourseAttendance(params: {
   const {
     userId,
     courseId,
-    type,
+    type: requestedType,
     coords,
     timezoneOffset,
     gpsAccuracy,
@@ -76,6 +77,20 @@ export async function markCourseAttendance(params: {
 
   const hasIn = existing.some((r) => r.type === "check_in");
   const hasOut = existing.some((r) => r.type === "check_out");
+
+  let type: AttendanceType;
+  if (requestedType) {
+    type = requestedType;
+  } else if (!hasIn) {
+    type = "check_in";
+  } else if (!hasOut) {
+    type = "check_out";
+  } else {
+    return {
+      error: "You've already completed attendance for this class today.",
+      status: 409 as const,
+    };
+  }
 
   if (type === "check_in") {
     if (!window.active) {

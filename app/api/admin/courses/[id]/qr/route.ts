@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
-/** Admin: check-in/check-out QR links for a course (scan target = /scan?token=...). */
+/** Admin: QR link for a course (scan target = /scan?token=...), covers both check-in and check-out. */
 export async function GET(request: Request, context: RouteContext) {
   const auth = await requireAdmin();
   if (auth instanceof Response) return auth;
@@ -20,15 +20,10 @@ export async function GET(request: Request, context: RouteContext) {
   const course = await Course.findById(id).select("_id title").lean();
   if (!course) return jsonError("Course not found", 404);
 
-  const [checkInToken, checkOutToken] = await Promise.all([
-    signQrToken({ courseId: id, type: "check_in" }),
-    signQrToken({ courseId: id, type: "check_out" }),
-  ]);
-
+  const token = await signQrToken({ courseId: id });
   const origin = new URL(request.url).origin;
 
   return jsonOk({
-    checkInUrl: `${origin}/scan?token=${checkInToken}`,
-    checkOutUrl: `${origin}/scan?token=${checkOutToken}`,
+    url: `${origin}/scan?token=${token}`,
   });
 }

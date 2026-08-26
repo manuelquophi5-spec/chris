@@ -14,10 +14,12 @@ const SCAN_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
  * Mark check-in/check-out from a scanned class QR code.
  * POST { token, latitude, longitude, accuracy?, timezoneOffset? }
  *
- * The token only carries "which class, which direction" — location proof
- * always comes fresh from the scanning device's own GPS, verified by the
- * same geofence + anti-spoofing pipeline as manual check-in
- * (see lib/course-mark.ts). Scanning the code alone never checks anyone in.
+ * The token only carries "which class" — one QR covers both check-in and
+ * check-out, with direction auto-detected from the student's existing
+ * records for the day (see markCourseAttendance). Location proof always
+ * comes fresh from the scanning device's own GPS, verified by the same
+ * geofence + anti-spoofing pipeline as manual check-in. Scanning the code
+ * alone never checks anyone in.
  */
 export async function POST(request: Request) {
   const user = await getAuthUser();
@@ -63,7 +65,6 @@ export async function POST(request: Request) {
     const result = await markCourseAttendance({
       userId: user.id,
       courseId: decoded.courseId,
-      type: decoded.type,
       coords,
       timezoneOffset,
       gpsAccuracy: gps.accuracy,

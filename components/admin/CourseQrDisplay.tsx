@@ -6,11 +6,9 @@ import { authFetch, parseJsonResponse } from "@/lib/auth-client";
 import { toastError } from "@/lib/toast";
 import { adminBtnGhost } from "./admin-ui";
 
-type QrCodes = {
-  checkInUrl: string;
-  checkOutUrl: string;
-  checkInImage: string;
-  checkOutImage: string;
+type QrCode = {
+  url: string;
+  image: string;
 };
 
 async function toQrImage(url: string): Promise<string> {
@@ -18,39 +16,29 @@ async function toQrImage(url: string): Promise<string> {
 }
 
 export function CourseQrDisplay({ courseId }: { courseId: string }) {
-  const [codes, setCodes] = useState<QrCodes | null>(null);
+  const [code, setCode] = useState<QrCode | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    setCodes(null);
+    setCode(null);
 
     async function load() {
       const res = await authFetch(`/api/admin/courses/${courseId}/qr`);
-      const data = await parseJsonResponse<{
-        error?: string;
-        checkInUrl?: string;
-        checkOutUrl?: string;
-      }>(res);
-      if (!res.ok || !data.checkInUrl || !data.checkOutUrl) {
+      const data = await parseJsonResponse<{ error?: string; url?: string }>(
+        res,
+      );
+      if (!res.ok || !data.url) {
         if (!cancelled) {
-          toastError(data.error ?? "Could not load QR codes");
+          toastError(data.error ?? "Could not load QR code");
           setLoading(false);
         }
         return;
       }
-      const [checkInImage, checkOutImage] = await Promise.all([
-        toQrImage(data.checkInUrl),
-        toQrImage(data.checkOutUrl),
-      ]);
+      const image = await toQrImage(data.url);
       if (!cancelled) {
-        setCodes({
-          checkInUrl: data.checkInUrl,
-          checkOutUrl: data.checkOutUrl,
-          checkInImage,
-          checkOutImage,
-        });
+        setCode({ url: data.url, image });
         setLoading(false);
       }
     }
@@ -63,27 +51,19 @@ export function CourseQrDisplay({ courseId }: { courseId: string }) {
 
   if (loading) {
     return (
-      <p className="ella-text-muted text-sm">Loading QR codes…</p>
+      <p className="ella-text-muted text-sm">Loading QR code…</p>
     );
   }
 
-  if (!codes) return null;
+  if (!code) return null;
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      <QrCard
-        label="Check-in QR"
-        hint="Project or print this for students to scan when class starts."
-        image={codes.checkInImage}
-        url={codes.checkInUrl}
-      />
-      <QrCard
-        label="Check-out QR"
-        hint="Show this near the end of class for students to scan on their way out."
-        image={codes.checkOutImage}
-        url={codes.checkOutUrl}
-      />
-    </div>
+    <QrCard
+      label="Class QR"
+      hint="Project or print this — students scan it to check in, and scan it again to check out."
+      image={code.image}
+      url={code.url}
+    />
   );
 }
 
@@ -102,7 +82,7 @@ function QrCard({
     <div className="ella-panel-muted flex flex-col items-center gap-3 p-4 text-center">
       <p className="ella-label font-semibold">{label}</p>
       {/* eslint-disable-next-line @next/next/no-img-element -- data: URI, next/image can't optimize it */}
-      <img src={image} alt={`${label} — scan to check in`} width={220} height={220} />
+      <img src={image} alt={`${label} — scan to check in or out`} width={220} height={220} />
       <p className="ella-text-muted text-xs">{hint}</p>
       <div className="flex gap-2">
         <a
