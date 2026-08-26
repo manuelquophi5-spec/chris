@@ -3,7 +3,6 @@ import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
 import { getCourseStats } from "@/lib/courses";
 import { Attendance } from "@/models/Attendance";
 import { Course } from "@/models/Course";
-import { User } from "@/models/User";
 import mongoose from "mongoose";
 
 /** Admin: search/filter attendance by course and student. */

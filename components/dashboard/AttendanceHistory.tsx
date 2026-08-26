@@ -13,6 +13,7 @@ type Row = {
   markedAt: string;
   distanceMeters: number;
   isLate: boolean;
+  checkInMethod?: "gps" | "qr";
   location: { name?: string } | null;
   course: CourseRef;
   user?: { name: string; email: string; studentId?: string };
@@ -110,6 +111,7 @@ export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) 
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");
+  const [methodFilter, setMethodFilter] = useState<"all" | "gps" | "qr">("all");
 
   const courseFilters = useMemo(() => {
     const seen = new Map<string, string>();
@@ -122,10 +124,16 @@ export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) 
   }, [rows]);
 
   const filteredRows = useMemo(() => {
-    if (filter === "all") return rows;
-    if (filter === "campus") return rows.filter((r) => !r.course);
-    return rows.filter((r) => r.course?.id === filter);
-  }, [rows, filter]);
+    let result = rows;
+    if (filter === "campus") result = result.filter((r) => !r.course);
+    else if (filter !== "all") result = result.filter((r) => r.course?.id === filter);
+    if (methodFilter !== "all") {
+      result = result.filter(
+        (r) => (r.checkInMethod ?? "gps") === methodFilter,
+      );
+    }
+    return result;
+  }, [rows, filter, methodFilter]);
 
   const days = useMemo(() => groupByDayAndClass(filteredRows), [filteredRows]);
 
@@ -209,6 +217,25 @@ export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) 
         ))}
       </div>
 
+      {showUser && (
+        <div className="mt-2 flex flex-wrap gap-2">
+          {(["all", "gps", "qr"] as const).map((m) => (
+            <button
+              key={m}
+              type="button"
+              onClick={() => setMethodFilter(m)}
+              className={`inline-flex min-h-[36px] items-center rounded-full px-3 text-xs font-medium ${
+                methodFilter === m
+                  ? "bg-[var(--ella-fg)] text-[var(--ella-accent-fg)]"
+                  : "bg-[var(--ella-surface-muted)] text-[var(--ella-fg-subtle)]"
+              }`}
+            >
+              {m === "all" ? "All methods" : m === "gps" ? "GPS" : "QR"}
+            </button>
+          ))}
+        </div>
+      )}
+
       {loading ? (
         <HistorySkeleton />
       ) : days.length === 0 ? (
@@ -241,12 +268,22 @@ export function AttendanceHistory({ showUser = false }: { showUser?: boolean }) 
                   <span className="text-[var(--ella-fg-subtle)]">In</span>
                   <p className="font-medium">
                     {day.checkIn ? formatTime(day.checkIn.markedAt) : "—"}
+                    {day.checkIn?.checkInMethod === "qr" && (
+                      <span className="ml-1.5 rounded-full bg-[var(--ella-accent-subtle)] px-1.5 py-0.5 text-[10px] font-semibold text-[var(--ella-accent-hover)]">
+                        QR
+                      </span>
+                    )}
                   </p>
                 </div>
                 <div>
                   <span className="text-[var(--ella-fg-subtle)]">Out</span>
                   <p className="font-medium">
                     {day.checkOut ? formatTime(day.checkOut.markedAt) : "—"}
+                    {day.checkOut?.checkInMethod === "qr" && (
+                      <span className="ml-1.5 rounded-full bg-[var(--ella-accent-subtle)] px-1.5 py-0.5 text-[10px] font-semibold text-[var(--ella-accent-hover)]">
+                        QR
+                      </span>
+                    )}
                   </p>
                 </div>
               </div>

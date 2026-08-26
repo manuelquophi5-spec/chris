@@ -68,6 +68,7 @@ export async function GET(request: Request) {
           distanceMeters: r.distanceMeters,
           withinGeofence: r.withinGeofence,
           isLate: Boolean(r.isLate),
+          checkInMethod: r.checkInMethod === "qr" ? "qr" : "gps",
           location:
             loc && typeof loc === "object" && "name" in loc
               ? { id: String(loc._id), name: loc.name }
