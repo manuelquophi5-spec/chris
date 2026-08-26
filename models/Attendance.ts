@@ -60,7 +60,6 @@ const attendanceSchema = new Schema<IAttendance>(
 );
 
 attendanceSchema.index({ userId: 1, markedAt: -1 });
-attendanceSchema.index({ userId: 1, dayKey: 1, type: 1 });
 attendanceSchema.index(
   { userId: 1, sessionId: 1, type: 1 },
   { unique: true, partialFilterExpression: { sessionId: { $type: "objectId" } } },
