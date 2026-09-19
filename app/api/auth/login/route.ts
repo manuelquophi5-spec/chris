@@ -14,6 +14,7 @@ import {
   verifyPassword,
 } from "@/lib/auth";
 import { jsonError } from "@/lib/api";
+import { LOGIN_IP_RATE_LIMIT_MAX } from "@/lib/constants";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { toSessionUser } from "@/lib/session-user";
 import { findUserByEmployeeIdForAuth } from "@/lib/find-user-by-employee-id";
@@ -31,6 +32,20 @@ export async function POST(request: Request) {
 
     if (!employeeId) {
       return jsonError("Student ID is required");
+    }
+
+    // Per-IP cap on top of the per-(IP, ID) one below: otherwise trying a new
+    // student ID each time gets a fresh counter and IDs can be enumerated freely.
+    // Generous, since a whole lecture hall can share one campus Wi-Fi address.
+    const ipLimited = await checkRateLimit(
+      `login-ip:${ip}`,
+      LOGIN_IP_RATE_LIMIT_MAX,
+    );
+    if (!ipLimited.allowed) {
+      return jsonError(
+        `Too many attempts from this network. Try again in ${ipLimited.retryAfterSec ?? 60} seconds.`,
+        429,
+      );
     }
 
     const rateKey = `login:${ip}:${employeeId}`;
@@ -57,7 +72,6 @@ export async function POST(request: Request) {
       return NextResponse.json({
         requiresPasswordSetup: true,
         studentId: doc.employeeId ?? employeeId,
-        name: doc.name,
       });
     }
 

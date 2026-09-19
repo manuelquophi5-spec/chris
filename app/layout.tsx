@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: appName,
     description:
-      "Mobile-first geofenced attendance — verify check-ins with GPS.",
+      "University of Ghana geofenced attendance — verify class check-ins on the Legon campus with GPS.",
     applicationName: appName,
     appleWebApp: {
       capable: true,
@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#6B2D3E",
+  themeColor: "#01356E",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -49,7 +49,11 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-[100dvh] flex flex-col font-sans antialiased">
+      {/* Browser extensions (e.g. ColorZilla's cz-shortcut-listen) inject attributes onto <body> before hydration. */}
+      <body
+        className="min-h-[100dvh] flex flex-col font-sans antialiased"
+        suppressHydrationWarning
+      >
         <BrandProvider appName={appName} logoUrl={logoUrl}>
           {children}
           <ToastProvider />

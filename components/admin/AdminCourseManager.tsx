@@ -222,7 +222,7 @@ export function AdminCourseManager() {
         </p>
       </div>
 
-      <AdminHelpCard title="School setup">
+      <AdminHelpCard title="University setup">
         <ol className="list-inside list-decimal space-y-1">
           <li>Create a campus under Campuses with GPS radius.</li>
           <li>
@@ -505,11 +505,12 @@ export function AdminCourseManager() {
               </div>
 
               <div className="ella-card-padded">
-                <h3 className="ella-heading-section">Class check-in QR</h3>
+                <h3 className="ella-heading-section">Class QR (check-in &amp; check-out)</h3>
                 <p className="ella-text-muted mt-1 text-sm">
-                  Students scan these with their phone camera — no app button to
-                  find. Still checks the geofence, so scanning a photo of the code
-                  from off-site does not check anyone in.
+                  Students scan this one code with their phone camera: the first scan
+                  checks them in, the next one checks them out. It still checks the
+                  geofence, so scanning a photo of the code from off-site does not
+                  check anyone in.
                 </p>
                 <div className="mt-4">
                   <CourseQrDisplay courseId={selectedId} />

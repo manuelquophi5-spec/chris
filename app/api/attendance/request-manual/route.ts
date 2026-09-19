@@ -1,5 +1,6 @@
 import { connectDB } from "@/lib/db";
 import { getAuthUser, jsonError, jsonOk } from "@/lib/api";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { AuditLog } from "@/models/AuditLog";
 
 export async function POST(request: Request) {
@@ -7,8 +8,16 @@ export async function POST(request: Request) {
     const user = await getAuthUser();
     if (!user) return jsonError("Unauthorized", 401);
 
+    const limited = await checkRateLimit(`request-manual:${user.id}`, 5, 60 * 60 * 1000);
+    if (!limited.allowed) {
+      return jsonError(
+        "You've sent several requests already. An administrator will get to them — try again later.",
+        429,
+      );
+    }
+
     const body = await request.json();
-    const reason = String(body.reason ?? "GPS not available").trim();
+    const reason = String(body.reason ?? "GPS not available").trim().slice(0, 300);
 
     await connectDB();
 
@@ -25,9 +34,6 @@ export async function POST(request: Request) {
     } as Record<string, unknown>);
   } catch (error) {
     console.error("[api/attendance/request-manual]", error);
-    return jsonError(
-      error instanceof Error ? error.message : "Internal Server Error",
-      500,
-    );
+    return jsonError("Something went wrong. Please try again.", 500);
   }
 }

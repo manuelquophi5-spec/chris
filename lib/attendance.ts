@@ -1,3 +1,4 @@
+import { campusTimezoneOffsetMinutes } from "@/lib/campus-time";
 import { getDayKey } from "@/lib/day";
 import { programLabel } from "@/lib/academic";
 import {
@@ -20,10 +21,13 @@ export function parseAttendanceType(value: unknown): AttendanceType | null {
   return null;
 }
 
-export function parseTimezoneOffset(value: unknown): number {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return 0;
-  return Math.round(n);
+/**
+ * Kept with its old signature so callers don't change, but the client-supplied
+ * value is deliberately ignored: campus time is decided by the server
+ * (see lib/campus-time.ts), so a forged timezone can't move a class window.
+ */
+export function parseTimezoneOffset(_clientValue?: unknown): number {
+  return campusTimezoneOffsetMinutes();
 }
 
 type PopulatedLocation = { name?: string };

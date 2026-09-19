@@ -9,6 +9,9 @@ import {
 import { User } from "@/models/User";
 import { ACADEMIC_PROGRAMS, ACADEMIC_LEVELS } from "@/lib/academic";
 
+/** Each row bcrypt-hashes a setup code, so an unbounded import would time out the request. */
+const MAX_IMPORT_ROWS = 500;
+
 export async function POST(request: Request) {
   try {
     const auth = await requireAdmin();
@@ -23,8 +26,13 @@ export async function POST(request: Request) {
       role?: string;
     }>;
 
-    if (!rows || rows.length === 0) {
+    if (!Array.isArray(rows) || rows.length === 0) {
       return jsonError("No rows to import");
+    }
+    if (rows.length > MAX_IMPORT_ROWS) {
+      return jsonError(
+        `Import at most ${MAX_IMPORT_ROWS} students at a time (got ${rows.length}). Split the file and import it in parts.`,
+      );
     }
 
     await connectDB();
@@ -99,9 +107,6 @@ export async function POST(request: Request) {
     } as Record<string, unknown>);
   } catch (error) {
     console.error("[api/admin/users/import]", error);
-    return jsonError(
-      error instanceof Error ? error.message : "Internal Server Error",
-      500,
-    );
+    return jsonError("Something went wrong. Please try again.", 500);
   }
 }

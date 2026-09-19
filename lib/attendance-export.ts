@@ -2,6 +2,7 @@ import { getDayKey } from "@/lib/day";
 import { Attendance } from "@/models/Attendance";
 import mongoose from "mongoose";
 import ExcelJS from "exceljs";
+import { neutralizeFormula } from "@/lib/csv-safe";
 
 export type ExportRow = {
   day: string;
@@ -97,7 +98,7 @@ export async function fetchAttendanceForExport(params: {
 
 export function rowsToCsv(rows: ExportRow[]): string {
   const escape = (value: string | number) => {
-    const s = String(value);
+    const s = neutralizeFormula(String(value));
     if (s.includes(",") || s.includes('"') || s.includes("\n")) {
       return `"${s.replace(/"/g, '""')}"`;
     }
@@ -133,22 +134,24 @@ export async function rowsToXlsxBuffer(rows: ExportRow[]): Promise<Buffer> {
   const sheet = workbook.addWorksheet("Attendance");
   sheet.addRow([...HEADERS]);
   for (const r of rows) {
-    sheet.addRow([
-      r.day,
-      r.studentId,
-      r.name,
-      r.type,
-      r.time,
-      r.campus,
-      r.classTitle,
-      r.classCode,
-      r.session,
-      r.late,
-      r.distanceM,
-      r.gpsAccuracyM,
-      r.inGeofence,
-      r.method,
-    ]);
+    sheet.addRow(
+      [
+        r.day,
+        r.studentId,
+        r.name,
+        r.type,
+        r.time,
+        r.campus,
+        r.classTitle,
+        r.classCode,
+        r.session,
+        r.late,
+        r.distanceM,
+        r.gpsAccuracyM,
+        r.inGeofence,
+        r.method,
+      ].map((v) => (typeof v === "string" ? neutralizeFormula(v) : v)),
+    );
   }
   sheet.getRow(1).font = { bold: true };
   const buf = await workbook.xlsx.writeBuffer();

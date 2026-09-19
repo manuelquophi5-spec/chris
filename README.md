@@ -1,6 +1,6 @@
-# Data Link Attend (`datalink_attend`)
+# UG Attend (`ug_attend`) — University of Ghana
 
-Mobile-first geofenced attendance PWA for schools. Students check in via the browser **Geolocation API**; the server verifies they are inside a configured campus geofence using the **Haversine formula**.
+Mobile-first geofenced attendance PWA for the University of Ghana (Legon campus). Students check in via the browser **Geolocation API**; the server verifies they are inside a configured campus geofence using the **Haversine formula**.
 
 See [docs/SCHOOL_SETUP_AND_DASHBOARDS.md](docs/SCHOOL_SETUP_AND_DASHBOARDS.md) for admin setup (campuses → users → classes → enrollments).
 
@@ -18,6 +18,19 @@ See [docs/SCHOOL_SETUP_AND_DASHBOARDS.md](docs/SCHOOL_SETUP_AND_DASHBOARDS.md) f
 |------|----------------|
 | `user` | **One check-in + one check-out per day** (GPS + geofence), today status, history by day |
 | `admin` | **Geofence admin** (`/dashboard/admin`) — Leaflet map, create/edit sites, radius slider, enable/disable; mark attendance; view all attendance |
+
+## Class QR (one code, check-in and check-out)
+
+Each class has a single QR (admin → Classes → select class). The token carries only the class; the server decides the direction from the student's attendance for the day (`lib/qr-toggle.ts`): first scan checks in, a later scan checks out, and a check-out is accepted only after a short gap (`QR_MIN_MINUTES_BEFORE_CHECKOUT`, 5 min) so a double-scan at the door can't check the student out. Location still comes from the scanning phone's GPS and goes through the same geofence and movement checks as manual check-in. QR codes issued before this change (which carried a `type`) still verify and now act as the combined code.
+
+## Development
+
+```bash
+cp .env.example .env.local   # then fill MONGODB_URI and JWT_SECRET
+npm run dev
+npm test                     # unit tests (node:test) for QR toggle + safe redirects
+npm run lint && npx tsc --noEmit && npm run build
+```
 
 ## Project structure
 

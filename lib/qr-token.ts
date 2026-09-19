@@ -1,6 +1,5 @@
 import { SignJWT, jwtVerify } from "jose";
 import { getSecretKey } from "@/lib/auth";
-import type { AttendanceType } from "@/types";
 
 /**
  * Long-lived on purpose: the QR is meant to be generated once per course and
@@ -11,16 +10,19 @@ import type { AttendanceType } from "@/types";
  */
 const QR_TOKEN_EXPIRES = "400d";
 
+/**
+ * One QR per course. Whether a scan means check-in or check-out is decided
+ * server-side from the student's attendance for the day (see lib/qr-toggle.ts),
+ * so the token carries only the course.
+ */
 export type QrTokenPayload = {
   courseId: string;
-  type: AttendanceType;
 };
 
 export async function signQrToken(payload: QrTokenPayload): Promise<string> {
   return new SignJWT({
     purpose: "qr_checkin",
     courseId: payload.courseId,
-    type: payload.type,
   })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -33,14 +35,12 @@ export async function verifyQrToken(
 ): Promise<QrTokenPayload | null> {
   try {
     const { payload } = await jwtVerify(token, getSecretKey());
-    if (
-      payload.purpose !== "qr_checkin" ||
-      typeof payload.courseId !== "string" ||
-      (payload.type !== "check_in" && payload.type !== "check_out")
-    ) {
+    if (payload.purpose !== "qr_checkin" || typeof payload.courseId !== "string") {
       return null;
     }
-    return { courseId: payload.courseId, type: payload.type };
+    // Codes printed before the single-QR change also carry a `type` claim;
+    // it is ignored, so those old codes keep working as the combined QR.
+    return { courseId: payload.courseId };
   } catch {
     return null;
   }

@@ -1,6 +1,8 @@
 import { connectDB } from "@/lib/db";
 import { getAuthUser, jsonError, jsonOk } from "@/lib/api";
 import { verifyPassword, hashPassword } from "@/lib/auth";
+import { validatePassword } from "@/lib/password-policy";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { User } from "@/models/User";
 
 export async function POST(request: Request) {
@@ -15,11 +17,16 @@ export async function POST(request: Request) {
     if (!currentPassword || !newPassword) {
       return jsonError("Current and new password are required");
     }
-    if (newPassword.length < 10) {
-      return jsonError("New password must be at least 10 characters");
-    }
-    if (!/[a-zA-Z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
-      return jsonError("New password must include letters and numbers");
+    const policyError = validatePassword(newPassword);
+    if (policyError) return jsonError(policyError);
+
+    // A stolen session must not be able to guess the current password unchecked.
+    const limited = await checkRateLimit(`change-password:${user.id}`, 5);
+    if (!limited.allowed) {
+      return jsonError(
+        `Too many attempts. Try again in ${limited.retryAfterSec ?? 60} seconds.`,
+        429,
+      );
     }
 
     await connectDB();
@@ -41,9 +48,6 @@ export async function POST(request: Request) {
     return jsonOk({ message: "Password changed successfully" } as Record<string, unknown>);
   } catch (error) {
     console.error("[api/auth/change-password]", error);
-    return jsonError(
-      error instanceof Error ? error.message : "Internal Server Error",
-      500,
-    );
+    return jsonError("Something went wrong. Please try again.", 500);
   }
 }

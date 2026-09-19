@@ -1,6 +1,6 @@
 /**
- * Generates PWA icons from public/logo.png (Data Link brand).
- * Falls back to wine-colored placeholder if sharp or logo is unavailable.
+ * Generates PWA icons from public/ug-logo.png (University of Ghana brand).
+ * Falls back to a UG-blue placeholder if sharp or logo is unavailable.
  */
 import { mkdir, writeFile, access } from "node:fs/promises";
 import { join, dirname } from "node:path";
@@ -8,9 +8,9 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const iconsDir = join(__dirname, "..", "public", "icons");
-const logoPath = join(__dirname, "..", "public", "logo.png");
-const WINE = "#6B2D3E";
-const CREAM = "#F5F0E8";
+const logoPath = join(__dirname, "..", "public", "ug-logo.png");
+const WINE = "#01356E"; // UG navy (const name kept to keep this diff small)
+const CREAM = "#FFFFFF"; // the official UG logo is on a white background
 
 const MINI_PNG = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
@@ -44,7 +44,7 @@ async function generateFromLogo() {
     .extend({ top: 0, bottom: 0, left: 0, right: 0 })
     .png()
     .toFile(join(iconsDir, "icon-maskable-512.png"));
-  console.log("Generated PWA icons from logo.png");
+  console.log("Generated PWA icons from ug-logo.png");
 }
 
 async function generateWineFallback() {
@@ -53,7 +53,7 @@ async function generateWineFallback() {
     <svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
       <rect width="512" height="512" rx="96" fill="${CREAM}"/>
       <circle cx="256" cy="256" r="160" fill="${WINE}" opacity="0.12"/>
-      <text x="256" y="300" text-anchor="middle" font-family="Arial,sans-serif" font-size="120" font-weight="700" fill="${WINE}">DL</text>
+      <text x="256" y="300" text-anchor="middle" font-family="Arial,sans-serif" font-size="120" font-weight="700" fill="${WINE}">UG</text>
     </svg>
   `;
   const base = sharp(Buffer.from(svg));

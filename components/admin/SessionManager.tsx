@@ -149,7 +149,7 @@ export function SessionManager() {
       <div>
         <h1 className="ella-heading-page">Classes (optional)</h1>
         <p className="ella-text-muted mt-2 max-w-2xl">
-          Only needed for schools or timed meetings. Staff check in when class starts
+          Only needed for timed lectures or meetings. Staff check in when class starts
           and out when it ends. For a normal office, use daily check-in on the phone
           instead — you can skip this page.
         </p>

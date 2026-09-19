@@ -241,7 +241,7 @@ export function AdminUsersManager() {
 
   function copyInstructions(id: string, name: string, code?: string) {
     const codeLine = code ? `\n3. Setup code: ${code}` : "";
-    const text = `Hi ${name}, set up Data Link attendance:\n1. Open datalink_attend\n2. Tap "Set password"${codeLine}\n${code ? "4" : "3"}. Student ID: ${id}\n${code ? "5" : "4"}. Choose a password, then sign in for class check-in.`;
+    const text = `Hi ${name}, set up UG Attend (University of Ghana):\n1. Open UG Attend\n2. Tap "Set password"${codeLine}\n${code ? "4" : "3"}. Student ID: ${id}\n${code ? "5" : "4"}. Choose a password, then sign in for class check-in.`;
     void navigator.clipboard.writeText(text).then(() => {
       setCopiedId(id);
       toastSuccess("Instructions copied to clipboard.");
@@ -312,7 +312,7 @@ export function AdminUsersManager() {
           setup code (shown below), then send:
         </p>
         <p className="ella-quote">
-          “Open datalink_attend → Set password → enter your Student ID and
+          “Open UG Attend → Set password → enter your Student ID and
           setup code → pick a password → check in during class.”
         </p>
       </AdminHelpCard>
@@ -410,7 +410,7 @@ export function AdminUsersManager() {
               value={studentId}
               onChange={(e) => setStudentId(e.target.value.toUpperCase())}
               className={`${adminInput} font-mono text-base uppercase py-3`}
-              placeholder="e.g. E10234"
+              placeholder="e.g. 10234567"
             />
           </label>
           <label className="block">

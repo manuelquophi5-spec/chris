@@ -1,11 +1,12 @@
-/* datalink_attend PWA — minimal service worker for installability + light caching */
-const CACHE = "ella-static-v2";
+/* UG Attend PWA — minimal service worker for installability + light caching */
+const CACHE = "ella-static-v5";
 const OFFLINE_URL = "/offline.html";
+// Only static, redirect-free files. "/" and "/dashboard" redirect (to /login or
+// the role dashboard); browsers refuse to serve a cached *redirected* response
+// to a navigation, so precaching them broke offline page loads.
 const PRECACHE = [
-  "/",
-  "/login",
-  "/dashboard",
   OFFLINE_URL,
+  "/ug-logo.png",
   "/icons/icon-192.png",
   "/icons/icon-512.png",
 ];

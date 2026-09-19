@@ -1,7 +1,7 @@
 export const ACADEMIC_PROGRAMS = [
-  { id: "computer-science", label: "Computer Science" },
-  { id: "information-technology", label: "Information Technology" },
-  { id: "business-administration", label: "Business Administration" },
+  { id: "computer-science", label: "BSc Computer Science" },
+  { id: "information-technology", label: "BSc Information Technology" },
+  { id: "business-administration", label: "BSc Business Administration" },
 ] as const;
 
 export const ACADEMIC_LEVELS = [100, 200, 300, 400] as const;

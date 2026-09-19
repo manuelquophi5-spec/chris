@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Tooling/agent folders that are not part of the app.
+    ".claude/**",
+    ".agents/**",
+    ".impeccable/**",
+    ".playwright-mcp/**",
   ]),
   {
     // Plain Node CLI scripts, run directly with `node`, not bundled by Next — CommonJS is intentional here.

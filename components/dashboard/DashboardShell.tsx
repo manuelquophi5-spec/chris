@@ -19,7 +19,7 @@ function getGreeting() {
 }
 
 export function DashboardShell({ user, children }: Props) {
-  const { logoUrl } = useBrand();
+  const { markUrl } = useBrand();
 
   async function handleLogout() {
     await authFetch("/api/auth/logout", { method: "POST" });
@@ -35,11 +35,11 @@ export function DashboardShell({ user, children }: Props) {
           <div className="flex items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-2.5 animate-fade-in">
               <Image
-                src={logoUrl}
+                src={markUrl}
                 alt=""
                 width={36}
                 height={36}
-                unoptimized={logoUrl.startsWith("http")}
+                unoptimized={markUrl.startsWith("http")}
                 className="shrink-0 object-contain h-auto w-auto"
                 style={{ width: "auto", height: "auto" }}
               />

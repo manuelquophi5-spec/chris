@@ -1,10 +1,10 @@
-# Data Link Attend — School Setup & Dashboard Guide
+# UG Attend — University Setup & Dashboard Guide
 
-**Audience:** School administrators and registrars who are **not** technical.  
-**App name:** datalink_attend (Data Link Attend)  
+**Audience:** University administrators and registrars who are **not** technical.  
+**App name:** ug_attend (UG Attend)  
 **Last updated:** August 2026  
 
-This guide explains, step by step, how to set up your school in the system, create classes, manage students, and how the **student** and **admin** dashboards work on phones and computers.
+This guide explains, step by step, how to set up your university in the system, create classes, manage students, and how the **student** and **admin** dashboards work on phones and computers.
 
 ---
 
@@ -14,7 +14,7 @@ This guide explains, step by step, how to set up your school in the system, crea
 2. [Who uses what — roles at a glance](#2-who-uses-what--roles-at-a-glance)
 3. [Before you start — what you need](#3-before-you-start--what-you-need)
 4. [Part A — First-time technical setup (usually done once by IT)](#4-part-a--first-time-technical-setup-usually-done-once-by-it)
-5. [Part B — Administrator: set up the school (your main checklist)](#5-part-b--administrator-set-up-the-school-your-main-checklist)
+5. [Part B — Administrator: set up the university (your main checklist)](#5-part-b--administrator-set-up-the-university-your-main-checklist)
 6. [Part B1 — Step 1: Create campuses (GPS check-in areas)](#6-part-b1--step-1-create-campuses-gps-check-in-areas)
 7. [Part B2 — Step 2: Add students](#7-part-b2--step-2-add-students)
 8. [Part B3 — Step 3: Create classes and schedules](#8-part-b3--step-3-create-classes-and-schedules)
@@ -29,12 +29,12 @@ This guide explains, step by step, how to set up your school in the system, crea
 
 ## 1. What this system does (in plain language)
 
-Data Link Attend is an **attendance app** that runs in a web browser (and can be installed on a phone like an app).
+UG Attend is an **attendance app** that runs in a web browser (and can be installed on a phone like an app).
 
 When a student checks in:
 
 1. The phone asks for **location (GPS)**.
-2. The system checks whether the student is **inside the campus area** you drew on the map (a “geofence” — a circle around the school building or site).
+2. The system checks whether the student is **inside the campus area** you drew on the map (a “geofence” — a circle around the university building or site).
 3. For **scheduled classes**, the system also checks whether check-in is allowed **only during class time** (for example Monday–Friday, 9:00–11:00).
 
 That way, attendance is tied to **being on campus** and **being in the right time window**, not just tapping a button from home.
@@ -48,14 +48,14 @@ That way, attendance is tied to **being on campus** and **being in the right tim
 
 | Role | Who | How they sign in | Main screen |
 |------|-----|------------------|-------------|
-| **Administrator** | Registrar, IT, school admin | **Email + password** at **Admin sign in** | Desktop admin area — full setup |
+| **Administrator** | Registrar, IT, university admin | **Email + password** at **Admin sign in** | Desktop admin area — full setup |
 | **Student** | Learners | **Student ID + password** at **Sign in** | Phone — check in / check out |
 
 ---
 
 ## 3. Before you start — what you need
 
-### From your school
+### From your university
 
 - A list of **student IDs** you will assign (for example `E10234`, `DL2026-001`).
 - **First names** for each student.
@@ -68,13 +68,13 @@ That way, attendance is tied to **being on campus** and **being in the right tim
 - A **database** (MongoDB) and a **first administrator account** must exist before you can sign in as admin.
 - Students need **internet** and **location services enabled** on their phones.
 
-If you only use the admin screens and someone else already created the first admin account, you can skip Part A and start at [Part B](#5-part-b--administrator-set-up-the-school-your-main-checklist).
+If you only use the admin screens and someone else already created the first admin account, you can skip Part A and start at [Part B](#5-part-b--administrator-set-up-the-university-your-main-checklist).
 
 ---
 
 ## 4. Part A — First-time technical setup (usually done once by IT)
 
-This section is for whoever deploys the app the first time. **School admins can skip to Part B** if the app URL and admin login already work.
+This section is for whoever deploys the app the first time. **University admins can skip to Part B** if the app URL and admin login already work.
 
 ### A.1 Create the first administrator account
 
@@ -89,9 +89,9 @@ The first admin cannot be added from the website. It is created on a computer th
 **Example (PowerShell on Windows):**
 
 ```powershell
-$env:ADMIN_EMAIL="registrar@yourschool.edu"
+$env:ADMIN_EMAIL="registrar@youruniversity.edu"
 $env:ADMIN_PASSWORD="YourSecurePass1"
-$env:ADMIN_NAME="School Admin"
+$env:ADMIN_NAME="UG Admin"
 npm run create-admin
 ```
 
@@ -102,13 +102,13 @@ npm run create-admin
 
 ### A.2 Deploy the app so students can open it on phones
 
-Typically the app is deployed to **Vercel** (or similar). IT must set the same `MONGODB_URI` and `JWT_SECRET` in the hosting dashboard, then give you the live URL (for example `https://your-school-attend.vercel.app`).
+Typically the app is deployed to **Vercel** (or similar). IT must set the same `MONGODB_URI` and `JWT_SECRET` in the hosting dashboard, then give you the live URL (for example `https://ug-attend.vercel.app`).
 
 Students should use **HTTPS** (a normal `https://` link). GPS on phones usually does not work on insecure `http://` links.
 
 ---
 
-## 5. Part B — Administrator: set up the school (your main checklist)
+## 5. Part B — Administrator: set up the university (your main checklist)
 
 After you sign in as **admin**, you land on **Start here** (`/dashboard/admin`). That page shows a **setup checklist** in order:
 
@@ -124,7 +124,7 @@ Do these steps **in order**. If you create a class before you have a campus, the
 
 ### How to open the admin area
 
-1. Open the school’s app URL in a **computer browser** (Chrome, Edge, or Firefox).
+1. Open the university’s app URL in a **computer browser** (Chrome, Edge, or Firefox).
 2. Go to **Admin sign in** (link from the student sign-in page, or add `/login/admin` to your site address).
 3. Enter your **admin email** and **password**.
 4. You should see the sidebar: **Start here**, **Classes**, **Students & staff**, **Campuses**, etc.
@@ -158,7 +158,7 @@ A **campus** (also called a site or workplace) is a point on the map with a **ra
    | **Radius (meters)** | e.g. `80`–`150` | Start around 100 m; increase if GPS says students are “outside” when they are in the yard. |
 
 4. **Use the map click:** Click the exact spot on the map where check-in should be centered. The pin moves to that location.
-5. **Optional — search:** If the page has a location search box, you can search for the school name, then fine-tune by clicking the map.
+5. **Optional — search:** If the page has a location search box, you can search for the university name, then fine-tune by clicking the map.
 6. **Optional — “Use my location”:** If you are standing at the campus with the same device, use the button that reads your current GPS (browser will ask permission). This is the most accurate method.
 7. Adjust the **radius slider** until the circle comfortably covers the area where students wait (not the whole city).
 8. Click **Save** or **Create** (wording may say “Created …” when successful).
@@ -203,7 +203,7 @@ Here you create student accounts. Each student gets a **Student ID** (stored as 
 
 Use **Copy instructions** on their row (only pre-fills the code if it's still shown on screen), or send this message:
 
-> 1. Open **datalink_attend** (your school link).  
+> 1. Open **UG Attend** (your university link).  
 > 2. Tap **Set password**.  
 > 3. Enter your **Student ID**: `E10234`  
 > 4. Enter the **setup code** you were given: `AB12XY`  
@@ -277,6 +277,26 @@ Students enrolled in a class use the **class check-in screen** on their phone (n
 
 If the current day and time fall inside a class’s schedule, the admin list may show **Active now**. That helps you know which classes students should be checking into at this moment.
 
+### 8.5 The class QR code (one code for check-in and check-out)
+
+Each class has **one** QR code. Open **Classes**, select the class, and find **Class QR (check-in & check-out)**. Use **Download** to print it or **Copy link** to paste it into a slide, and display it in the lecture room.
+
+How students use it:
+
+1. They scan the code with the normal **phone camera**, sign in if asked, and allow location.
+2. **First scan of the day = check-in.** The system sees they have not checked in to this class yet today.
+3. **Scan again later = check-out.** The system sees they are already checked in and records the check-out instead.
+4. A check-out is only accepted **at least 5 minutes after** the check-in. This stops an accidental double-scan at the door from checking a student straight back out.
+5. Once they have both checked in and out, further scans say they are already done for today.
+
+Good to know:
+
+- The QR only names the class. **Location is still checked from the student’s own phone GPS**, so a photo of the code sent to someone off-campus does not check them in.
+- A check-in scan outside the class time window is refused, so a late scan is never treated as a check-out.
+- The same code works all term. If you deactivate a class, its QR stops working immediately.
+- QR codes printed before this change (separate check-in and check-out codes) still work; both now behave as the single combined code.
+- Changing the `JWT_SECRET` setting invalidates every printed QR code, so reprint them if it is ever rotated.
+
 ---
 
 ## 9. Part B4 — Step 4: Enroll students into classes
@@ -300,7 +320,7 @@ They cannot check in to that course until enrolled.
 
 ### 9.3 Remove a student from a class
 
-Click **Remove** next to their name in the enrolled list. This does not delete their school account — only removes them from that course.
+Click **Remove** next to their name in the enrolled list. This does not delete their university account — only removes them from that course.
 
 ---
 
@@ -320,11 +340,11 @@ Click **Remove** next to their name in the enrolled list. This does not delete t
    | **Late** | Number of late check-ins |
    | **Missed** | Sessions they did not check in for |
 
-### 10.2 School-wide attendance log
+### 10.2 University-wide attendance log
 
 **Menu:** **Attendance log** (`/dashboard/admin/attendance`)
 
-Shows individual check-in/check-out records across the school. Use this when you need a raw list of marks for a day, not only class percentages.
+Shows individual check-in/check-out records across the university. Use this when you need a raw list of marks for a day, not only class percentages.
 
 ### 10.3 Start here dashboard numbers
 
@@ -345,7 +365,7 @@ Use **Need password setup** before the first day of class so every student can l
 
 **Menu:** **One-off sessions** (`/dashboard/admin/sessions`)
 
-For special events **outside** the weekly class schedule (exams, workshops, assemblies). Most schools using **Classes** with weekly timetables can **skip** this page.
+For special events **outside** the weekly class schedule (exams, workshops, assemblies). Most universities using **Classes** with weekly timetables can **skip** this page.
 
 If used, you create a session with title, optional course code, site, start datetime, and end datetime. Students in **session mode** pick that session when checking in.
 
@@ -359,11 +379,11 @@ A log of important admin actions (creating users, classes, etc.) for accountabil
 
 **Menu:** **Branding** (`/dashboard/admin/settings`)
 
-Set the **app name** and **logo** shown across the whole app — sign-in pages, the student dashboard, the admin sidebar, and the installable PWA icon. Paste a link to a logo image already hosted somewhere (your school website, etc.); there is no file upload. Leave the logo field blank to use the default logo. Changes take effect for everyone within about 30 seconds.
+Set the **app name** and **logo** shown across the whole app — sign-in pages, the student dashboard, the admin sidebar, and the installable PWA icon. Paste a link to a logo image already hosted somewhere (your university website, etc.); there is no file upload. Leave the logo field blank to use the default logo, which is the official University of Ghana logo (`public/ug-logo.png`). Changes take effect for everyone within about 30 seconds.
 
 ### 11.4 Daily attendance (no classes)
 
-If students are **not enrolled in any class**, their phone shows **daily** check-in: one check-in and one check-out per day at a selected campus. That mode suits **offices or workplaces**, not typical timed school periods. For schools, prefer **classes + enrollment** so attendance follows the timetable.
+If students are **not enrolled in any class**, their phone shows **daily** check-in: one check-in and one check-out per day at a selected campus. That mode suits **offices or workplaces**, not typical timed university periods. For universities, prefer **classes + enrollment** so attendance follows the timetable.
 
 ---
 
@@ -376,7 +396,7 @@ If students are **not enrolled in any class**, their phone shows **daily** check
 
 ### 12.1 Installing on the phone (recommended)
 
-1. Open the school link in **Chrome** (Android) or **Safari** (iPhone).
+1. Open the university link in **Chrome** (Android) or **Safari** (iPhone).
 2. Android: use the **Install** prompt or browser menu → Install app.  
 3. iPhone: **Share** → **Add to Home Screen**.
 4. Allow **location** when the browser asks — required for check-in.
@@ -393,7 +413,7 @@ If students are **not enrolled in any class**, their phone shows **daily** check
 
 The app **automatically** picks the right screen:
 
-#### A) Class mode (typical for schools)
+#### A) Class mode (typical for universities)
 
 **When:** Student is **enrolled in at least one class**.
 
@@ -425,7 +445,7 @@ The app **automatically** picks the right screen:
 - Distance hint text explaining if they are near the campus or outside.
 - Evening reminder after 5 PM if they checked in but forgot check-out.
 
-Schools using timetabled classes should enroll everyone so students get **class mode**, not daily mode.
+Universities using timetabled classes should enroll everyone so students get **class mode**, not daily mode.
 
 ### 12.4 History tab
 
@@ -451,6 +471,9 @@ Lists past attendance by day so students can prove they marked in. Read-only.
 | No classes assigned | Not enrolled | Admin must enroll them under **Classes** |
 | Location permission denied | Phone blocked GPS | Enable location for the browser in phone settings |
 | Select a class that is active | No active class selected | Choose from dropdown during class hours |
+| You checked in a moment ago. Scan again in N minutes to check out | They scanned the QR again too soon after checking in | Wait the stated minutes, then scan again to check out |
+| You’ve already checked in and out of this class today | Both check-in and check-out are already recorded | Nothing to do; attendance for today is complete |
+| This QR code is invalid or expired | Code is damaged, from another system, or the secret was changed | Print a fresh code from **Classes** |
 
 ---
 
@@ -476,25 +499,25 @@ Lists past attendance by day so students can prove they marked in. Read-only.
 
 ## 14. Quick reference — URLs and menu names
 
-Replace `https://YOUR-SCHOOL-URL` with your real deployed address.
+Replace `https://YOUR-UG-ATTEND-URL` with your real deployed address.
 
 | Page | Path |
 |------|------|
-| Student sign in | `https://YOUR-SCHOOL-URL/login` |
-| Set password | `https://YOUR-SCHOOL-URL/set-password` |
-| Admin sign in | `https://YOUR-SCHOOL-URL/login/admin` |
-| Admin home (checklist) | `https://YOUR-SCHOOL-URL/dashboard/admin` |
-| Campuses | `https://YOUR-SCHOOL-URL/dashboard/admin/sites` |
-| Students & staff | `https://YOUR-SCHOOL-URL/dashboard/admin/users` |
-| Classes | `https://YOUR-SCHOOL-URL/dashboard/admin/courses` |
-| Student home (check-in) | `https://YOUR-SCHOOL-URL/dashboard` |
-| Student history | `https://YOUR-SCHOOL-URL/dashboard/history` |
+| Student sign in | `https://YOUR-UG-ATTEND-URL/login` |
+| Set password | `https://YOUR-UG-ATTEND-URL/set-password` |
+| Admin sign in | `https://YOUR-UG-ATTEND-URL/login/admin` |
+| Admin home (checklist) | `https://YOUR-UG-ATTEND-URL/dashboard/admin` |
+| Campuses | `https://YOUR-UG-ATTEND-URL/dashboard/admin/sites` |
+| Students & staff | `https://YOUR-UG-ATTEND-URL/dashboard/admin/users` |
+| Classes | `https://YOUR-UG-ATTEND-URL/dashboard/admin/courses` |
+| Student home (check-in) | `https://YOUR-UG-ATTEND-URL/dashboard` |
+| Student history | `https://YOUR-UG-ATTEND-URL/dashboard/history` |
 
 ---
 
-## End-to-end example (small school)
+## End-to-end example (small university)
 
-1. **IT** creates admin `registrar@school.edu` and deploys the app.  
+1. **IT** creates admin `registrar@ug.edu.gh` and deploys the app.  
 2. **Admin** creates campus `Main Building` with 120 m radius.  
 3. **Admin** adds students `E101`, `E102`, `E103`.  
 4. **Admin** creates class `Math 101`, Mon/Wed/Fri 10:00–12:00, campus Main Building, late after 10 minutes.  
@@ -504,4 +527,4 @@ Replace `https://YOUR-SCHOOL-URL` with your real deployed address.
 
 ---
 
-*This document describes the Data Link Attend (ella) application as implemented in this repository. If your deployed version differs, compare menu labels with your live site.*
+*This document describes the UG Attend (ella) application as implemented in this repository. If your deployed version differs, compare menu labels with your live site.*

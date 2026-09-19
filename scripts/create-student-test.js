@@ -29,7 +29,7 @@ async function main() {
   const hash = await bcrypt.hash("Student12345", 12);
   await User.findOneAndUpdate(
     { employeeId: "STU001" },
-    { employeeId: "STU001", email: "stu001@ella.local", passwordHash: hash, name: "Test Student",
+    { employeeId: "STU001", email: "stu001@st.ug.edu.gh", passwordHash: hash, name: "Test Student",
       role: "user", program: "computer-science", level: 200, passwordMustChange: false,
       failedLoginAttempts: 0, lockedUntil: null },
     { upsert: true, new: true }

@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -45,3 +46,7 @@ Project Work.docx
 _docx_extract/
 _project_work.zip
 _project_work_text.txt
+
+# local tooling output
+/.playwright-mcp/
+/.claude/

@@ -43,9 +43,6 @@ export async function POST(request: Request) {
     } as Record<string, unknown>);
   } catch (error) {
     console.error("[api/auth/request-reset]", error);
-    return jsonError(
-      error instanceof Error ? error.message : "Internal Server Error",
-      500,
-    );
+    return jsonError("Something went wrong. Please try again.", 500);
   }
 }

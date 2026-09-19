@@ -3,55 +3,44 @@
 import { useEffect, useState } from "react";
 import { toDataURL } from "qrcode";
 import { authFetch, parseJsonResponse } from "@/lib/auth-client";
-import { toastError } from "@/lib/toast";
+import { toastError, toastSuccess } from "@/lib/toast";
+import { QR_MIN_MINUTES_BEFORE_CHECKOUT } from "@/lib/qr-toggle";
 import { adminBtnGhost } from "./admin-ui";
 
-type QrCodes = {
-  checkInUrl: string;
-  checkOutUrl: string;
-  checkInImage: string;
-  checkOutImage: string;
+type QrCode = {
+  url: string;
+  image: string;
 };
 
 async function toQrImage(url: string): Promise<string> {
-  return toDataURL(url, { margin: 1, width: 220 });
+  return toDataURL(url, { margin: 1, width: 260 });
 }
 
 export function CourseQrDisplay({ courseId }: { courseId: string }) {
-  const [codes, setCodes] = useState<QrCodes | null>(null);
+  const [code, setCode] = useState<QrCode | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    setCodes(null);
+    setCode(null);
 
     async function load() {
-      const res = await authFetch(`/api/admin/courses/${courseId}/qr`);
-      const data = await parseJsonResponse<{
-        error?: string;
-        checkInUrl?: string;
-        checkOutUrl?: string;
-      }>(res);
-      if (!res.ok || !data.checkInUrl || !data.checkOutUrl) {
-        if (!cancelled) {
-          toastError(data.error ?? "Could not load QR codes");
-          setLoading(false);
+      try {
+        const res = await authFetch(`/api/admin/courses/${courseId}/qr`);
+        const data = await parseJsonResponse<{ error?: string; qrUrl?: string }>(
+          res,
+        );
+        if (!res.ok || !data.qrUrl) {
+          if (!cancelled) toastError(data.error ?? "Could not load the QR code");
+          return;
         }
-        return;
-      }
-      const [checkInImage, checkOutImage] = await Promise.all([
-        toQrImage(data.checkInUrl),
-        toQrImage(data.checkOutUrl),
-      ]);
-      if (!cancelled) {
-        setCodes({
-          checkInUrl: data.checkInUrl,
-          checkOutUrl: data.checkOutUrl,
-          checkInImage,
-          checkOutImage,
-        });
-        setLoading(false);
+        const image = await toQrImage(data.qrUrl);
+        if (!cancelled) setCode({ url: data.qrUrl, image });
+      } catch {
+        if (!cancelled) toastError("Could not load the QR code");
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     }
 
@@ -62,60 +51,43 @@ export function CourseQrDisplay({ courseId }: { courseId: string }) {
   }, [courseId]);
 
   if (loading) {
-    return (
-      <p className="ella-text-muted text-sm">Loading QR codes…</p>
-    );
+    return <p className="ella-text-muted text-sm">Loading QR code…</p>;
   }
 
-  if (!codes) return null;
+  if (!code) return null;
+
+  async function copyLink(url: string) {
+    try {
+      await navigator.clipboard.writeText(url);
+      toastSuccess("Link copied");
+    } catch {
+      toastError("Could not copy — select and copy the link manually.");
+    }
+  }
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      <QrCard
-        label="Check-in QR"
-        hint="Project or print this for students to scan when class starts."
-        image={codes.checkInImage}
-        url={codes.checkInUrl}
-      />
-      <QrCard
-        label="Check-out QR"
-        hint="Show this near the end of class for students to scan on their way out."
-        image={codes.checkOutImage}
-        url={codes.checkOutUrl}
-      />
-    </div>
-  );
-}
-
-function QrCard({
-  label,
-  hint,
-  image,
-  url,
-}: {
-  label: string;
-  hint: string;
-  image: string;
-  url: string;
-}) {
-  return (
-    <div className="ella-panel-muted flex flex-col items-center gap-3 p-4 text-center">
-      <p className="ella-label font-semibold">{label}</p>
+    <div className="ella-panel-muted mx-auto flex max-w-sm flex-col items-center gap-3 p-4 text-center">
+      <p className="ella-label font-semibold">Class QR — check in &amp; check out</p>
       {/* eslint-disable-next-line @next/next/no-img-element -- data: URI, next/image can't optimize it */}
-      <img src={image} alt={`${label} — scan to check in`} width={220} height={220} />
-      <p className="ella-text-muted text-xs">{hint}</p>
+      <img
+        src={code.image}
+        alt="Class QR code — scan to check in or check out"
+        width={260}
+        height={260}
+      />
+      <p className="ella-text-muted text-xs">
+        One code for the whole class. A student&apos;s first scan checks them in;
+        scanning again (at least {QR_MIN_MINUTES_BEFORE_CHECKOUT} minutes later)
+        checks them out. Print or project it in the room.
+      </p>
       <div className="flex gap-2">
-        <a
-          href={image}
-          download={`${label.toLowerCase().replace(/\s+/g, "-")}.png`}
-          className={adminBtnGhost}
-        >
+        <a href={code.image} download="class-qr.png" className={adminBtnGhost}>
           Download
         </a>
         <button
           type="button"
           className={adminBtnGhost}
-          onClick={() => void navigator.clipboard.writeText(url)}
+          onClick={() => void copyLink(code.url)}
         >
           Copy link
         </button>

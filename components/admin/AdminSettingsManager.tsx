@@ -89,7 +89,7 @@ export function AdminSettingsManager() {
 
       <AdminHelpCard title="Logo requirements">
         <p>
-          Paste a link to an image already hosted somewhere (your school
+          Paste a link to an image already hosted somewhere (your university
           website, a shared drive with public sharing on, etc). Square images
           work best. Leave it blank to use the default logo.
         </p>
@@ -121,7 +121,7 @@ export function AdminSettingsManager() {
                 setImgError(false);
               }}
               className={`${adminInput} text-base py-3`}
-              placeholder="https://your-school.edu/logo.png"
+              placeholder="https://www.ug.edu.gh/logo.png"
             />
           </label>
         </div>

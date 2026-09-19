@@ -8,6 +8,7 @@ import {
   mobileInputClass,
 } from "@/components/auth/AuthPageShell";
 import { useBrand } from "@/components/BrandProvider";
+import { safeRedirectPath } from "@/lib/safe-redirect";
 import { usePwaInstall } from "@/hooks/usePwaInstall";
 import {
   authFetch,
@@ -60,8 +61,7 @@ function LoginForm() {
       }
 
       toastSuccess("Signed in. Welcome back.");
-      const from = searchParams.get("from") ?? "/dashboard";
-      redirectAfterAuth(from);
+      redirectAfterAuth(safeRedirectPath(searchParams.get("from"), "/dashboard"));
     } catch {
       toastError("Network error. Check your connection and try again.");
       setLoading(false);

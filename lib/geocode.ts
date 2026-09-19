@@ -29,7 +29,7 @@ export async function searchPlaces(
   const res = await fetch(url.toString(), {
     headers: {
       Accept: "application/json",
-      "User-Agent": "datalink_attend/1.0 (geofence-admin)",
+      "User-Agent": "ug_attend/1.0 (geofence-admin)",
     },
     next: { revalidate: 0 },
   });

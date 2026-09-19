@@ -1,6 +1,6 @@
 ---
-name: Data Link Attend
-description: datalink_attend — wine and navy brand, cream surfaces, campus check-in
+name: UG Attend
+description: UG Attend — University of Ghana blue and navy brand with gold accent, cream surfaces, campus check-in
 colors:
   canvas: "oklch(0.96 0.018 85)"
   surface: "oklch(0.99 0.008 85)"
@@ -10,11 +10,12 @@ colors:
   foreground-subtle: "oklch(0.58 0.04 265)"
   border: "oklch(0.88 0.02 265)"
   border-strong: "oklch(0.78 0.03 265)"
-  primary: "oklch(0.42 0.13 18)"
-  primary-hover: "oklch(0.36 0.13 18)"
-  primary-active: "oklch(0.3 0.12 18)"
+  primary: "oklch(0.335 0.111 255.5)"
+  primary-hover: "oklch(0.285 0.105 255.5)"
+  primary-active: "oklch(0.24 0.095 255.5)"
   on-primary: "oklch(0.99 0.008 85)"
-  primary-subtle: "oklch(0.94 0.04 18)"
+  primary-subtle: "oklch(0.94 0.03 255.5)"
+  gold: "oklch(0.789 0.102 84.2)"
   sidebar: "oklch(0.26 0.07 265)"
   sidebar-foreground: "oklch(0.96 0.01 85)"
   danger: "oklch(0.48 0.16 25)"
@@ -94,7 +95,7 @@ components:
 
 **Creative north star: The Campus Clipboard**
 
-Data Link Attend should feel like a dependable field tool: quiet paper, clear stamps for in/out, no spectacle. Students check in outdoors in daylight; admins work through setup and review without visual noise.
+UG Attend should feel like a dependable field tool: quiet paper, clear stamps for in/out, no spectacle. Students check in outdoors in daylight; admins work through setup and review without visual noise.
 
 **Register:** product (UI serves attendance tasks, not marketing spectacle).
 
@@ -106,7 +107,7 @@ Implementation lives in `app/globals.css` as `--ella-*` CSS variables and `ella-
 
 ## Colors
 
-**Strategy:** Restrained. **Wine** (`oklch` hue ~18) for primary actions and status. **Navy** (hue ~265) for text and admin sidebar. **Cream** (hue ~85) for canvas and surfaces. Never pure `#000` / `#fff`.
+**Strategy:** Restrained. **UG navy** (`oklch` hue ~255, sampled from the official logo) for primary actions and status, with a **gold** accent (hue ~84, from the logo) reserved for the brand mark. **Navy** (hue ~265) for text and admin sidebar. **Cream** (hue ~85) for canvas and surfaces. Never pure `#000` / `#fff`.
 
 | Role | Token | Usage |
 |------|-------|--------|

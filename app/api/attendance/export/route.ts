@@ -32,7 +32,7 @@ export async function GET(request: Request) {
     });
 
     const rangeLabel = from && to ? `${from}_to_${to}` : from ?? "today";
-    const baseName = `datalink-attendance-${rangeLabel}`;
+    const baseName = `ug-attendance-${rangeLabel}`;
 
     if (format === "csv") {
       const csv = rowsToCsv(rows);

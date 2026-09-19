@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { BRAND_CREAM, BRAND_WINE } from "@/lib/brand";
+import { BRAND_CREAM, BRAND_BLUE } from "@/lib/brand";
 import { getSettings } from "@/lib/settings";
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
@@ -10,12 +10,12 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     name: appName,
     short_name: appName,
     description:
-      "Check in at campus with your phone — GPS confirms you are on site.",
+      "University of Ghana attendance — check in at Legon with your phone; GPS confirms you are on campus.",
     start_url: "/",
     scope: "/",
     display: "standalone",
     background_color: BRAND_CREAM,
-    theme_color: BRAND_WINE,
+    theme_color: BRAND_BLUE,
     orientation: "portrait",
     categories: ["business", "productivity"],
     icons: [

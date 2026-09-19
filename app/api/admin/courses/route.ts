@@ -4,6 +4,12 @@ import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
 import { parseLevel, parseProgram } from "@/lib/academic";
 import { listCoursesForAdmin } from "@/lib/courses";
 import { parseTimezoneOffset } from "@/lib/attendance";
+import {
+  MAX_COURSE_CODE_LENGTH,
+  MAX_DESCRIPTION_LENGTH,
+  MAX_NAME_LENGTH,
+  parseLateAfterMinutes,
+} from "@/lib/input-limits";
 import { parseTimeToMinutes } from "@/lib/schedule";
 import { Course } from "@/models/Course";
 import { Location } from "@/models/Location";
@@ -41,16 +47,22 @@ export async function POST(request: Request) {
     const startTime = String(body.startTime ?? "").trim();
     const endTime = String(body.endTime ?? "").trim();
     const scheduleDays = parseScheduleDays(body.scheduleDays);
-    const lateAfterMinutes = Math.min(
-      120,
-      Math.max(0, Number(body.lateAfterMinutes ?? 15)),
-    );
+    const lateAfterMinutes = parseLateAfterMinutes(body.lateAfterMinutes);
     const timezoneOffset = parseTimezoneOffset(body.timezoneOffset);
 
     const program = parseProgram(body.program);
     const level = parseLevel(body.level);
 
     if (!title) return jsonError("Course title is required");
+    if (title.length > MAX_NAME_LENGTH) {
+      return jsonError(`Course title must be at most ${MAX_NAME_LENGTH} characters`);
+    }
+    if (courseCode.length > MAX_COURSE_CODE_LENGTH) {
+      return jsonError(`Course code must be at most ${MAX_COURSE_CODE_LENGTH} characters`);
+    }
+    if (description.length > MAX_DESCRIPTION_LENGTH) {
+      return jsonError(`Description must be at most ${MAX_DESCRIPTION_LENGTH} characters`);
+    }
     if (!program) return jsonError("Select a program for this class");
     if (level === null) return jsonError("Select an academic level (100–400)");
     if (!scheduleDays) return jsonError("Select at least one class day");

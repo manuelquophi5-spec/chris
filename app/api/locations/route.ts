@@ -7,6 +7,7 @@ import {
   parseCoordinates,
   requireAdmin,
 } from "@/lib/api";
+import { MAX_NAME_LENGTH, validateRadiusMeters } from "@/lib/input-limits";
 import { Location } from "@/models/Location";
 
 export async function GET(request: Request) {
@@ -52,10 +53,12 @@ export async function POST(request: Request) {
     const radiusMeters = Number(body.radiusMeters ?? 100);
 
     if (!name) return jsonError("Location name is required");
-    if (!coords) return jsonError("Valid latitude and longitude are required");
-    if (!Number.isFinite(radiusMeters) || radiusMeters < 10) {
-      return jsonError("radiusMeters must be at least 10");
+    if (name.length > MAX_NAME_LENGTH) {
+      return jsonError(`Location name must be at most ${MAX_NAME_LENGTH} characters`);
     }
+    if (!coords) return jsonError("Valid latitude and longitude are required");
+    const radiusError = validateRadiusMeters(radiusMeters);
+    if (radiusError) return jsonError(radiusError);
 
     await connectDB();
     const location = await Location.create({

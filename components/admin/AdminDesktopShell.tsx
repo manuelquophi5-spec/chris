@@ -73,7 +73,7 @@ type Props = {
 
 export function AdminDesktopShell({ user, children }: Props) {
   const pathname = usePathname();
-  const { appName, logoUrl } = useBrand();
+  const { appName, markUrl } = useBrand();
   const nav = allNav.filter(
     (item) => !item.roles || item.roles.includes(user.role as "admin"),
   );
@@ -89,12 +89,12 @@ export function AdminDesktopShell({ user, children }: Props) {
         <div className="border-b border-[var(--ella-sidebar-raised)] px-5 py-5">
           <div className="flex items-center gap-3">
             <Image
-              src={logoUrl}
+              src={markUrl}
               alt=""
               width={40}
               height={40}
-              unoptimized={logoUrl.startsWith("http")}
-              className="shrink-0 object-contain"
+              unoptimized={markUrl.startsWith("http")}
+              className="shrink-0 rounded-lg bg-white object-contain p-0.5"
             />
             <div className="min-w-0">
               <p className="truncate text-sm font-bold">{appName}</p>

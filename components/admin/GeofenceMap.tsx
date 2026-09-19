@@ -104,7 +104,7 @@ export function GeofenceMap({
             radius={loc.radiusMeters}
             pathOptions={{
               color: loc.id === selectedId ? "#047857" : loc.isActive ? "#10b981" : "#94a3b8",
-              fillColor: loc.id === selectedId ? "#6B2D3E" : loc.isActive ? "#9E4A5F" : "#cbd5e1",
+              fillColor: loc.id === selectedId ? "#01356E" : loc.isActive ? "#3F6FB0" : "#cbd5e1",
               fillOpacity: loc.id === selectedId ? 0.35 : 0.2,
               weight: loc.id === selectedId ? 3 : 2,
             }}

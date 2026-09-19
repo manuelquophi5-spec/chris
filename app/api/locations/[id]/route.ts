@@ -6,6 +6,7 @@ import {
   parseCoordinates,
   requireAdmin,
 } from "@/lib/api";
+import { MAX_NAME_LENGTH, validateRadiusMeters } from "@/lib/input-limits";
 import { Location } from "@/models/Location";
 import mongoose from "mongoose";
 
@@ -27,6 +28,9 @@ export async function PATCH(request: Request, context: RouteContext) {
     if (body.name !== undefined) {
       const name = String(body.name).trim();
       if (!name) return jsonError("Name cannot be empty");
+      if (name.length > MAX_NAME_LENGTH) {
+        return jsonError(`Name must be at most ${MAX_NAME_LENGTH} characters`);
+      }
       updates.name = name;
     }
 
@@ -42,9 +46,8 @@ export async function PATCH(request: Request, context: RouteContext) {
 
     if (body.radiusMeters !== undefined) {
       const radiusMeters = Number(body.radiusMeters);
-      if (!Number.isFinite(radiusMeters) || radiusMeters < 10) {
-        return jsonError("radiusMeters must be at least 10");
-      }
+      const radiusError = validateRadiusMeters(radiusMeters);
+      if (radiusError) return jsonError(radiusError);
       updates.radiusMeters = radiusMeters;
     }
 

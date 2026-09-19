@@ -13,6 +13,7 @@ import {
   parseJsonResponse,
   redirectAfterAuth,
 } from "@/lib/auth-client";
+import { safeRedirectPath } from "@/lib/safe-redirect";
 import { toastError, toastSuccess } from "@/lib/toast";
 
 function AdminLoginForm() {
@@ -44,7 +45,7 @@ function AdminLoginForm() {
       }
 
       toastSuccess("Signed in as administrator.");
-      const from = searchParams.get("from") ?? "/dashboard/admin";
+      const from = safeRedirectPath(searchParams.get("from"), "/dashboard/admin");
       redirectAfterAuth(from.startsWith("/dashboard") ? from : "/dashboard/admin");
     } catch {
       toastError("Network error. Check your connection and try again.");

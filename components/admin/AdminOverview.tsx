@@ -101,7 +101,7 @@ export function AdminOverview({ initial }: { initial: InitialStats }) {
       <div>
         <h1 className="ella-heading-page">Welcome</h1>
         <p className="ella-text-muted mt-2 max-w-2xl">
-          Set up attendance for your school. Follow the checklist below; no technical
+          Set up attendance for the University of Ghana. Follow the checklist below; no technical
           knowledge required.
         </p>
       </div>

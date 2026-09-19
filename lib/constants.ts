@@ -11,6 +11,8 @@ export const LOCKOUT_MINUTES = 30;
 
 export const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 export const RATE_LIMIT_MAX_AUTH = 10;
+/** Login attempts allowed per IP per window across all IDs (shared campus Wi-Fi, so generous). */
+export const LOGIN_IP_RATE_LIMIT_MAX = 300;
 
 /** Admin JWT lifetime (shorter than regular users). */
 export const ADMIN_JWT_EXPIRES = "24h";

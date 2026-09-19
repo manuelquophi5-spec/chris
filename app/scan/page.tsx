@@ -29,7 +29,7 @@ function ScanContent() {
     if (!token) {
       setState({
         status: "error",
-        message: "Missing QR code. Scan a class QR code to check in.",
+        message: "Missing QR code. Scan your class QR code to check in or out.",
       });
       return;
     }
@@ -51,7 +51,7 @@ function ScanContent() {
       return;
     }
 
-    setState({ status: "working", message: "Marking your attendance…" });
+    setState({ status: "working", message: "Recording your attendance…" });
 
     const payload = {
       token,
@@ -73,16 +73,16 @@ function ScanContent() {
       if (!res.ok) {
         setState({
           status: "error",
-          message: data.error ?? "Could not check in. Try again.",
+          message: data.error ?? "Could not record attendance. Try again.",
         });
         return;
       }
       setState({
         status: "success",
-        message: data.message ?? "Checked in.",
+        message: data.message ?? "Attendance recorded.",
       });
     } catch {
-      enqueue("/api/attendance/scan", payload, "Class check-in");
+      enqueue("/api/attendance/scan", payload, "Class QR scan");
       setState({
         status: "queued",
         message:
@@ -96,7 +96,7 @@ function ScanContent() {
   }, [runScan]);
 
   return (
-    <AuthPageShell title="Class check-in" subtitle="Scanned from a class QR code">
+    <AuthPageShell title="Class attendance" subtitle="Scanned from a class QR code">
       <div className="flex flex-col items-center gap-4 py-2 text-center">
         {state.status === "working" && (
           <div

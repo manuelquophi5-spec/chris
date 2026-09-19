@@ -17,9 +17,6 @@ export async function GET(request: Request) {
     return jsonOk({ classes } as Record<string, unknown>);
   } catch (error) {
     console.error("[api/admin/courses/active-now]", error);
-    return jsonError(
-      error instanceof Error ? error.message : "Internal Server Error",
-      500,
-    );
+    return jsonError("Something went wrong. Please try again.", 500);
   }
 }

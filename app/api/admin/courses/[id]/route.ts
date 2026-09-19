@@ -3,6 +3,12 @@ import { writeAudit } from "@/lib/audit";
 import { jsonError, jsonOk, requireAdmin } from "@/lib/api";
 import { parseLevel, parseProgram } from "@/lib/academic";
 import { parseTimeToMinutes } from "@/lib/schedule";
+import {
+  MAX_COURSE_CODE_LENGTH,
+  MAX_DESCRIPTION_LENGTH,
+  MAX_NAME_LENGTH,
+  parseLateAfterMinutes,
+} from "@/lib/input-limits";
 import { Course } from "@/models/Course";
 import { Location } from "@/models/Location";
 import mongoose from "mongoose";
@@ -34,13 +40,24 @@ export async function PATCH(request: Request, context: RouteContext) {
     if (body.title !== undefined) {
       const title = String(body.title).trim();
       if (!title) return jsonError("Title cannot be empty");
+      if (title.length > MAX_NAME_LENGTH) {
+        return jsonError(`Title must be at most ${MAX_NAME_LENGTH} characters`);
+      }
       course.title = title;
     }
     if (body.description !== undefined) {
-      course.description = String(body.description).trim();
+      const description = String(body.description).trim();
+      if (description.length > MAX_DESCRIPTION_LENGTH) {
+        return jsonError(`Description must be at most ${MAX_DESCRIPTION_LENGTH} characters`);
+      }
+      course.description = description;
     }
     if (body.courseCode !== undefined) {
-      course.courseCode = String(body.courseCode).trim().toUpperCase();
+      const courseCode = String(body.courseCode).trim().toUpperCase();
+      if (courseCode.length > MAX_COURSE_CODE_LENGTH) {
+        return jsonError(`Course code must be at most ${MAX_COURSE_CODE_LENGTH} characters`);
+      }
+      course.courseCode = courseCode;
     }
     if (body.program !== undefined) {
       const program = parseProgram(body.program);
@@ -78,9 +95,9 @@ export async function PATCH(request: Request, context: RouteContext) {
       course.endTime = t;
     }
     if (body.lateAfterMinutes !== undefined) {
-      course.lateAfterMinutes = Math.min(
-        120,
-        Math.max(0, Number(body.lateAfterMinutes)),
+      course.lateAfterMinutes = parseLateAfterMinutes(
+        body.lateAfterMinutes,
+        course.lateAfterMinutes ?? undefined,
       );
     }
     if (body.isActive !== undefined) {

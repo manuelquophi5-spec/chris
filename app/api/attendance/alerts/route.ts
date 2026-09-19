@@ -70,7 +70,7 @@ export async function GET(request: Request) {
     return Response.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : "Internal Server Error",
+        error: "Something went wrong. Please try again.",
       },
       { status: 500 },
     );

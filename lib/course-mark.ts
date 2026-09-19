@@ -3,6 +3,7 @@ import { geofenceOutOfRangeMessage } from "@/lib/geofence-messages";
 import { checkImplausibleMovement } from "@/lib/gps-spoofing";
 import { isWithinGeofence } from "@/lib/haversine";
 import { evaluateCourseSchedule } from "@/lib/schedule";
+import { resolveQrAction } from "@/lib/qr-toggle";
 import { toAttendanceSummary } from "@/lib/attendance";
 import { Attendance } from "@/models/Attendance";
 import { Course } from "@/models/Course";
@@ -15,7 +16,8 @@ import mongoose from "mongoose";
 export async function markCourseAttendance(params: {
   userId: string;
   courseId: string;
-  type: AttendanceType;
+  /** "auto" (QR scan): check in if not yet checked in today, otherwise check out. */
+  type: AttendanceType | "auto";
   coords: { latitude: number; longitude: number };
   timezoneOffset: number;
   gpsAccuracy: number | null;
@@ -25,7 +27,7 @@ export async function markCourseAttendance(params: {
   const {
     userId,
     courseId,
-    type,
+    type: requestedType,
     coords,
     timezoneOffset,
     gpsAccuracy,
@@ -74,8 +76,23 @@ export async function markCourseAttendance(params: {
     dayKey,
   }).lean();
 
-  const hasIn = existing.some((r) => r.type === "check_in");
+  const checkInRecord = existing.find((r) => r.type === "check_in");
+  const hasIn = Boolean(checkInRecord);
   const hasOut = existing.some((r) => r.type === "check_out");
+
+  let type: AttendanceType;
+  if (requestedType === "auto") {
+    const action = resolveQrAction({
+      hasIn,
+      hasOut,
+      checkInAt: checkInRecord?.markedAt ?? null,
+      now: new Date(),
+    });
+    if (!action.ok) return { error: action.error, status: action.status };
+    type = action.type;
+  } else {
+    type = requestedType;
+  }
 
   if (type === "check_in") {
     if (!window.active) {

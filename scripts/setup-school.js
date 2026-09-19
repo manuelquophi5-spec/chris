@@ -66,13 +66,13 @@ async function main() {
   const admin = await User.findOne({ role: "admin" });
   if (!admin) { console.error("No admin user found"); process.exit(1); }
 
-  // Create a campus
+  // Create the University of Ghana, Legon campus (approx. campus centre; refine per lecture venue)
   const location = await Location.findOneAndUpdate(
-    { name: "Main Campus" },
-    { name: "Main Campus", latitude: 5.6037, longitude: -0.187, radiusMeters: 100, isActive: true },
+    { name: "University of Ghana, Legon" },
+    { name: "University of Ghana, Legon", latitude: 5.6502, longitude: -0.1962, radiusMeters: 500, isActive: true },
     { upsert: true, new: true }
   );
-  console.log("Campus created:", location.name, "(adjust radius in admin panel)");
+  console.log("Campus created:", location.name, "(Legon is large; tighten the radius or add per-venue sites in the admin panel)");
 
   // Create courses for Computer Science Level 200
   const courses = [
