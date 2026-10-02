@@ -19,16 +19,24 @@ export async function getSettings(): Promise<BrandSettings> {
     return cached.value;
   }
 
-  await connectDB();
-  const doc = await Settings.findOne().lean();
+  try {
+    await connectDB();
+    const doc = await Settings.findOne().lean();
 
-  const value: BrandSettings = {
-    appName: doc?.appName?.trim() || DEFAULT_APP_NAME,
-    logoUrl: doc?.logoUrl?.trim() || DEFAULT_LOGO_URL,
-  };
+    const value: BrandSettings = {
+      appName: doc?.appName?.trim() || DEFAULT_APP_NAME,
+      logoUrl: doc?.logoUrl?.trim() || DEFAULT_LOGO_URL,
+    };
 
-  cached = { value, expiresAt: Date.now() + CACHE_TTL_MS };
-  return value;
+    cached = { value, expiresAt: Date.now() + CACHE_TTL_MS };
+    return value;
+  } catch (e) {
+    console.warn("Could not fetch brand settings from DB, using defaults:", e);
+    return {
+      appName: DEFAULT_APP_NAME,
+      logoUrl: DEFAULT_LOGO_URL,
+    };
+  }
 }
 
 export function invalidateSettingsCache(): void {
