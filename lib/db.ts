@@ -5,7 +5,8 @@ import dns from "node:dns";
 // that. Vercel's own resolver doesn't have this problem, so leave it untouched there.
 if (process.env.VERCEL !== "1") {
   try {
-    dns.setServers(["8.8.8.8", "8.8.4.4"]);
+    dns.setDefaultResultOrder("ipv4first");
+    dns.setServers(["8.8.8.8", "8.8.4.4", "1.1.1.1"]);
   } catch {
     /* ignore if already set */
   }
@@ -48,9 +49,14 @@ export async function connectDB(): Promise<typeof mongoose> {
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(getMongoUri(), {
-      bufferCommands: false,
-    });
+    cached.promise = mongoose
+      .connect(getMongoUri(), {
+        bufferCommands: false,
+      })
+      .catch((err) => {
+        cached.promise = null;
+        throw err;
+      });
   }
 
   cached.conn = await cached.promise;
